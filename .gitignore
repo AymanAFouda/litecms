@@ -1,0 +1,16 @@
+# Node
+node_modules/
+dist/
+
+# Spring Boot
+target/
+*.log
+
+# Env files
+.env
+.env.local
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
