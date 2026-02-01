@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
-import { apiCallTest } from './api'
+import { getArticles } from './api'
 import './App.css'
 
 function App() {
-  const [userIp, setUserIp] = useState('');
+  const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    apiCall();
+    fetchArticles();
   }, [])
 
-  const apiCall = async () => {
+  const fetchArticles = async () => {
     try{
-      const ip = await apiCallTest();
-      setUserIp(ip);
+      const data = await getArticles();
+      setArticles(data);
     } catch(er) {
       console.log(er);
     }
@@ -20,7 +20,13 @@ function App() {
 
   return (
     <>
-      <h1>{userIp}</h1>
+      {articles.map(article => (
+        <>
+          <h1>Id: {article.id}</h1>
+          <h1>Title: {article.title}</h1>
+          <p>{article.content}</p>
+        </>
+      ))}
     </>
   )
 }
