@@ -1,11 +1,16 @@
 package com.litecms.backend.entity;
 
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +24,10 @@ public class Category {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "category")
+    @JsonIgnore 
+    private List<Content> contents;
 
     public Category() {}
 
@@ -40,6 +49,14 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Content> getContents() {
+        return contents;
+    }
+
+    public void setContents(List<Content> contents) {
+        this.contents = contents;
     }
 
 }
