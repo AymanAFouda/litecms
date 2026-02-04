@@ -13,40 +13,45 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.litecms.backend.entity.Category;
-import com.litecms.backend.service.CategoryService;
-
-
+import com.litecms.backend.entity.Content;
+import com.litecms.backend.service.ContentService;
+ 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
-@RequestMapping("/categories")
-public class CategoryController {
+@RequestMapping("/content")
 
- private final CategoryService categoryService;
+public class ContentController {
 
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    
+    private final ContentService contentService;
+
+    public ContentController(ContentService contentService) {
+        this.contentService = contentService;
     }
 
     @PostMapping
-    public Category create(@RequestBody Category category) {
-        return categoryService.create(category);
+    public Content create(@RequestBody Content content) {
+        return contentService.create(content);
     }
 
     @PutMapping("/{id}")
-    public Category update(@PathVariable Long id,
-                           @RequestBody Category category) {
-        return categoryService.update(id, category);
+    public Content update(@PathVariable Long id, @RequestBody Content content) {
+        return contentService.update(id, content);
     }
 
     @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryService.findAll();
+    public List<Content> getAll() {
+        return contentService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Content getById(@PathVariable Long id) {
+        return contentService.findById(id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
-        categoryService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        contentService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
