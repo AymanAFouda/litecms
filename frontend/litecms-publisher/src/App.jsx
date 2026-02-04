@@ -1,40 +1,41 @@
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import './App.css'
+
 import { Home } from './pages/Home'
 import { Articles } from './pages/Articles'
 import { PhotoGalleries } from './pages/PhotoGalleries'
 import { Videos } from './pages/Videos'
 import { Categories } from './pages/Categories'
+import { CreateCategory } from './pages/CreateCategory'
 import { NotFound } from './pages/NotFound'
-import { Sidebar } from './components/layout/Sidebar';
-import { Header } from './components/layout/Header';
-import { useState } from 'react';
+import { Profile } from './pages/Profile';
+import { Login } from './pages/Login';
+
+import { MainLayout } from './components/layout/MainLayout';
+import { Toaster } from 'react-hot-toast'
+import { CreateArticle } from './pages/CreateArticle';
 
 
 function App() {
-
-  const [isMenuExpanded , setIsMenuExpanded] = useState(true);
-
   return (
     <BrowserRouter>
-      <div id='body-div' className={isMenuExpanded ? "nav-md" : "nav-sm"} >
-        <div className='container body'>
-          <Sidebar
-            isMenuExpanded={isMenuExpanded} />
-          <Header
-            setIsMenuExpanded={setIsMenuExpanded} />
-          
+      <Toaster position="top-center"/>
           <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/articles' element={<Articles />} />
-            <Route path='/photo-galleries' element={<PhotoGalleries />} />
-            <Route path='/videos' element={<Videos />} />
-            <Route path='/categories' element={<Categories />} />
+            <Route element={<MainLayout />}>
+              <Route path='/' element={<Home />} />
+              <Route path='/articles' element={<Articles />} />
+              <Route path='/photo-galleries' element={<PhotoGalleries />} />
+              <Route path='/videos' element={<Videos />} />
+              <Route path='/categories' element={<Categories />} />
+              <Route path='/categories/create' element={<CreateCategory />} />
+              <Route path='/articles/create' element={<CreateArticle />} />
+              <Route path='/articles/edit/:id' element={<CreateArticle />} />
+              <Route path='/Profile' element={<Profile />} />
+            </Route>
+
+            <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-
-        </div>
-      </div>
     </BrowserRouter>
   )
 }

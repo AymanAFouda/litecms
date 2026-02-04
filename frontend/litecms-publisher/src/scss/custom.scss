@@ -1228,7 +1228,7 @@ a:focus {
 
 .panel_toolbox {
   float: right;
-  min-width: 70px;
+  min-width: 35px;
 }
 .panel_toolbox > li {
   float: left;
@@ -6647,3 +6647,88 @@ input[type="radio"].flat:disabled + label {
 
 // Skycons weather icon size
 .skycons-icon { width: 160px; height: 120px; margin: 0 auto; }
+
+// Extra styles
+
+/* Remove right border on last column */
+.rdt_TableHeadCell:last-child,
+.rdt_TableCell:last-child {
+  border-right: none !important;
+}
+
+/* Remove bottom border on last row */
+.rdt_TableRow:last-child {
+  border-bottom: none !important;
+}
+
+/* Remove outer table border */
+.rdt_Table {
+  border: none;
+}
+
+/* Row bottom borders */
+.rdt_TableRow {
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* Header row bottom border */
+.rdt_TableHeadRow {
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* Cell right borders */
+.rdt_TableCell {
+  border-right: 1px solid #dee2e6;
+}
+
+.rdt_TableHeadRow .rdt_TableCol {
+  font-weight: 700; 
+  font-size: 1.2em;
+}
+
+
+.large-spinner {
+  height: 60px;
+  width: 60px;
+}
+
+.medium-spinner {
+  height: 40px;
+  width: 40px;
+}
+
+.small-spinner {
+  height: 20px;
+  width: 20px;
+}
+
+.spinner-container {
+   min-height: 90vh;
+}
+
+.font-size-6 {
+  font-size: 6rem !important;
+}
+
+.error-bg {
+  background: linear-gradient(135deg, #2A3F54 0%, #34495e 100%);
+  min-height: 100vh;
+}
+
+.sc-kFCscd {
+  margin-left: 5px !important;
+}
+
+.ck-editor{
+  width: 100% !important;
+  padding: 10px !important;
+}
+
+/* Editable area inside CKEditor */
+.ck-content {
+  width: 100%;
+  min-height: 300px;
+  box-sizing: border-box;
+  font-size: 1.2em !important;  
+  color: #000 !important; 
+}

@@ -4,12 +4,10 @@ import { Link } from 'react-router-dom'
 
 export function Sidebar({ isMenuExpanded }) {
 
-    console.log("Sidebar rendered")
-
     //profile page
     const menuItems = [
         { label: "Home", iconClass: "bi bi-house", to: "/" },
-        { label: "Articles", iconClass: "bi bi-pencil-square", to: "/articles" },
+        { label: "Articles", iconClass: "bi bi-file-earmark-text", to: "/articles" },
         { label: "Videos", iconClass: "bi bi-camera-video", to: "/videos" },
         { label: "Photo Galleries", iconClass: "bi bi-images", to: "/photo-galleries" },
         { label: "Categories", iconClass: "bi bi-list-task", to: "/categories" },
