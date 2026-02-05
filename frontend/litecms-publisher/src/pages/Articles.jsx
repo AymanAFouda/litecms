@@ -27,7 +27,7 @@ export function Articles() {
             const data = await getArticles()
             setArticles(data)
         } catch (error) {
-            console.log(error)
+            toast.error(error)
         } finally {
             setIsLoading(false)
         }
@@ -66,7 +66,7 @@ export function Articles() {
             await deleteArticle(selectedArticle.id)
             setArticles(articles.filter((item) => item.id !== selectedArticle.id));
         } catch(error) {
-            console.log(error)
+            toast.error(error)
         } finally {
             handleCloseDeleteModal();
             setIsDeleting(false)

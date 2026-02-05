@@ -1,5 +1,5 @@
 import DataTable from "react-data-table-component"
-import { getCategories, editCategory, deleteCategory } from '../api'
+import { getCategories, updateCategory, deleteCategory } from '../api'
 import { useEffect, useState } from "react"
 import { Modal } from 'react-bootstrap'
 import { LoadingSpinner } from '../components/common/LoadingSpinner'
@@ -27,7 +27,7 @@ export function Categories() {
             const data = await getCategories()
             setCategories(data)
         } catch (error) {
-            console.log(error)
+            toast.error(error)
         } finally {
             setIsLoading(false)
         }
@@ -61,7 +61,7 @@ export function Categories() {
         try {
 
             const payLoad = { ...selectedCategory, name: categoryName };
-            const updatedCategory = await editCategory(payLoad)
+            const updatedCategory = await updateCategory(payLoad)
 
             setCategories(
                 categories.map( (cat) => (
@@ -69,7 +69,7 @@ export function Categories() {
                 ))
             )
         } catch(error) {
-            console.log(error)
+            toast.error(error)
         } finally {
             handleCloseEditModal();
         }
@@ -97,7 +97,7 @@ export function Categories() {
             await deleteCategory(selectedCategory.id)
             setCategories(categories.filter((item) => item.id !== selectedCategory.id));
         } catch(error) {
-            console.log(error)
+            toast.error(error)
         } finally {
             handleCloseDeleteModal();
             setIsDeleting(false)

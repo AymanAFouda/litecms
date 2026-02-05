@@ -29,7 +29,7 @@ export function CreateCategory() {
                 navigate("/categories")
             }
         } catch(er) {
-            console.log(er)
+            toast.error(er)
         }
     }
 

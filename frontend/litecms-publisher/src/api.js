@@ -34,7 +34,7 @@ export async function createArticle(article) {
     return createdArticle;
 }
 
-export async function editArticle(article) {
+export async function updateArticle(article) {
     const response = await fetch(`${API_BASE_URL}/articles/${article.id}`, {
         method: 'PUT',
         headers: {
@@ -86,7 +86,7 @@ export async function createCategory(categoryName) {
     return createdCategory;
 }
 
-export async function editCategory(category) {
+export async function updateCategory(category) {
     const response = await fetch(`${API_BASE_URL}/categories/${category.id}`, {
         method: 'PUT',
         headers: {
