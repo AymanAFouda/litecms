@@ -13,6 +13,9 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+
+
+
 @Entity
 @Table(name = "Content")
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
@@ -36,10 +39,10 @@ public class Content {
     private String tags; 
 
     @Column(name = "like_count")
-    private Integer likeCount;
+    private Integer likeCount = 0;
 
     @Column(name = "view_count")
-    private Integer viewCount;
+    private Integer viewCount = 0;
    
     @ManyToOne
     private Category category;
@@ -48,14 +51,10 @@ public class Content {
 
      }
 
-    public Content(Long contentId, String title, String description, String tags, Integer likeCount, Integer viewCount,
-            Category category) {
-        this.contentId = contentId;
+    public Content(String title, String description, String tags, Category category) {
         this.title = title;
         this.description = description;
         this.tags = tags;
-        this.likeCount = likeCount;
-        this.viewCount = viewCount;
         this.category = category;
     }
 

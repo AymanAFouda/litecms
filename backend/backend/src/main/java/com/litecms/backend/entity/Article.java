@@ -21,9 +21,8 @@ public class Article extends Content{
         this.articleBody = articleBody;
     }
 
-    public Article(Long contentId, String title, String description, String tags, Integer likeCount, Integer viewCount,
-            Category category, String articleBody) {
-        super(contentId, title, description, tags, likeCount, viewCount, category);
+    public Article(String title, String description, String tags, Category category, String articleBody) {
+        super(title, description, tags, category);
         this.articleBody = articleBody;
     }
 
