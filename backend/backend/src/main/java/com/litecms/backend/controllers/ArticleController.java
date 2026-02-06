@@ -38,7 +38,8 @@ public class ArticleController {
     @PutMapping("/{id}")
     public Content update(@PathVariable Long id,
                            @RequestBody Article article) {
-        return articleService.update(id, article);
+        article.setContentId(id);
+        return articleService.update(article);
     }
 
       // Get all content

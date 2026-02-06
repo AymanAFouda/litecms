@@ -5,7 +5,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue(value ="Article")
+@DiscriminatorValue(value ="ARTICLE")
 public class Article extends Content{
 
     @Column(name = "Article_Body")
@@ -15,14 +15,15 @@ public class Article extends Content{
         
     }
 
-   
-
     public Article(String articleBody) {
         this.articleBody = articleBody;
     }
 
-    public Article(String title, String description, String tags, Category category, String articleBody) {
-        super(title, description, tags, category);
+
+
+    public Article(String title, String description, String tags, Category category, Status status,
+            String articleBody) {
+        super(title, description, tags, category, status);
         this.articleBody = articleBody;
     }
 

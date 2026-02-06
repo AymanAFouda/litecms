@@ -15,15 +15,15 @@ import com.litecms.backend.repositories.CategoryRepository;
 
 public class ArticleService {
 
-    private final ArticleRepository contentRepository;
+    private final ArticleRepository articleRepository;
     private final CategoryRepository categoryRepository;
 
 
   
 
-public ArticleService(ArticleRepository contentRepository, CategoryRepository categoryRepository) {
+public ArticleService(ArticleRepository articleRepository, CategoryRepository categoryRepository) {
 
-    this.contentRepository = contentRepository;
+    this.articleRepository = articleRepository;
     this.categoryRepository = categoryRepository;
 
 }
@@ -50,50 +50,43 @@ public ArticleService(ArticleRepository contentRepository, CategoryRepository ca
             content.getDescription(),
             content.getTags(),
             content.getCategory(),
+            content.getStatus(),
             article.getArticleBody()
         );
-        return contentRepository.save(newArticle);
+        return articleRepository.save(newArticle);
         }
-        return contentRepository.save(content);
+        return articleRepository.save(content);
             }
 
     // Update content
 
-    public Article update(Long id, Article content) {
-            Content existing = contentRepository.findById(id)
+    public Article update(Article article) {
+            articleRepository.findById(article.getContentId())
             .orElseThrow(() -> new RuntimeException("Article not found"));
-            existing.setTitle(content.getTitle());
-            existing.setDescription(content.getDescription());
-            existing.setTags(content.getTags());
 
-            if (content.getCategory() != null) {
-            Long categoryId = content.getCategory().getId();
-            Category category = categoryRepository.findById(categoryId)
-            .orElseThrow(() -> new RuntimeException("Category not found"));
-            existing.setCategory(category);
+            if (article.getCategory() != null) {
+                Long categoryId = article.getCategory().getId();
+                categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
             }
 
-            if (existing instanceof Article existingArticle && content instanceof Article incomingArticle) {
-            existingArticle.setArticleBody(incomingArticle.getArticleBody());
-
-            }
-            return contentRepository.save(content);
+            return articleRepository.save(article);
     }
 
     // Get all content
     public List<Content> findAll() {
-        return contentRepository.findAll();
+        return articleRepository.findAll();
     }
 
     // Get content by ID
     public Content findById(Long id) {
-        return contentRepository.findById(id)
+        return articleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Article not found"));
     }
  
     // Delete content
     public void delete(Long id) {
-        contentRepository.deleteById(id);
+        articleRepository.deleteById(id);
 
         
     }
