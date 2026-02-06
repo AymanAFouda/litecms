@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.litecms.backend.entity.Article;
 import com.litecms.backend.entity.Category;
-import com.litecms.backend.entity.Content;
 import com.litecms.backend.repositories.ArticleRepository;
 import com.litecms.backend.repositories.CategoryRepository;
  
@@ -61,8 +60,11 @@ public ArticleService(ArticleRepository articleRepository, CategoryRepository ca
     // Update content
 
     public Article update(Article article) {
-            articleRepository.findById(article.getContentId())
+            Article originalArticle = articleRepository.findById(article.getContentId())
             .orElseThrow(() -> new RuntimeException("Article not found"));
+
+            article.setViewCount(originalArticle.getViewCount());
+            article.setLikeCount(originalArticle.getLikeCount());
 
             if (article.getCategory() != null) {
                 Long categoryId = article.getCategory().getId();
@@ -74,12 +76,12 @@ public ArticleService(ArticleRepository articleRepository, CategoryRepository ca
     }
 
     // Get all content
-    public List<Content> findAll() {
+    public List<Article> findAll() {
         return articleRepository.findAll();
     }
 
     // Get content by ID
-    public Content findById(Long id) {
+    public Article findById(Long id) {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Article not found"));
     }

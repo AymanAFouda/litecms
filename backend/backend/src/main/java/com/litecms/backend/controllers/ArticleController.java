@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.litecms.backend.entity.Article;
-import com.litecms.backend.entity.Content;
 import com.litecms.backend.service.ArticleService;
 
 @RestController
@@ -36,7 +35,7 @@ public class ArticleController {
 
     
     @PutMapping("/{id}")
-    public Content update(@PathVariable Long id,
+    public Article update(@PathVariable Long id,
                            @RequestBody Article article) {
         article.setContentId(id);
         return articleService.update(article);
@@ -44,13 +43,13 @@ public class ArticleController {
 
       // Get all content
     @GetMapping
-    public List<Content> getAllContents() {
+    public List<Article> getAllContents() {
         return articleService.findAll();
     }
 
     // Get content by ID
     @GetMapping("/{id}")
-    public Content getContentById(@PathVariable Long id) {
+    public Article getContentById(@PathVariable Long id) {
         return articleService.findById(id);
     }
 
