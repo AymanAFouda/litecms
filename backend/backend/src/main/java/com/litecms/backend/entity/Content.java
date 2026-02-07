@@ -3,10 +3,14 @@ package com.litecms.backend.entity;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +26,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Content")
+@EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(
     name ="Content_type",
@@ -48,7 +53,8 @@ public class Content {
     @Column(name = "view_count")
     private Integer viewCount = 0;
    
-    @Column(name = "created_at", nullable = false)  
+    @CreatedDate
+    @Column(nullable = false, updatable = false) 
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Enumerated(value = EnumType.STRING)
