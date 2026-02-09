@@ -15,6 +15,8 @@ public class Article extends Content{
         
     }
 
+
+
     public Article(String articleBody) {
         this.articleBody = articleBody;
     }

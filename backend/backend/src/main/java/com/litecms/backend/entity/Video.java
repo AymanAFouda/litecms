@@ -12,24 +12,28 @@ public class Video extends Content{
 
     public Video(){
         
-    }
-
+    } 
+    
     public Video(String videoUrl) {
         this.videoUrl = videoUrl;
     }
+
+
 
     public Video(String title, String description, String tags, Category category, Status status, String videoUrl) {
         super(title, description, tags, category, status);
         this.videoUrl = videoUrl;
     }
 
+
+
+    //#region Getters and Setters
     public String getVideoUrl() {
         return videoUrl;
     }
-
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
     }
-
+    //#endregion
     
 }
