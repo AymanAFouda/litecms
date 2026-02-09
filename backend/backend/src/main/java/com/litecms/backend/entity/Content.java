@@ -25,7 +25,7 @@ import jakarta.persistence.Table;
 
 
 @Entity
-@Table(name = "Content")
+@Table(name = "contents")
 @EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(
@@ -63,6 +63,9 @@ public class Content {
 
     @ManyToOne
     private Category category;
+
+
+     
 
     public Content(){
 

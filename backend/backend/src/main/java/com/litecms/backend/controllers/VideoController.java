@@ -18,7 +18,7 @@ import com.litecms.backend.service.VideoService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
-@RequestMapping("/Videos")
+@RequestMapping("/videos")
 public class VideoController {
   
     
@@ -41,13 +41,13 @@ public class VideoController {
         return videoService.update(video);
     }
 
-   // Get all content
+   // Get all Videos
     @GetMapping
     public List<Video> getAllContents() {
         return videoService.findAll();
     }
 
-    // Get content by ID
+    // Get Video by ID
     @GetMapping("/{id}")
     public Video getContentById(@PathVariable Long id) {
         return videoService.findById(id);

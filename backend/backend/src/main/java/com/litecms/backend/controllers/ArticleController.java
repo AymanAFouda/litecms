@@ -41,13 +41,13 @@ public class ArticleController {
         return articleService.update(article);
     }
 
-      // Get all content
+      // Get all Article
     @GetMapping
     public List<Article> getAllContents() {
         return articleService.findAll();
     }
 
-    // Get content by ID
+    // Get Article by ID
     @GetMapping("/{id}")
     public Article getContentById(@PathVariable Long id) {
         return articleService.findById(id);

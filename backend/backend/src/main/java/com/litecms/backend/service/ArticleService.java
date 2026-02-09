@@ -24,8 +24,7 @@ public ArticleService(ArticleRepository articleRepository, CategoryRepository ca
 
 }
 
-// Create content
-
+// Create Article  
  public Article create(Article content) {
 
 // Ensure category exists
@@ -54,7 +53,7 @@ public ArticleService(ArticleRepository articleRepository, CategoryRepository ca
         return articleRepository.save(content);
             }
 
-    // Update content
+    // Update Article
 
     public Article update(Article article) {
             Article originalArticle = articleRepository.findById(article.getContentId())
@@ -72,18 +71,18 @@ public ArticleService(ArticleRepository articleRepository, CategoryRepository ca
             return articleRepository.save(article);
     }
 
-    // Get all content
+    // Get all Article
     public List<Article> findAll() {
         return articleRepository.findAll();
     }
 
-    // Get content by ID
+    // Get Article by ID
     public Article findById(Long id) {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Article not found"));
     }
  
-    // Delete content
+    // Delete Article
     public void delete(Long id) {
         articleRepository.deleteById(id);
 

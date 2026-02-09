@@ -22,7 +22,7 @@ public class VideoService {
 
     }
 
-      // Create content
+      // Create Video
 
 public Video create(Video content) {
 
@@ -53,8 +53,7 @@ public Video create(Video content) {
         return videoRepository.save(content);
             }
 
-// Update content
-
+// Update Video
     public Video update(Video video) {
             Video originalVideo = videoRepository.findById(video.getContentId())
             .orElseThrow(() -> new RuntimeException("Video not found"));
@@ -70,18 +69,18 @@ public Video create(Video content) {
             return videoRepository.save(video);
     }
 
-     // Get all content
+     // Get all Video
     public List<Video> findAll() {
         return videoRepository.findAll();
     }
 
-    // Get content by ID
+    // Get Video by ID
     public Video findById(Long id) {
         return videoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Article not found"));
     }
  
-    // Delete content
+    // Delete Video
     public void delete(Long id) {
         videoRepository.deleteById(id);
 
