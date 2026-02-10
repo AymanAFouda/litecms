@@ -13,51 +13,52 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.litecms.backend.entity.Article;
-import com.litecms.backend.service.ArticleService;
+import com.litecms.backend.entity.PhotoGallery;
+import com.litecms.backend.service.PhotoGalleryService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
-@RequestMapping("/articles")
-public class ArticleController {
-    
+@RequestMapping("/photoGalleries")
+public class PhotoGalleryController {
 
-    private final ArticleService articleService;
 
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
+    private final PhotoGalleryService photoGalleryService;
+
+    public PhotoGalleryController(PhotoGalleryService photoGalleryService) {
+        this.photoGalleryService = photoGalleryService;
     }
 
      @PostMapping
-    public Article create(@RequestBody Article article) {
-        return articleService.create(article);
+    public PhotoGallery create(@RequestBody PhotoGallery photoGallery) {
+        return photoGalleryService.create(photoGallery);
     }
 
     
     @PutMapping("/{id}")
-    public Article update(@PathVariable Long id,
-     @RequestBody Article article) {
-        article.setContentId(id);
-        return articleService.update(article);
+    public PhotoGallery update(@PathVariable Long id,
+    @RequestBody PhotoGallery photoGallery) {
+        photoGallery.setContentId(id);
+        return photoGalleryService.update(photoGallery);
     }
 
       // Get all Article
     @GetMapping
-    public List<Article> getAllContents() {
-        return articleService.findAll();
+    public List<PhotoGallery> getAllContents() {
+        return photoGalleryService.findAll();
     }
 
     // Get Article by ID
     @GetMapping("/{id}")
-    public Article getContentById(@PathVariable Long id) {
-        return articleService.findById(id);
+    public PhotoGallery getContentById(@PathVariable Long id) {
+        return photoGalleryService.findById(id);
     }
 
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteContent(@PathVariable Long id) {
-        articleService.delete(id);
+        photoGalleryService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    
 }
