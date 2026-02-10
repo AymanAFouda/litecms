@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.Media;
+import com.litecms.backend.entity.PhotoGallery;
 import com.litecms.backend.repositories.MediaRepository;
 
 @Service
@@ -28,7 +29,7 @@ public MediaService(MediaRepository mediaRepository) {
     }   
 
 
-    public Media saveFile(MultipartFile file) throws IOException {
+    public Media saveFile(MultipartFile file, PhotoGallery gallery) throws IOException {
 
         //Validate file
         if (file.isEmpty()) {
@@ -60,7 +61,8 @@ public MediaService(MediaRepository mediaRepository) {
         media.setFileName(originalName);
         media.setFileUrl("/uploads/" + storedFileName); // for serving
         media.setMimeType(mimeType);
-        
+        media.setPhotoGallery(gallery);
+
         return mediaRepository.save(media);
     }
 

@@ -1,9 +1,11 @@
 package com.litecms.backend.entity;
 
+ 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Media {
@@ -18,15 +20,17 @@ public class Media {
 
     private String mimeType;
 
-    public Media(){
+    @ManyToOne
+    private PhotoGallery photoGallery;
 
-    }
+    public Media() {}
 
-    public Media(Long id, String fileName, String fileUrl, String mimeType) {
+    public Media(Long id, String fileName, String fileUrl, String mimeType, PhotoGallery photoGallery) {
         this.id = id;
         this.fileName = fileName;
         this.fileUrl = fileUrl;
         this.mimeType = mimeType;
+        this.photoGallery = photoGallery;
     }
 
     public Long getId() {
@@ -60,5 +64,15 @@ public class Media {
     public void setMimeType(String mimeType) {
         this.mimeType = mimeType;
     }
-     
+
+    public PhotoGallery getPhotoGallery() {
+        return photoGallery;
+    }
+
+    public void setPhotoGallery(PhotoGallery photoGallery) {
+        this.photoGallery = photoGallery;
+    }
+ 
+    
+   
 }

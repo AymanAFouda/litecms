@@ -2,8 +2,8 @@ package com.litecms.backend.controllers;
 
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.PhotoGallery;
 import com.litecms.backend.service.PhotoGalleryService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/photoGalleries")
 public class PhotoGalleryController {
 
@@ -28,11 +29,10 @@ public class PhotoGalleryController {
         this.photoGalleryService = photoGalleryService;
     }
 
-     @PostMapping
-    public PhotoGallery create(@RequestBody PhotoGallery photoGallery) {
-        return photoGalleryService.create(photoGallery);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> create(@RequestParam("files") MultipartFile[] files, @RequestParam("gallery") PhotoGallery photoGallery) {
+        return photoGalleryService.create(photoGallery, files);
     }
-
     
     @PutMapping("/{id}")
     public PhotoGallery update(@PathVariable Long id,
