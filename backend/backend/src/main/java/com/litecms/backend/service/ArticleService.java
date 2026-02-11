@@ -11,7 +11,6 @@ import com.litecms.backend.repositories.CategoryRepository;
  
 
 @Service
-
 public class ArticleService {
 
     private final ArticleRepository articleRepository;

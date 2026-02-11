@@ -36,7 +36,7 @@ public class ArticleController {
     
     @PutMapping("/{id}")
     public Article update(@PathVariable Long id,
-                           @RequestBody Article article) {
+     @RequestBody Article article) {
         article.setContentId(id);
         return articleService.update(article);
     }
@@ -59,6 +59,5 @@ public class ArticleController {
         articleService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 
 }

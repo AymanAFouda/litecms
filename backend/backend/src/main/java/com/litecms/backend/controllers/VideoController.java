@@ -36,7 +36,7 @@ public class VideoController {
  
     @PutMapping("/{id}")
     public Video update(@PathVariable Long id,
-                           @RequestBody Video video) {
+    @RequestBody Video video) {
         video.setContentId(id);
         return videoService.update(video);
     }
