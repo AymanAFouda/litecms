@@ -28,9 +28,7 @@ public class Article extends Content{
         super(title, description, tags, category, status);
         this.articleBody = articleBody;
     }
-
-
-
+    //#region Getters and Setters
     public String getArticleBody() {
         return articleBody;
     }
@@ -40,8 +38,5 @@ public class Article extends Content{
     public void setArticleBody(String articleBody) {
         this.articleBody = articleBody;
     }
-
-    
-
-    
+    //#endregion  
 }

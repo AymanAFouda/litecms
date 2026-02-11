@@ -76,7 +76,7 @@ public class PhotoGalleryService {
   // Update PhotoGallery
     public PhotoGallery update(PhotoGallery photoGallery) {
             PhotoGallery originalPhotoGallery = photoGalleryRepository.findById(photoGallery.getContentId())
-            .orElseThrow(() -> new RuntimeException("PhotoGallery not found"));
+                .orElseThrow(() -> new RuntimeException("PhotoGallery not found"));
 
             photoGallery.setViewCount(originalPhotoGallery.getViewCount());
             photoGallery.setLikeCount(originalPhotoGallery.getLikeCount());
@@ -84,7 +84,7 @@ public class PhotoGalleryService {
             if (photoGallery.getCategory() != null) {
                 Long categoryId = photoGallery.getCategory().getId();
                 categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                    .orElseThrow(() -> new RuntimeException("Category not found"));
             }
 
             return photoGalleryRepository.save(photoGallery);
@@ -101,6 +101,14 @@ public class PhotoGalleryService {
     }
     // Delete PhotoGallery
     public void delete(Long id) {
-        photoGalleryRepository.deleteById(id); 
+        PhotoGallery photoGallery = photoGalleryRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("PhotoGallery not found")); 
+
+        List<Media> mediaList = photoGallery.getMediaList();
+            for (Media media : mediaList) {
+                mediaService.deleteFile(media);
+            }
+        
+        photoGalleryRepository.delete(photoGallery);
     }
 }
