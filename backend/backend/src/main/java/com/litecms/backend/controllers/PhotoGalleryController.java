@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +30,7 @@ public class PhotoGalleryController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> create(@RequestParam("files") MultipartFile[] files, @RequestParam("gallery") PhotoGallery photoGallery) {
+    public ResponseEntity<?> create(@RequestPart("files") MultipartFile[] files, @RequestPart("gallery") PhotoGallery photoGallery) {
         return photoGalleryService.create(photoGallery, files);
     }
     

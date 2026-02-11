@@ -65,23 +65,28 @@ public MediaService(MediaRepository mediaRepository) {
 
         return mediaRepository.save(media);
     }
-
-    // CREATE
     public Media createMedia(Media media) {
         return mediaRepository.save(media);
     }
-     // GET ALL
+
     public List<Media> getAllMedia() {
         return mediaRepository.findAll();
     }
-    // GET BY ID
+
     public Media getMediaById(Long id) {
         return mediaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Media not found with id: " + id));
     }
-    //DELETE
-    public void deleteMedia(Long id) {
-        mediaRepository.deleteById(id);
+
+    public void deleteFile(Media media) {
+        try {   
+            Path filePath = Paths.get(uploadDir).resolve(media.getFileUrl()).normalize();
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete file: " + media, e);
+        }
+        mediaRepository.delete(media); 
+
     }
 
 }

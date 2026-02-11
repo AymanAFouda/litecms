@@ -36,8 +36,6 @@ public ArticleService(ArticleRepository articleRepository, CategoryRepository ca
         content.setCategory(category);
         }
 
-        
-
         if (content instanceof Article article) {
         Article newArticle = new Article(
             content.getTitle(),
