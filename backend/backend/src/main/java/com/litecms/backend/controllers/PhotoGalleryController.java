@@ -41,13 +41,13 @@ public class PhotoGalleryController {
         return photoGalleryService.update(photoGallery);
     }
 
-      // Get all Article
+      // Get all PhotoGallery
     @GetMapping
     public List<PhotoGallery> getAllContents() {
         return photoGalleryService.findAll();
     }
 
-    // Get Article by ID
+    // Get PhotoGallery by ID
     @GetMapping("/{id}")
     public PhotoGallery getContentById(@PathVariable Long id) {
         return photoGalleryService.findById(id);
