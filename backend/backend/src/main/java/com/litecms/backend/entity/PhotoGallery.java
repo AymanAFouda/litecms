@@ -2,6 +2,9 @@ package com.litecms.backend.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -10,7 +13,8 @@ import jakarta.persistence.OneToMany;
 @DiscriminatorValue(value ="PHOTOGALLERY")
 public class PhotoGallery extends Content{
     
-    @OneToMany
+    @OneToMany(mappedBy="photoGallery", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Media> mediaList;
 
     public PhotoGallery() {

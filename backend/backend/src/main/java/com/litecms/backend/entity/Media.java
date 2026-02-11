@@ -1,6 +1,8 @@
 package com.litecms.backend.entity;
 
  
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +23,7 @@ public class Media {
     private String mimeType;
 
     @ManyToOne
+    @JsonBackReference
     private PhotoGallery photoGallery;
 
     public Media() {}
