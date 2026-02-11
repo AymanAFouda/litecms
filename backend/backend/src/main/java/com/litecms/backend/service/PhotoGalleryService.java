@@ -104,10 +104,11 @@ public class PhotoGalleryService {
         PhotoGallery photoGallery = photoGalleryRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("PhotoGallery not found")); 
 
-        List<Media> mediaList = photoGallery.getMediaList();
-            for (Media media : mediaList) {
-                mediaService.deleteFile(media);
-            }
+        List<Media> mediaList = new ArrayList<>(photoGallery.getMediaList());
+        
+        for (Media media : mediaList) {
+            mediaService.deleteFile(media);
+        }
         
         photoGalleryRepository.delete(photoGallery);
     }

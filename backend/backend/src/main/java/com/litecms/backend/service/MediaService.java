@@ -80,7 +80,12 @@ public MediaService(MediaRepository mediaRepository) {
 
     public void deleteFile(Media media) {
         try {   
-            Path filePath = Paths.get(uploadDir).resolve(media.getFileUrl()).normalize();
+            String storedFileName = Paths.get(media.getFileUrl()).getFileName().toString();
+
+            Path filePath = Paths.get(uploadDir)
+                .resolve(storedFileName)
+                .normalize();
+
             Files.deleteIfExists(filePath);
         } catch (IOException e) {
             throw new RuntimeException("Failed to delete file: " + media, e);
