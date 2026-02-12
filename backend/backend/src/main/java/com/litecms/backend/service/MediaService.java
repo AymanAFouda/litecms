@@ -68,16 +68,16 @@ public MediaService(MediaRepository mediaRepository) {
     public Media createMedia(Media media) {
         return mediaRepository.save(media);
     }
-
+    //get all
     public List<Media> getAllMedia() {
         return mediaRepository.findAll();
     }
-
+    //get by id
     public Media getMediaById(Long id) {
         return mediaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Media not found with id: " + id));
     }
-
+    //Delete
     public void deleteFile(Media media) {
         try {   
             String storedFileName = Paths.get(media.getFileUrl()).getFileName().toString();
@@ -93,5 +93,6 @@ public MediaService(MediaRepository mediaRepository) {
         mediaRepository.delete(media); 
 
     }
+     
 
 }

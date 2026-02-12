@@ -35,10 +35,10 @@ public class PhotoGalleryController {
     }
     
     @PutMapping("/{id}")
-    public PhotoGallery update(@PathVariable Long id,
-    @RequestBody PhotoGallery photoGallery) {
+    public ResponseEntity<?> update(@PathVariable Long id,
+    @RequestPart("files") MultipartFile[] files, @RequestPart("gallery") PhotoGallery photoGallery) {
         photoGallery.setContentId(id);
-        return photoGalleryService.update(photoGallery);
+        return photoGalleryService.update(photoGallery, files);
     }
 
       // Get all PhotoGallery
