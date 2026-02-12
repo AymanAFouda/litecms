@@ -74,7 +74,7 @@ public class PhotoGalleryService {
     }
 
   // Update PhotoGallery
-    public PhotoGallery update(PhotoGallery photoGallery) {
+    public ResponseEntity<?> update(PhotoGallery photoGallery, MultipartFile[] files) {
             PhotoGallery originalPhotoGallery = photoGalleryRepository.findById(photoGallery.getContentId())
                 .orElseThrow(() -> new RuntimeException("PhotoGallery not found"));
 
@@ -85,21 +85,53 @@ public class PhotoGalleryService {
                 Long categoryId = photoGallery.getCategory().getId();
                 categoryRepository.findById(categoryId)
                     .orElseThrow(() -> new RuntimeException("Category not found"));
-            }
+            } 
 
-            return photoGalleryRepository.save(photoGallery);
+            List<Media> oldMediaList = new ArrayList<>(originalPhotoGallery.getMediaList());
+            for (Media media: oldMediaList){
+                mediaService.deleteFile(media);
+            }
+            
+            PhotoGallery updatedGallery = photoGalleryRepository.save(photoGallery);
+
+            try {
+                List<Map<String, Object>> responseData = new ArrayList<>();
+
+
+            if (files != null && files.length > 0) {
+                for (MultipartFile file : files) {
+                    Media media = mediaService.saveFile(file, updatedGallery);
+
+                    Map<String, Object> fileResponse = new HashMap<>();
+                    fileResponse.put("mediaId", media.getId());
+                    fileResponse.put("fileUrl", media.getFileUrl());
+
+                    responseData.add(fileResponse);
+                 }
+             }
+
+            Map<String, Object> galleryResponse = new HashMap<>();
+                galleryResponse.put("gallery", updatedGallery);
+                responseData.add(galleryResponse);
+
+                return ResponseEntity.ok(responseData);
+
+            }catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+            }         
     }
 
-    // Get all PhotoGallery
+    // Get all 
     public List<PhotoGallery> findAll() {
         return photoGalleryRepository.findAll();
     }
-    // Get PhotoGallery by ID
+    // Get  by ID
     public PhotoGallery findById(Long id) {
         return photoGalleryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("PhotoGallery not found"));
     }
-    // Delete PhotoGallery
+    // Delete 
     public void delete(Long id) {
         PhotoGallery photoGallery = photoGalleryRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("PhotoGallery not found")); 
