@@ -1,6 +1,8 @@
 package com.litecms.backend.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -19,16 +21,20 @@ public class PhotoGallery extends Content{
 
     public PhotoGallery() {
     }
+ 
+    public PhotoGallery(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
+            LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, List<Media> mediaList) {
+        super(contentId, title, description, likeCount, viewCount, createdAt, status, category, tags);
+        this.mediaList = mediaList;
+    }
+
+
 
     public PhotoGallery(List<Media> mediaList) {
         this.mediaList = mediaList;
     }
 
-    public PhotoGallery(String title, String description, String tags, Category category, Status status,
-            List<Media> mediaList) {
-        super(title, description, tags, category, status);
-        this.mediaList = mediaList;
-    }
+
 
     public List<Media> getMediaList() {
         return mediaList;
@@ -37,4 +43,10 @@ public class PhotoGallery extends Content{
     public void setMediaList(List<Media> mediaList) {
         this.mediaList = mediaList;
     }
+
+   
 }
+
+
+
+

@@ -2,23 +2,29 @@ package com.litecms.backend.service;
 
  import java.util.List;
 
- import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.litecms.backend.entity.Category;
 import com.litecms.backend.entity.Video;
 import com.litecms.backend.repositories.CategoryRepository;
+import com.litecms.backend.repositories.TagRepository;
 import com.litecms.backend.repositories.VideoRepository;
 
 @Service
 public class VideoService {
-    
+        @Autowired
         private final VideoRepository videoRepository;
+        @Autowired
         private final CategoryRepository categoryRepository;
+        @Autowired
+        private final TagRepository tagRepository;
 
-    public VideoService(VideoRepository videoRepository, CategoryRepository categoryRepository) {
+    public VideoService(VideoRepository videoRepository, CategoryRepository categoryRepository,TagRepository tagRepository) {
 
         this.videoRepository = videoRepository;
         this.categoryRepository = categoryRepository;
+        this.tagRepository=tagRepository;
 
     }
 
@@ -41,11 +47,15 @@ public Video create(Video content) {
 
         if (content instanceof Video video) {
         Video newVideo = new Video(
+            null,
             content.getTitle(),
             content.getDescription(),
-            content.getTags(),
-            content.getCategory(),
+            0,
+            0,
+            java.time.LocalDateTime.now(),
             content.getStatus(),
+            content.getCategory(),
+            content.getTags(),
             video.getVideoUrl()
         );
         return videoRepository.save(newVideo);

@@ -1,5 +1,8 @@
 package com.litecms.backend.entity;
 
+import java.time.LocalDateTime;
+import java.util.Set;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -18,14 +21,11 @@ public class Video extends Content{
         this.videoUrl = videoUrl;
     }
 
-
-
-    public Video(String title, String description, String tags, Category category, Status status, String videoUrl) {
-        super(title, description, tags, category, status);
+    public Video(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
+            LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, String videoUrl) {
+        super(contentId, title, description, likeCount, viewCount, createdAt, status, category, tags);
         this.videoUrl = videoUrl;
     }
-
-
 
     //#region Getters and Setters
     public String getVideoUrl() {
