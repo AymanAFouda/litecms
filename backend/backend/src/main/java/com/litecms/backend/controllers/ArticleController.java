@@ -30,8 +30,7 @@ public class ArticleController {
     }
 
   @PostMapping
-    // Using ResponseEntity allows you to return a 201 Created status
-    public ResponseEntity<Article> create(@RequestPart("article") Article article, @RequestPart(value="featuredImage", required=false) MultipartFile featuredImage) {
+     public ResponseEntity<Article> create(@RequestPart("article") Article article, @RequestPart(value="featuredImage", required=false) MultipartFile featuredImage) {
         Article savedArticle = articleService.create(article);
         return ResponseEntity.status(201).body(savedArticle);
     }
