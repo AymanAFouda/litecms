@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.Video;
 import com.litecms.backend.service.VideoService;
@@ -28,18 +29,24 @@ public class VideoController {
         this.videoService = videoService;
     }
 
-        @PostMapping
-    public Video create(@RequestBody Video video) {
-        return videoService.create(video);
+   @PostMapping
+    public ResponseEntity<Video> create(@RequestPart("video") Video video, @RequestPart(value="featuredImage", required=false) MultipartFile featuredImage) {
+        Video savedVideo = videoService.create(video);
+        return ResponseEntity.status(201).body(savedVideo);
     }
 
  
+
     @PutMapping("/{id}")
-    public Video update(@PathVariable Long id,
-    @RequestBody Video video) {
-        video.setContentId(id);
-        return videoService.update(video);
-    }
+    public ResponseEntity<Video> update(@PathVariable Long id,
+        @RequestPart("video") Video video, 
+        @RequestPart(value="featuredImage", 
+            required=false) MultipartFile featuredImage) {
+
+            video.setContentId(id);
+            Video updatedVideo = videoService.update(video);
+            return ResponseEntity.ok(updatedVideo);
+    } 
 
    // Get all Videos
     @GetMapping
@@ -48,14 +55,13 @@ public class VideoController {
     }
 
     // Get Video by ID
-    @GetMapping("/{id}")
-    public Video getContentById(@PathVariable Long id) {
-        return videoService.findById(id);
+     @GetMapping("/{id}")
+    public ResponseEntity<Video> getContentById(@PathVariable Long id) {
+         
+        return ResponseEntity.ok(videoService.findById(id));
     }
 
-    
-
-    @DeleteMapping("/{id}")
+   @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteContent(@PathVariable Long id) {
         videoService.delete(id);
         return ResponseEntity.noContent().build();

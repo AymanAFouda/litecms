@@ -25,12 +25,15 @@ public class Comment  {
     @Column(nullable = false, updatable = false) 
     private LocalDateTime createdAt = LocalDateTime.now();
 
+ 
+
     public Comment(Long commentId, String guestName, String commentText, LocalDateTime createdAt) {
         CommentId = commentId;
         this.guestName = guestName;
         this.commentText = commentText;
         this.createdAt = createdAt;
     }
+    public Comment() {}
 
     //#region Getters and Setters
     public Long getCommentId() {

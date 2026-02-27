@@ -2,10 +2,12 @@ package com.litecms.backend.entity;
 
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -18,6 +20,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -44,9 +49,6 @@ public class Content {
     @Column(name = "content_description")
     private String description;
 
-    @Column(name = "tags")
-    private String tags; 
-
     @Column(name = "like_count")
     private Integer likeCount = 0;
 
@@ -64,6 +66,13 @@ public class Content {
     @ManyToOne
     private Category category;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name = "content_tags",
+        joinColumns = @JoinColumn(name = "content_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags;
 
      
 
@@ -71,15 +80,19 @@ public class Content {
 
      }
 
-    public Content(String title, String description, String tags, Category category, Status status) {
+    public Content(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
+            LocalDateTime createdAt, Status status, Category category, Set<Tag> tags) {
+        this.contentId = contentId;
         this.title = title;
         this.description = description;
-        this.tags = tags;
+        this.likeCount = likeCount;
+        this.viewCount = viewCount;
+        this.createdAt = createdAt;
+        this.status = status;
         this.category = category;
-        this.status =status ;
+        this.tags = tags;
     }
 
-    //#region Getters and Setters
     public Long getContentId() {
         return contentId;
     }
@@ -102,14 +115,6 @@ public class Content {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
     }
 
     public Integer getLikeCount() {
@@ -152,5 +157,13 @@ public class Content {
         this.category = category;
     }
 
-     //#endregion
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
+    
 }
