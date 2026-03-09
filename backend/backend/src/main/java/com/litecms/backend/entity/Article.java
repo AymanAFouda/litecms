@@ -25,12 +25,13 @@ public class Article extends Content{
     }
 
 
-    
     public Article(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
-            LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, String articleBody) {
-        super(contentId, title, description, likeCount, viewCount, createdAt, status, category, tags);
+            LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, Media featuredImage,
+            String articleBody) {
+        super(contentId, title, description, likeCount, viewCount, createdAt, status, category, tags, featuredImage);
         this.articleBody = articleBody;
     }
+
 
 
     //#region Getters and Setters
