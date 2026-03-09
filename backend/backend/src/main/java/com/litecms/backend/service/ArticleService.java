@@ -1,14 +1,17 @@
 package com.litecms.backend.service;
 
- import java.util.List;
+ import java.io.IOException;
+import java.util.List;
  import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.Article;
 import com.litecms.backend.entity.Category;
+import com.litecms.backend.entity.Media;
 import com.litecms.backend.entity.Tag;
 import com.litecms.backend.repositories.ArticleRepository;
 import com.litecms.backend.repositories.CategoryRepository;
@@ -28,47 +31,47 @@ public class ArticleService {
     @Autowired
     private final TagRepository tagRepository;
 
-    public ArticleService(ArticleRepository articleRepository, CategoryRepository categoryRepository, TagRepository tagRepository) {
+    private final MediaService mediaService;
 
+
+    public ArticleService(ArticleRepository articleRepository, CategoryRepository categoryRepository, TagRepository tagRepository,MediaService mediaService) {
         this.articleRepository = articleRepository;
         this.categoryRepository = categoryRepository;
         this.tagRepository = tagRepository;
-    }
+        this.mediaService = mediaService;
+    }   
 
     // Create Article  
     @Transactional
-    public Article create(Article content) {
+    public Article create(Article content, MultipartFile featuredImage) throws IOException {
 
-// Ensure category exists
-
+        // Ensure category exists
         if (content.getCategory() != null) {
-
-        Long categoryId = content.getCategory().getId();
-        Category category = categoryRepository.findById(categoryId)
-        .orElseThrow(() -> new RuntimeException("Category not found"));
-        content.setCategory(category);
+            Long categoryId = content.getCategory().getId();
+            Category category = categoryRepository.findById(categoryId)
+            .orElseThrow(() -> new RuntimeException("Category not found"));
+            content.setCategory(category);
         }
 
         //Handle Tags 
-       if (content.getTags() != null) {
-     Set<Tag> processedTags = content.getTags().stream()
-        .map(tag -> tagRepository.findByTagName(tag.getTagName())
-            .orElseGet(() -> tagRepository.save(tag))) 
-        .collect(Collectors.toSet()); // Change .toList() to this
-    
-    content.setTags(processedTags);
-}
-
- 
-        //Save Article 
-        if (content instanceof Article article) {
+        if (content.getTags() != null) {
+            Set<Tag> processedTags = content.getTags().stream()
+                .map(tag -> tagRepository.findByTagName(tag.getTagName())
+                .orElseGet(() -> tagRepository.save(tag))) 
+                .collect(Collectors.toSet()); // Change .toList() to this
             
-             return articleRepository.save(article);
+            content.setTags(processedTags);
         }
-        return articleRepository.save(content);
-             }
 
-// Update Article
+        //Handle Featured Image
+        Media savedFeaturedImage = mediaService.saveFeaturedImage(featuredImage);
+
+        content.setFeaturedImage(savedFeaturedImage);
+
+        return articleRepository.save(content);
+    }
+
+    // Update Article
     @Transactional
     public Article update(Article article) {
             Article originalArticle = articleRepository.findById(article.getContentId())

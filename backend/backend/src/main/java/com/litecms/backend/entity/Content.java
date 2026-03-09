@@ -74,14 +74,14 @@ public class Content {
     )
     private Set<Tag> tags;
 
-     
+    private Media featuredImage;
 
     public Content(){
 
      }
 
     public Content(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
-            LocalDateTime createdAt, Status status, Category category, Set<Tag> tags) {
+            LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, Media featuredImage) {
         this.contentId = contentId;
         this.title = title;
         this.description = description;
@@ -91,6 +91,7 @@ public class Content {
         this.status = status;
         this.category = category;
         this.tags = tags;
+        this.featuredImage = featuredImage;
     }
 
     public Long getContentId() {
@@ -165,5 +166,14 @@ public class Content {
         this.tags = tags;
     }
 
+    public Media getFeaturedImage() {
+        return featuredImage;
+    }
+
+    public void setFeaturedImage(Media featuredImage) {
+        this.featuredImage = featuredImage;
+    }
+
+    
     
 }

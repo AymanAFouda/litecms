@@ -28,6 +28,40 @@ public MediaService(MediaRepository mediaRepository) {
     this.mediaRepository = mediaRepository;
     }   
 
+    public Media saveFeaturedImage(MultipartFile file) throws IOException {
+        //Validate file
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("File is empty");
+        }
+
+        String mimeType = file.getContentType();
+        if (!mimeType.startsWith("image/") && !mimeType.equals("application/pdf")) {
+            throw new IllegalArgumentException("Unsupported file type");
+        }
+
+        //Generate unique filename
+        String originalName = file.getOriginalFilename();
+        String extension = originalName.substring(originalName.lastIndexOf("."));
+        String storedFileName = UUID.randomUUID() + extension;
+
+        //Create directory if not exists
+        Path uploadPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        //Save file to disk
+        Path filePath = uploadPath.resolve(storedFileName);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        //Save metadata in DB
+        Media media = new Media();
+        media.setFileName(originalName);
+        media.setFileUrl("/uploads/" + storedFileName); // for serving
+        media.setMimeType(mimeType);
+         
+        return media;
+    }
 
     public Media saveFile(MultipartFile file, PhotoGallery gallery) throws IOException {
 
@@ -91,7 +125,6 @@ public MediaService(MediaRepository mediaRepository) {
             throw new RuntimeException("Failed to delete file: " + media, e);
         }
         mediaRepository.delete(media); 
-
     }
      
 

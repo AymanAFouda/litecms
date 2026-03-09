@@ -22,15 +22,15 @@ public class PhotoGallery extends Content{
     public PhotoGallery() {
     }
  
-    public PhotoGallery(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
-            LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, List<Media> mediaList) {
-        super(contentId, title, description, likeCount, viewCount, createdAt, status, category, tags);
+
+    public PhotoGallery(List<Media> mediaList) {
         this.mediaList = mediaList;
     }
 
-
-
-    public PhotoGallery(List<Media> mediaList) {
+    public PhotoGallery(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
+            LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, Media featuredImage,
+            List<Media> mediaList) {
+        super(contentId, title, description, likeCount, viewCount, createdAt, status, category, tags, featuredImage);
         this.mediaList = mediaList;
     }
 

@@ -1,7 +1,9 @@
 package com.litecms.backend.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.Article;
 import com.litecms.backend.service.ArticleService;
+import com.litecms.backend.service.SearchService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -24,14 +27,17 @@ public class ArticleController {
     
 
     private final ArticleService articleService;
+    private final SearchService searchService ;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService,SearchService searchService) {
         this.articleService = articleService;
+        this.searchService = searchService;
     }
 
-  @PostMapping
-     public ResponseEntity<Article> create(@RequestPart("article") Article article, @RequestPart(value="featuredImage", required=false) MultipartFile featuredImage) {
-        Article savedArticle = articleService.create(article);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE) 
+    public ResponseEntity<Article> create(@RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage, @RequestPart("article") Article article) throws IOException {
+        Article savedArticle = articleService.create(article, featuredImage);
+        searchService.indexContent(savedArticle);
         return ResponseEntity.status(201).body(savedArticle);
     }
     
@@ -43,6 +49,7 @@ public class ArticleController {
 
         article.setContentId(id);
         Article updatedArticle = articleService.update(article);
+        searchService.indexContent(updatedArticle);
         return ResponseEntity.ok(updatedArticle);
     }
 
