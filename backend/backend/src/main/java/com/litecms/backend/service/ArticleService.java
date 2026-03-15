@@ -1,11 +1,13 @@
 package com.litecms.backend.service;
 
- import java.io.IOException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
- import java.util.Set;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +17,7 @@ import com.litecms.backend.entity.Media;
 import com.litecms.backend.entity.Tag;
 import com.litecms.backend.repositories.ArticleRepository;
 import com.litecms.backend.repositories.CategoryRepository;
+import com.litecms.backend.repositories.MediaRepository;
 import com.litecms.backend.repositories.TagRepository;
 
 import jakarta.transaction.Transactional;
@@ -22,23 +25,25 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class ArticleService {
-    @Autowired
+
     private final ArticleRepository articleRepository;
 
-    @Autowired
     private final CategoryRepository categoryRepository;
 
-    @Autowired
     private final TagRepository tagRepository;
 
     private final MediaService mediaService;
 
+    private final MediaRepository mediaRepository;
 
-    public ArticleService(ArticleRepository articleRepository, CategoryRepository categoryRepository, TagRepository tagRepository,MediaService mediaService) {
+    private final String uploadDir = "uploads";
+
+    public ArticleService(ArticleRepository articleRepository, CategoryRepository categoryRepository, TagRepository tagRepository, MediaService mediaService, MediaRepository mediaRepository) {
         this.articleRepository = articleRepository;
         this.categoryRepository = categoryRepository;
         this.tagRepository = tagRepository;
         this.mediaService = mediaService;
+        this.mediaRepository = mediaRepository;
     }   
 
     // Create Article  
@@ -64,45 +69,65 @@ public class ArticleService {
         }
 
         //Handle Featured Image
-        Media savedFeaturedImage = mediaService.saveFeaturedImage(featuredImage);
-
-        content.setFeaturedImage(savedFeaturedImage);
-
+        if (featuredImage != null ){
+            Media savedFeaturedImage = mediaService.saveFeaturedImage(featuredImage);
+            content.setFeaturedImage(savedFeaturedImage);
+        }
+        
         return articleRepository.save(content);
     }
 
     // Update Article
-    @Transactional
-    public Article update(Article article) {
-            Article originalArticle = articleRepository.findById(article.getContentId())
-            .orElseThrow(() -> new RuntimeException("Article not found"));
+   @Transactional
+    public Article update(Article article, MultipartFile newFeaturedImage) throws IOException {
 
-            article.setViewCount(originalArticle.getViewCount());
-            article.setLikeCount(originalArticle.getLikeCount());
+        Article originalArticle = articleRepository.findById(article.getContentId())
+                .orElseThrow(() -> new RuntimeException("Article not found"));
 
-            if (article.getCategory() != null) {
-                Long categoryId = article.getCategory().getId();
-                categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-            }
-            // Handle Tags 
-             if (article.getTags() != null) {
+        article.setViewCount(originalArticle.getViewCount());
+        article.setLikeCount(originalArticle.getLikeCount());
+
+        // Handle Category
+        if (article.getCategory() != null) {
+            Long categoryId = article.getCategory().getId();
+            Category category = categoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new RuntimeException("Category not found"));
+            article.setCategory(category);
+        }
+
+        // Handle Tags
+        if (article.getTags() != null) {
             Set<Tag> processedTags = article.getTags().stream()
-                .map(tag -> tagRepository.findByTagName(tag.getTagName())
-                    .orElseGet(() -> {
-                        // Important: If it's a new tag, we must save it first
-                        Tag newTag = new Tag();
-                        newTag.setTagName(tag.getTagName());
-                        return tagRepository.save(newTag);
-                    }))
-                .collect(Collectors.toSet());
-        
-        // This replaces the old set with the new set of managed tags
-                article.setTags(processedTags);
+                    .map(tag -> tagRepository.findByTagName(tag.getTagName())
+                            .orElseGet(() -> {
+                                Tag newTag = new Tag();
+                                newTag.setTagName(tag.getTagName());
+                                return tagRepository.save(newTag);
+                            }))
+                    .collect(Collectors.toSet());
+
+            article.setTags(processedTags);
+        }
+
+        // Handle Featured Image Update
+        if (newFeaturedImage != null && !newFeaturedImage.isEmpty()) {
+
+            // Delete old image if exists
+            if (originalArticle.getFeaturedImage() != null) {
+                deleteFeaturedImage(originalArticle.getFeaturedImage());
+            }
+
+            // Save new image
+            Media savedImage = mediaService.saveFeaturedImage(newFeaturedImage);
+            article.setFeaturedImage(savedImage);
+        } else {
+            // Keep old image if no new image uploaded
+            article.setFeaturedImage(originalArticle.getFeaturedImage());
+        }
+
+        return articleRepository.save(article);
     }
 
-            return articleRepository.save(article);
-    }
     // Get all Article
     public List<Article> findAll() {
         return articleRepository.findAll();
@@ -113,7 +138,7 @@ public class ArticleService {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Article not found"));
     }
- 
+    //Delete
     @Transactional
     public void delete(Long id) {
     // 1. Fetch the article first
@@ -124,8 +149,26 @@ public class ArticleService {
     article.getTags().clear();
 
     // 3. Delete the article  
+
     articleRepository.delete(article);
-}
+ 
+    }
+    public void deleteFeaturedImage(Media featuredImage) {
+        try {   
+            String storedFileName = Paths.get(featuredImage.getFileUrl()).getFileName().toString();
+
+            Path filePath = Paths.get(uploadDir)
+                .resolve(storedFileName)
+                .normalize();
+
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete file: " + featuredImage, e);
+        }
+        mediaRepository.delete(featuredImage); 
+    }
+
+
         
 }
 

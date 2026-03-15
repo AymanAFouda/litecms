@@ -24,6 +24,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 
@@ -74,6 +75,8 @@ public class Content {
     )
     private Set<Tag> tags;
 
+    @OneToOne
+    @JoinColumn(name = "featured_image_id")
     private Media featuredImage;
 
     public Content(){

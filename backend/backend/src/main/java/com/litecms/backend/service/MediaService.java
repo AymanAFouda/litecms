@@ -19,8 +19,9 @@ import com.litecms.backend.repositories.MediaRepository;
 @Service
 public class MediaService {
     
-  @Value("${file.upload-dir}")
+   @Value("${file.upload-dir}")
     private String uploadDir;
+
 
     private final MediaRepository mediaRepository;
 
@@ -60,7 +61,7 @@ public MediaService(MediaRepository mediaRepository) {
         media.setFileUrl("/uploads/" + storedFileName); // for serving
         media.setMimeType(mimeType);
          
-        return media;
+        return mediaRepository.save(media);
     }
 
     public Media saveFile(MultipartFile file, PhotoGallery gallery) throws IOException {
