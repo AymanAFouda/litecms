@@ -1,16 +1,22 @@
 package com.litecms.backend.service;
 
- import java.util.List;
+ import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Set;
  import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.Category;
+import com.litecms.backend.entity.Media;
 import com.litecms.backend.entity.Tag;
 import com.litecms.backend.entity.Video;
 import com.litecms.backend.repositories.CategoryRepository;
+import com.litecms.backend.repositories.MediaRepository;
 import com.litecms.backend.repositories.TagRepository;
 import com.litecms.backend.repositories.VideoRepository;
 
@@ -18,24 +24,34 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class VideoService {
-        @Autowired
+        
         private final VideoRepository videoRepository;
-        @Autowired
+
         private final CategoryRepository categoryRepository;
-        @Autowired
+
         private final TagRepository tagRepository;
 
-    public VideoService(VideoRepository videoRepository, CategoryRepository categoryRepository,TagRepository tagRepository) {
+        private final MediaService mediaService;
+
+        private final MediaRepository mediaRepository;
+
+        private final String uploadDir = "uploads";
+
+
+    public VideoService(VideoRepository videoRepository, CategoryRepository categoryRepository,TagRepository tagRepository,
+         MediaService mediaService, MediaRepository mediaRepository) {
 
         this.videoRepository = videoRepository;
         this.categoryRepository = categoryRepository;
-        this.tagRepository=tagRepository;
+        this.tagRepository = tagRepository;
+        this.mediaService = mediaService;
+        this.mediaRepository = mediaRepository;
 
     }
 
       // Create Video
     @Transactional
-    public Video create(Video content) {
+    public Video create(Video content, MultipartFile featuredImage) throws IOException {
 
 
         
@@ -58,6 +74,12 @@ public class VideoService {
                 
                 content.setTags(processedTags);
             }
+
+             //Handle Featured Image
+        if (featuredImage != null ){
+            Media savedFeaturedImage = mediaService.saveFeaturedImage(featuredImage);
+            content.setFeaturedImage(savedFeaturedImage);
+        }
             
             //Save Article 
             if (content instanceof Video video) {
@@ -69,7 +91,7 @@ public class VideoService {
 
 // Update Video
     @Transactional
-    public Video update(Video video) {
+    public Video update(Video video, MultipartFile newFeaturedImage)throws IOException {
             Video originalVideo = videoRepository.findById(video.getContentId())
             .orElseThrow(() -> new RuntimeException("Video not found"));
 
@@ -97,9 +119,24 @@ public class VideoService {
                  // This replaces the old set with the new set of managed tags
                 video.setTags(processedTags);
     }
+    // Handle Featured Image Update
+    if (newFeaturedImage != null && !newFeaturedImage.isEmpty()) {
+
+        // Delete old image if exists
+        if (originalVideo.getFeaturedImage() != null) {
+            deleteFeaturedImage(originalVideo.getFeaturedImage());
+        }
+
+        // Save new image
+        Media savedImage = mediaService.saveFeaturedImage(newFeaturedImage);
+        video.setFeaturedImage(savedImage);
+    } else {
+        // Keep old image if no new image uploaded
+        video.setFeaturedImage(originalVideo.getFeaturedImage());
+    }
 
 
-            return videoRepository.save(video);
+        return videoRepository.save(video);
     }
 
      // Get all Video
@@ -125,6 +162,20 @@ public class VideoService {
     // 3. Delete the Video  
     videoRepository.delete(video);
     
+    }
+    public void deleteFeaturedImage(Media featuredImage) {
+        try {   
+            String storedFileName = Paths.get(featuredImage.getFileUrl()).getFileName().toString();
+
+            Path filePath = Paths.get(uploadDir)
+                .resolve(storedFileName)
+                .normalize();
+
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete file: " + featuredImage, e);
+        }
+        mediaRepository.delete(featuredImage); 
     }
 
 

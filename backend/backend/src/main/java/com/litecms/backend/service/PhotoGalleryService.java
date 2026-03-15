@@ -1,12 +1,12 @@
 package com.litecms.backend.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,29 +14,37 @@ import com.litecms.backend.entity.Category;
 import com.litecms.backend.entity.Media;
 import com.litecms.backend.entity.PhotoGallery;
 import com.litecms.backend.repositories.CategoryRepository;
+import com.litecms.backend.repositories.MediaRepository;
 import com.litecms.backend.repositories.PhotoGalleryRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class PhotoGalleryService {
 
 
     private final PhotoGalleryRepository photoGalleryRepository;
-    private final CategoryRepository categoryRepository;
-     private final MediaService mediaService;
-    
 
-    public PhotoGalleryService(PhotoGalleryRepository photoGalleryRepository, CategoryRepository categoryRepository, MediaService mediaService) {
+    private final CategoryRepository categoryRepository;
+
+    private final MediaService mediaService;
+
+    private final MediaRepository mediaRepository;
+
+    private final String uploadDir = "uploads";
+
+    public PhotoGalleryService(PhotoGalleryRepository photoGalleryRepository, CategoryRepository categoryRepository, MediaService mediaService ,MediaRepository mediaRepository) {
         this.photoGalleryRepository = photoGalleryRepository;
         this.categoryRepository = categoryRepository;
         this.mediaService = mediaService;
+        this.mediaRepository = mediaRepository;
 
     }
 
-// Create PhotoGallery  
-    public ResponseEntity<?> create(PhotoGallery gallery, MultipartFile[] files) {
+    // Create PhotoGallery  
+    public PhotoGallery create(PhotoGallery gallery, MultipartFile[] files,  MultipartFile featuredImage) throws IOException {
 
-// Ensure category exists
-
+        // Ensure category exists
         if (gallery.getCategory() != null) {
 
             Long categoryId = gallery.getCategory().getId();
@@ -45,81 +53,63 @@ public class PhotoGalleryService {
             gallery.setCategory(category);
         } 
 
-        PhotoGallery createdGallery = photoGalleryRepository.save(gallery);
-        try {
-            List<Map<String, Object>>  responseData = new ArrayList<>();
-
-            for (MultipartFile file : files) {
-                Media media = mediaService.saveFile(file, createdGallery);
-
-                // Build response for each file
-                Map<String, Object> fileResponse = new HashMap<>();
-                fileResponse.put("mediaId", media.getId());
-                fileResponse.put("fileUrl", media.getFileUrl());
-
-                responseData.add(fileResponse);
-            }
-            
-            Map<String, Object> galleryResponse = new HashMap<>();
-            galleryResponse.put("gallery", createdGallery);
-
-            responseData.add(galleryResponse);
-
-            return ResponseEntity.ok(responseData);
-
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(e.getMessage());
+        if (featuredImage != null ){
+            Media savedFeaturedImage = mediaService.saveFeaturedImage(featuredImage);
+            gallery.setFeaturedImage(savedFeaturedImage);
         }
+
+        PhotoGallery createdGallery = photoGalleryRepository.save(gallery);
+
+        for (MultipartFile file : files) {
+            Media media = mediaService.saveFile(file, createdGallery);
+        }
+
+        return createdGallery;
     }
 
-  // Update PhotoGallery
-    public ResponseEntity<?> update(PhotoGallery photoGallery, MultipartFile[] files) {
-            PhotoGallery originalPhotoGallery = photoGalleryRepository.findById(photoGallery.getContentId())
-                .orElseThrow(() -> new RuntimeException("PhotoGallery not found"));
+    @Transactional
+    // Update PhotoGallery
+    public PhotoGallery update(PhotoGallery photoGallery, MultipartFile[] files, MultipartFile newFeaturedImage) throws IOException {
 
-            photoGallery.setViewCount(originalPhotoGallery.getViewCount());
-            photoGallery.setLikeCount(originalPhotoGallery.getLikeCount());
+        PhotoGallery original = photoGalleryRepository.findById(photoGallery.getContentId())
+        .orElseThrow(() -> new RuntimeException("PhotoGallery not found"));
 
-            if (photoGallery.getCategory() != null) {
-                Long categoryId = photoGallery.getCategory().getId();
-                categoryRepository.findById(categoryId)
-                    .orElseThrow(() -> new RuntimeException("Category not found"));
-            } 
+        // Keep view and like counts
+        original.setViewCount(photoGallery.getViewCount());
+        original.setLikeCount(photoGallery.getLikeCount());
 
-            List<Media> oldMediaList = new ArrayList<>(originalPhotoGallery.getMediaList());
-            for (Media media: oldMediaList){
-                mediaService.deleteFile(media);
+        // Handle Category
+        if (photoGallery.getCategory() != null) {
+            Long categoryId = photoGallery.getCategory().getId();
+            Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+            original.setCategory(category);
+        }
+
+        // Delete old media safely
+        for (Media media : new ArrayList<>(original.getMediaList())) {
+            mediaService.deleteFile(media); // deletes file + DB record
+        }
+        original.getMediaList().clear(); // remove references from managed entity
+
+        // Add new media files
+        if (files != null && files.length > 0) {
+            for (MultipartFile file : files) {
+                Media newMedia = mediaService.saveFile(file, original);
+                original.getMediaList().add(newMedia);
             }
-            
-            PhotoGallery updatedGallery = photoGalleryRepository.save(photoGallery);
+        }
 
-            try {
-                List<Map<String, Object>> responseData = new ArrayList<>();
+        // Handle featured image
+        if (newFeaturedImage != null && !newFeaturedImage.isEmpty()) {
+            if (original.getFeaturedImage() != null) {
+                mediaService.deleteFile(original.getFeaturedImage());
+            }
+            Media savedImage = mediaService.saveFeaturedImage(newFeaturedImage);
+            original.setFeaturedImage(savedImage);
+        } 
 
-
-            if (files != null && files.length > 0) {
-                for (MultipartFile file : files) {
-                    Media media = mediaService.saveFile(file, updatedGallery);
-
-                    Map<String, Object> fileResponse = new HashMap<>();
-                    fileResponse.put("mediaId", media.getId());
-                    fileResponse.put("fileUrl", media.getFileUrl());
-
-                    responseData.add(fileResponse);
-                 }
-             }
-
-            Map<String, Object> galleryResponse = new HashMap<>();
-                galleryResponse.put("gallery", updatedGallery);
-                responseData.add(galleryResponse);
-
-                return ResponseEntity.ok(responseData);
-
-            }catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(e.getMessage());
-            }         
+        return photoGalleryRepository.save(original);
     }
 
     // Get all 
@@ -143,5 +133,20 @@ public class PhotoGalleryService {
         }
         
         photoGalleryRepository.delete(photoGallery);
+    }
+
+    public void deleteFeaturedImage(Media featuredImage) {
+        try {   
+            String storedFileName = Paths.get(featuredImage.getFileUrl()).getFileName().toString();
+
+            Path filePath = Paths.get(uploadDir)
+                .resolve(storedFileName)
+                .normalize();
+
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete file: " + featuredImage, e);
+        }
+        mediaRepository.delete(featuredImage);
     }
 }

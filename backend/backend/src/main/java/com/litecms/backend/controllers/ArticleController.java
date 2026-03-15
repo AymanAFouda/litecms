@@ -35,25 +35,29 @@ public class ArticleController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE) 
-    public ResponseEntity<Article> create(@RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage, @RequestPart("article") Article article) throws IOException {
+    public ResponseEntity<Article> create(@RequestPart(value = "featuredImage", required = false)
+     MultipartFile featuredImage, @RequestPart("article") Article article) throws IOException {
+
         Article savedArticle = articleService.create(article, featuredImage);
         searchService.indexContent(savedArticle);
         return ResponseEntity.status(201).body(savedArticle);
     }
-    
-  @PutMapping("/{id}")
-    public ResponseEntity<Article> update(@PathVariable Long id,
-         @RequestPart("article") Article article, 
-         @RequestPart(value="featuredImage", 
-         required=false) MultipartFile featuredImage) {
+    //update
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Article> update(
+            @PathVariable Long id,
+            @RequestPart("article") Article article,
+            @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage
+        ) throws IOException {
 
         article.setContentId(id);
-        Article updatedArticle = articleService.update(article);
+        Article updatedArticle = articleService.update(article, featuredImage);
         searchService.indexContent(updatedArticle);
+
         return ResponseEntity.ok(updatedArticle);
     }
 
-      // Get all Article
+    // Get all Article
     @GetMapping
     public List<Article> getAllContents() {
         return articleService.findAll();

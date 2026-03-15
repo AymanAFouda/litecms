@@ -1,5 +1,6 @@
 package com.litecms.backend.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.PhotoGallery;
 import com.litecms.backend.service.PhotoGalleryService;
+import com.litecms.backend.service.SearchService;
 
 @RestController
 @RequestMapping("/photoGalleries")
@@ -23,21 +25,39 @@ public class PhotoGalleryController {
 
 
     private final PhotoGalleryService photoGalleryService;
+    private final SearchService searchService ;
 
-    public PhotoGalleryController(PhotoGalleryService photoGalleryService) {
+
+    public PhotoGalleryController(PhotoGalleryService photoGalleryService, SearchService searchService) {
         this.photoGalleryService = photoGalleryService;
+        this    .searchService = searchService;
     }
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> create(@RequestPart("files") MultipartFile[] files, @RequestPart("gallery") PhotoGallery photoGallery) {
-        return photoGalleryService.create(photoGallery, files);
+    public ResponseEntity<?> create(
+        @RequestPart("files") MultipartFile[] files,
+        @RequestPart("gallery") PhotoGallery photoGallery,
+        @RequestPart(value = "featuredImage", required = false)
+        MultipartFile featuredImage)throws IOException {
+ 
+            PhotoGallery savedPhotoGallery = photoGalleryService.create(photoGallery, files, featuredImage);
+            searchService.indexContent(savedPhotoGallery);
+            return ResponseEntity.status(201).body(savedPhotoGallery);
     }
-    
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id,
-    @RequestPart("files") MultipartFile[] files, @RequestPart("gallery") PhotoGallery photoGallery) {
-        photoGallery.setContentId(id);
-        return photoGalleryService.update(photoGallery, files);
+        
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PhotoGallery> update(
+        @PathVariable Long id,
+        @RequestPart("files") MultipartFile[] files,
+        @RequestPart("gallery") PhotoGallery photoGallery,
+        @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage
+        ) throws IOException {
+
+            photoGallery.setContentId(id);
+            PhotoGallery updatedPhotoGallery = photoGalleryService.update(photoGallery, files, featuredImage);
+            searchService.indexContent(updatedPhotoGallery);
+
+            return ResponseEntity.ok(updatedPhotoGallery);
     }
 
       // Get all PhotoGallery

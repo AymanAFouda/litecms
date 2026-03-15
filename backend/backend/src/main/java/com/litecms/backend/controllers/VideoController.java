@@ -1,7 +1,9 @@
 package com.litecms.backend.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.Video;
+import com.litecms.backend.service.SearchService;
 import com.litecms.backend.service.VideoService;
 
 @RestController
@@ -24,27 +27,35 @@ public class VideoController {
   
     
     private final VideoService videoService;
+    private final SearchService searchService ;
 
-    public VideoController(VideoService videoService) {
+
+    public VideoController(VideoService videoService, SearchService searchService) {
         this.videoService = videoService;
+        this.searchService = searchService;
     }
 
-   @PostMapping
-    public ResponseEntity<Video> create(@RequestPart("video") Video video, @RequestPart(value="featuredImage", required=false) MultipartFile featuredImage) {
-        Video savedVideo = videoService.create(video);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE) 
+    public ResponseEntity<Video> create(@RequestPart("video") Video video, @RequestPart(value="featuredImage", required=false)
+     MultipartFile featuredImage)throws IOException {
+
+        Video savedVideo = videoService.create(video, featuredImage);
+        searchService.indexContent(savedVideo);
         return ResponseEntity.status(201).body(savedVideo);
     }
 
  
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Video> update(@PathVariable Long id,
         @RequestPart("video") Video video, 
-        @RequestPart(value="featuredImage", 
-            required=false) MultipartFile featuredImage) {
+        @RequestPart(value = "featuredImage", required = false)
+         MultipartFile featuredImage) throws IOException{
 
             video.setContentId(id);
-            Video updatedVideo = videoService.update(video);
+            Video updatedVideo = videoService.update(video, featuredImage);
+            searchService.indexContent(updatedVideo);
+
             return ResponseEntity.ok(updatedVideo);
     } 
 
