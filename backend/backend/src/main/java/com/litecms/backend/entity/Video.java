@@ -20,11 +20,12 @@ public class Video extends Content{
     public Video(String videoUrl) {
         this.videoUrl = videoUrl;
     }
-
+ 
     public Video(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
             LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, Media featuredImage,
-            String videoUrl) {
-        super(contentId, title, description, likeCount, viewCount, createdAt, status, category, tags, featuredImage);
+            Set<Comment> comments, String videoUrl) {
+        super(contentId, title, description, likeCount, viewCount, createdAt, status, category, tags, featuredImage,
+                comments);
         this.videoUrl = videoUrl;
     }
 

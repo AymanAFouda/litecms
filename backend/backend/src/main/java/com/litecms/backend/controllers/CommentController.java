@@ -1,11 +1,11 @@
 package com.litecms.backend.controllers;
 
-import org.springframework.http.ResponseEntity;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,27 +15,30 @@ import com.litecms.backend.service.CommentService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
-@RequestMapping("/Comment")
+@RequestMapping("/comment")
 public class CommentController {
 
- private final CommentService CommentService;
+ private final CommentService commentService;
 
-    public CommentController( CommentService CommentService) {
-        this.CommentService = CommentService;
+    public CommentController( CommentService commentService) {
+        this.commentService = commentService;
     }
-    @PostMapping
-    public Comment create(@RequestBody Comment comment) {
-        return CommentService.create(comment);
+    
+    //CREATE COMMENT FOR A CONTENT
+    @PostMapping("/{contentId}")
+    public Comment create(@PathVariable Long contentId,
+                          @RequestBody Comment comment) {
+        return commentService.create(contentId, comment);
     }
-    @PutMapping("/{id}")
-    public Comment update(@PathVariable Long commentId,
-                           @RequestBody Comment comment) {
-        return CommentService.update(commentId, comment);
+    
+ 
+
+    //GET COMMENTS BY CONTENT
+    @GetMapping("/content/{contentId}")
+    public List<Comment> getCommentsByContent(@PathVariable Long contentId) {
+        return commentService.getCommentsByContent(contentId);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
-        CommentService.delete(commentId);
-        return ResponseEntity.noContent().build();
-    }
+
+
 
 }

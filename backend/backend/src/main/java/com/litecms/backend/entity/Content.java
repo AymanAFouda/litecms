@@ -24,6 +24,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -79,12 +80,18 @@ public class Content {
     @JoinColumn(name = "featured_image_id")
     private Media featuredImage;
 
+    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments;
+
     public Content(){
 
      }
 
+     
+
     public Content(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
-            LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, Media featuredImage) {
+            LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, Media featuredImage,
+            Set<Comment> comments) {
         this.contentId = contentId;
         this.title = title;
         this.description = description;
@@ -95,7 +102,10 @@ public class Content {
         this.category = category;
         this.tags = tags;
         this.featuredImage = featuredImage;
+        this.comments = comments;
     }
+
+
 
     public Long getContentId() {
         return contentId;
@@ -177,6 +187,12 @@ public class Content {
         this.featuredImage = featuredImage;
     }
 
-    
+    public Set<Comment> getComments() {
+    return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
     
 }

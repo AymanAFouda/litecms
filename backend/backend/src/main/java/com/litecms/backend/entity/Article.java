@@ -17,18 +17,16 @@ public class Article extends Content{
     public Article(){
         
     }
-
-
-
+ 
     public Article(String articleBody) {
         this.articleBody = articleBody;
     }
-
-
+  
     public Article(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
             LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, Media featuredImage,
-            String articleBody) {
-        super(contentId, title, description, likeCount, viewCount, createdAt, status, category, tags, featuredImage);
+            Set<Comment> comments, String articleBody) {
+        super(contentId, title, description, likeCount, viewCount, createdAt, status, category, tags, featuredImage,
+                comments);
         this.articleBody = articleBody;
     }
 
