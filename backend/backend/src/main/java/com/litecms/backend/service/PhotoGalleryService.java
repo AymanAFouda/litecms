@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,9 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.litecms.backend.entity.Category;
 import com.litecms.backend.entity.Media;
 import com.litecms.backend.entity.PhotoGallery;
+import com.litecms.backend.entity.Tag;
 import com.litecms.backend.repositories.CategoryRepository;
 import com.litecms.backend.repositories.MediaRepository;
 import com.litecms.backend.repositories.PhotoGalleryRepository;
+import com.litecms.backend.repositories.TagRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -31,13 +35,17 @@ public class PhotoGalleryService {
 
     private final MediaRepository mediaRepository;
 
+    private final TagRepository tagRepository;
+
+
     private final String uploadDir = "uploads";
 
-    public PhotoGalleryService(PhotoGalleryRepository photoGalleryRepository, CategoryRepository categoryRepository, MediaService mediaService ,MediaRepository mediaRepository) {
+    public PhotoGalleryService(PhotoGalleryRepository photoGalleryRepository, CategoryRepository categoryRepository, MediaService mediaService ,MediaRepository mediaRepository,  TagRepository tagRepository) {
         this.photoGalleryRepository = photoGalleryRepository;
         this.categoryRepository = categoryRepository;
         this.mediaService = mediaService;
         this.mediaRepository = mediaRepository;
+        this.tagRepository = tagRepository;
 
     }
 
@@ -52,6 +60,15 @@ public class PhotoGalleryService {
             .orElseThrow(() -> new RuntimeException("Category not found"));
             gallery.setCategory(category);
         } 
+
+        if (gallery.getTags() != null) {
+        Set<Tag> processedTags = gallery.getTags().stream()
+            .map((Tag tag) -> tagRepository.findByTagName(tag.getTagName())
+                .orElseGet(() -> tagRepository.save(tag)))
+            .collect(Collectors.toSet());
+
+        gallery.setTags(processedTags);
+    }
 
         if (featuredImage != null ){
             Media savedFeaturedImage = mediaService.saveFeaturedImage(featuredImage);
@@ -84,6 +101,20 @@ public class PhotoGalleryService {
             Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
             original.setCategory(category);
+        }
+
+        // Handle Tags
+        if (photoGallery.getTags() != null) {
+            Set<Tag> processedTags = photoGallery.getTags().stream()
+                .map(tag -> tagRepository.findByTagName(tag.getTagName())
+                    .orElseGet(() -> {
+                        Tag newTag = new Tag();
+                        newTag.setTagName(tag.getTagName());
+                        return tagRepository.save(newTag);
+                    }))
+                .collect(Collectors.toSet());
+
+            original.setTags(processedTags);
         }
 
         // Delete old media safely
@@ -131,6 +162,9 @@ public class PhotoGalleryService {
         for (Media media : mediaList) {
             mediaService.deleteFile(media);
         }
+
+        //Clear the links to tags  
+        photoGallery.getTags().clear();
         
         photoGalleryRepository.delete(photoGallery);
     }

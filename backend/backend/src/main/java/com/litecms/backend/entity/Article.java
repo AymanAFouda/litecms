@@ -11,7 +11,7 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue(value ="ARTICLE")
 public class Article extends Content{
 
-    @Column(name = "Article_Body")
+    @Column(name = "Article_Body", columnDefinition = "TEXT")
     private String articleBody;
 
     public Article(){
