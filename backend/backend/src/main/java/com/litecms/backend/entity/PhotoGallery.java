@@ -29,11 +29,11 @@ public class PhotoGallery extends Content{
 
     public PhotoGallery(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
             LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, Media featuredImage,
-            List<Media> mediaList) {
-        super(contentId, title, description, likeCount, viewCount, createdAt, status, category, tags, featuredImage);
+            Set<Comment> comments, List<Media> mediaList) {
+        super(contentId, title, description, likeCount, viewCount, createdAt, status, category, tags, featuredImage,
+                comments);
         this.mediaList = mediaList;
     }
-
 
 
     public List<Media> getMediaList() {
