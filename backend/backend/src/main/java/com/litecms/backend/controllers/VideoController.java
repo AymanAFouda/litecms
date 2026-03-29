@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.Video;
+import com.litecms.backend.service.InteractionsService;
 import com.litecms.backend.service.SearchService;
 import com.litecms.backend.service.VideoService;
 
@@ -28,11 +29,14 @@ public class VideoController {
     
     private final VideoService videoService;
     private final SearchService searchService ;
+    private final InteractionsService interactionsService;
 
 
-    public VideoController(VideoService videoService, SearchService searchService) {
+
+    public VideoController(VideoService videoService, SearchService searchService, InteractionsService interactionsService) {
         this.videoService = videoService;
         this.searchService = searchService;
+        this.interactionsService = interactionsService ;
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE) 
@@ -68,8 +72,22 @@ public class VideoController {
     // Get Video by ID
      @GetMapping("/{id}")
     public ResponseEntity<Video> getContentById(@PathVariable Long id) {
-         
+        interactionsService.incrementView(id); // COUNT VIEW
         return ResponseEntity.ok(videoService.findById(id));
+    }
+
+    // Like article
+    @PostMapping("/{id}/like")
+    public ResponseEntity<Void> likeArticle(@PathVariable Long id) {
+        interactionsService.incrementLike(id); // COUNT LIKE
+        return ResponseEntity.ok().build();
+    }
+
+    // Unlike article
+    @PostMapping("/{id}/unlike")
+    public ResponseEntity<Void> unlikeArticle(@PathVariable Long id) {
+        interactionsService.decrementLike(id); // COUNT UNLIKE
+        return ResponseEntity.ok().build();
     }
 
    @DeleteMapping("/{id}")

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.PhotoGallery;
+import com.litecms.backend.service.InteractionsService;
 import com.litecms.backend.service.PhotoGalleryService;
 import com.litecms.backend.service.SearchService;
 
@@ -26,11 +27,14 @@ public class PhotoGalleryController {
 
     private final PhotoGalleryService photoGalleryService;
     private final SearchService searchService ;
+    private final InteractionsService interactionsService;
 
 
-    public PhotoGalleryController(PhotoGalleryService photoGalleryService, SearchService searchService) {
+
+    public PhotoGalleryController(PhotoGalleryService photoGalleryService, SearchService searchService, InteractionsService interactionsService) {
         this.photoGalleryService = photoGalleryService;
-        this    .searchService = searchService;
+        this   .searchService = searchService;
+        this.interactionsService = interactionsService;
     }
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
@@ -69,9 +73,24 @@ public class PhotoGalleryController {
     // Get PhotoGallery by ID
     @GetMapping("/{id}")
     public PhotoGallery getContentById(@PathVariable Long id) {
+        interactionsService.incrementView(id); // COUNT VIEW
         return photoGalleryService.findById(id);
     }
 
+    // Like article
+    @PostMapping("/{id}/like")
+    public ResponseEntity<Void> likeArticle(@PathVariable Long id) {
+        interactionsService.incrementLike(id); // COUNT LIKE
+        return ResponseEntity.ok().build();
+    }
+
+    // Unlike article
+    @PostMapping("/{id}/unlike")
+    public ResponseEntity<Void> unlikeArticle(@PathVariable Long id) {
+        interactionsService.decrementLike(id); // COUNT UNLIKE
+        return ResponseEntity.ok().build();
+    }
+    
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteContent(@PathVariable Long id) {

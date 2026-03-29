@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.Article;
 import com.litecms.backend.service.ArticleService;
+import com.litecms.backend.service.InteractionsService;
 import com.litecms.backend.service.SearchService;
 
 @RestController
@@ -28,19 +29,21 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final SearchService searchService ;
+    private final InteractionsService interactionsService;
 
-    public ArticleController(ArticleService articleService,SearchService searchService) {
+    public ArticleController(ArticleService articleService,SearchService searchService,InteractionsService interactionsService) {
         this.articleService = articleService;
         this.searchService = searchService;
+        this.interactionsService = interactionsService;
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE) 
     public ResponseEntity<Article> create(@RequestPart(value = "featuredImage", required = false)
-     MultipartFile featuredImage, @RequestPart("article") Article article) throws IOException {
+        MultipartFile featuredImage, @RequestPart("article") Article article) throws IOException {
 
-        Article savedArticle = articleService.create(article, featuredImage);
-        searchService.indexContent(savedArticle);
-        return ResponseEntity.status(201).body(savedArticle);
+            Article savedArticle = articleService.create(article, featuredImage);
+            searchService.indexContent(savedArticle);
+            return ResponseEntity.status(201).body(savedArticle);
     }
     //update
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -65,9 +68,24 @@ public class ArticleController {
 
   @GetMapping("/{id}")
     public ResponseEntity<Article> getContentById(@PathVariable Long id) {
-         
+           interactionsService.incrementView(id); // COUNT VIEW
         return ResponseEntity.ok(articleService.findById(id));
     }
+
+    // Like article
+    @PostMapping("/{id}/like")
+    public ResponseEntity<Void> likeArticle(@PathVariable Long id) {
+        interactionsService.incrementLike(id); // COUNT LIKE
+        return ResponseEntity.ok().build();
+    }
+
+    // Unlike article
+    @PostMapping("/{id}/unlike")
+    public ResponseEntity<Void> unlikeArticle(@PathVariable Long id) {
+        interactionsService.decrementLike(id); // COUNT UNLIKE
+        return ResponseEntity.ok().build();
+    }
+    
 
 
    @DeleteMapping("/{id}")
@@ -78,41 +96,3 @@ public class ArticleController {
 }
 
 
-//#region
-/*
-  @PostMapping
-    public Article create(@RequestBody Article article) {
-        return articleService.create(article);
-    }
-
-    
-    @PutMapping("/{id}")
-    public Article update(@PathVariable Long id,
-     @RequestBody Article article) {
-        article.setContentId(id);
-        return articleService.update(article);
-    }
-
-      // Get all Article
-    @GetMapping
-    public List<Article> getAllContents() {
-        return articleService.findAll();
-    }
-
-    // Get Article by ID
-    @GetMapping("/{id}")
-    public Article getContentById(@PathVariable Long id) {
-        return articleService.findById(id);
-    }
-
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteContent(@PathVariable Long id) {
-        articleService.delete(id);
-        return ResponseEntity.noContent().build();
-    }
-
-*/
-
-
-//#endregion

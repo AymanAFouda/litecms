@@ -23,5 +23,5 @@ public class SearchController {
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
         .body(ExchangeRateResponse.class);
-            }
-        }
+    }
+}
