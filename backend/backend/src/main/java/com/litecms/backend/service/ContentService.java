@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.litecms.backend.entity.Category;
 import com.litecms.backend.entity.Content;
 import com.litecms.backend.repositories.ContentRepository;
 
@@ -31,13 +30,13 @@ import com.litecms.backend.repositories.ContentRepository;
             .orElseThrow(() -> new RuntimeException("Content not found with ID: " + id));
     }
 
-    // Get by category
-    public List<Content> getByCategory(Category category) {
-        return contentRepository.findByCategory(category);
+    // Get by category name
+    public List<Content> getByCategory(String name) {
+        return contentRepository.findByCategory_name(name);
     }
 
-    // Get content by tag IDs
-    public List<Content> getByTags(List<Long> tagIds) {
-        return contentRepository.findDistinctByTagIds(tagIds);
+    // Get content by tag name
+    public List<Content> getByTag(String tagName) {
+        return contentRepository.findDistinctByTagName(tagName);
     }
 }

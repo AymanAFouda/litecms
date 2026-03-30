@@ -1,6 +1,5 @@
 package com.litecms.backend.controllers;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.litecms.backend.entity.Category;
 import com.litecms.backend.entity.Content;
 import com.litecms.backend.service.ContentService;
 
@@ -39,20 +37,17 @@ public class ContentController {
         return ResponseEntity.ok(contentService.getById(id));
     }
 
-    // Get content by category
-    @GetMapping("/category/{categoryId}")
-    public List<Content> getByCategory(@PathVariable Long categoryId) {
-        Category category = new Category();
-        category.setId(categoryId);
-        return contentService.getByCategory(category);
+  
+    // Get content by category name
+    @GetMapping("/category")
+    public List<Content> getByCategory(@RequestParam String name) {
+        return contentService.getByCategory(name);
     }
 
-   @GetMapping("/tags")
-    public List<Content> getByTags(@RequestParam String tagIds) {
-        List<Long> ids = Arrays.stream(tagIds.split(","))
-                            .map(Long::parseLong)
-                            .toList();
-        return contentService.getByTags(ids);
+    // Get content by tag name
+    @GetMapping("/tags/{tagName}")
+    public List<Content> getByTag(@PathVariable String tagName) {
+        return contentService.getByTag(tagName);
     }
-
+    
 }

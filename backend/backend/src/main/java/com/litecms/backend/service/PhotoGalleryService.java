@@ -152,6 +152,15 @@ public class PhotoGalleryService {
         return photoGalleryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("PhotoGallery not found"));
     }
+
+    public List<PhotoGallery> getByCategory(String categoryName) {
+        return photoGalleryRepository.findByCategoryName(categoryName);
+    }
+
+    public List<PhotoGallery> getByTag(String tagName) {
+        return photoGalleryRepository.findDistinctByTagName(tagName);
+    }
+
     // Delete 
     public void delete(Long id) {
         PhotoGallery photoGallery = photoGalleryRepository.findById(id)

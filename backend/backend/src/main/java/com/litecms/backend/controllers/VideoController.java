@@ -90,6 +90,18 @@ public class VideoController {
         return ResponseEntity.ok().build();
     }
 
+    // Get videos by category
+    @GetMapping("/category/{name}")
+    public List<Video> getByCategory(@PathVariable String name) {
+        return videoService.getByCategory(name);
+    }
+
+    // Get videos by tag
+    @GetMapping("/tags/{tagName}")
+    public List<Video> getByTag(@PathVariable String tagName) {
+        return videoService.getByTag(tagName);
+    }
+
    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteContent(@PathVariable Long id) {
         videoService.delete(id);

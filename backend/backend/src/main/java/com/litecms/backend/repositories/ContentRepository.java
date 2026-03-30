@@ -9,13 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.litecms.backend.entity.Category;
 import com.litecms.backend.entity.Content;
 
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Long> {
-
-    // Increment view count
     @Modifying
     @Query("UPDATE Content c SET c.viewCount = c.viewCount + 1 WHERE c.contentId = :id")
     void incrementView(@Param("id") Long id);
@@ -35,9 +32,9 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     List<Content> findAll();
 
     @EntityGraph(attributePaths = {"tags", "category"})
-    List<Content> findByCategory(Category category);
+    List<Content> findByCategory_name(String name);
 
     @EntityGraph(attributePaths = {"tags", "category"})
-    @Query("SELECT DISTINCT c FROM Content c JOIN c.tags t WHERE t.tagId IN :tagIds")
-    List<Content> findDistinctByTagIds(@Param("tagIds") List<Long> tagIds);
+    @Query("SELECT DISTINCT c FROM Content c JOIN c.tags t WHERE t.tagName = :tagName")
+    List<Content> findDistinctByTagName(@Param("tagName") String tagName);
 }

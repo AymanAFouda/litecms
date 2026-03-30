@@ -149,6 +149,17 @@ public class VideoService {
         return videoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Article not found"));
     }
+
+    // Get videos by category name
+    public List<Video> getByCategory(String categoryName) {
+        return videoRepository.findByCategoryName(categoryName);
+    }
+
+    // Get videos by tag name
+    public List<Video> getByTag(String tagName) {
+        return videoRepository.findDistinctByTagName(tagName);
+    }
+
      @Transactional
     // Delete Video
     public void delete(Long id) {
@@ -177,8 +188,6 @@ public class VideoService {
         }
         mediaRepository.delete(featuredImage); 
     }
-
-
 }
 
 
@@ -186,54 +195,3 @@ public class VideoService {
 
 
 
-
-/*
- create
-// Ensure category exists
-
-        if (content.getCategory() != null) {
-
-        Long categoryId = content.getCategory().getId();
-        Category category = categoryRepository.findById(categoryId)
-        .orElseThrow(() -> new RuntimeException("Category not found"));
-        content.setCategory(category);
-        }
-
-
-        
-
-        if (content instanceof Video video) {
-        Video newVideo = new Video(
-            null,
-            content.getTitle(),
-            content.getDescription(),
-            0,
-            0,
-            java.time.LocalDateTime.now(),
-            content.getStatus(),
-            content.getCategory(),
-            content.getTags(),
-            video.getVideoUrl()
-        );
-        return videoRepository.save(newVideo);
-        }
-        return videoRepository.save(content);
-
-
-update
-  Video originalVideo = videoRepository.findById(video.getContentId())
-            .orElseThrow(() -> new RuntimeException("Video not found"));
-            video.setViewCount(originalVideo.getViewCount());
-            video.setLikeCount(originalVideo.getLikeCount());
-
-            if (video.getCategory() != null) {
-                Long categoryId = video.getCategory().getId();
-                categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-            }
-
-
-
-
-
-*/
