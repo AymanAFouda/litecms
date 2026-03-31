@@ -83,11 +83,13 @@ public class Content {
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments;
 
+    @Column(name = "Content_type", insertable = false, updatable = false)
+    private String Type;
+
     public Content(){
 
      }
 
-     
 
     public Content(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
             LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, Media featuredImage,

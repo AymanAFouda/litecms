@@ -91,6 +91,17 @@ public class PhotoGalleryController {
         return ResponseEntity.ok().build();
     }
     
+    // Get galleries by category name
+    @GetMapping("/category/{name}")
+    public List<PhotoGallery> getByCategory(@PathVariable String name) {
+        return photoGalleryService.getByCategory(name);
+    }
+
+    // Get galleries by tag name
+    @GetMapping("/tags/{tagName}")
+    public List<PhotoGallery> getByTag(@PathVariable String tagName) {
+        return photoGalleryService.getByTag(tagName);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteContent(@PathVariable Long id) {

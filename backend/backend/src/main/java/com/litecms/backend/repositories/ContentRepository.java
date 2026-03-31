@@ -1,5 +1,8 @@
 package com.litecms.backend.repositories;
 
+import java.util.List;
+
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,8 +13,6 @@ import com.litecms.backend.entity.Content;
 
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Long> {
-
-    // Increment view count
     @Modifying
     @Query("UPDATE Content c SET c.viewCount = c.viewCount + 1 WHERE c.contentId = :id")
     void incrementView(@Param("id") Long id);
@@ -25,4 +26,15 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     @Modifying
     @Query("UPDATE Content c SET c.likeCount = CASE WHEN c.likeCount > 0 THEN c.likeCount - 1 ELSE 0 END WHERE c.contentId = :id")
     void decrementLike(@Param("id") Long id);
+
+
+    @EntityGraph(attributePaths = {"tags", "category"})
+    List<Content> findAll();
+
+    @EntityGraph(attributePaths = {"tags", "category"})
+    List<Content> findByCategory_name(String name);
+
+    @EntityGraph(attributePaths = {"tags", "category"})
+    @Query("SELECT DISTINCT c FROM Content c JOIN c.tags t WHERE t.tagName = :tagName")
+    List<Content> findDistinctByTagName(@Param("tagName") String tagName);
 }

@@ -153,6 +153,19 @@ public class ArticleService {
     articleRepository.delete(article);
  
     }
+
+
+        // Get articles by category name
+        public List<Article> getByCategory(String categoryName) {
+            return articleRepository.findByCategory_name(categoryName);
+        }
+
+        // Get articles by tag name
+        public List<Article> getByTag(String tagName) {
+            return articleRepository.findDistinctByTagName(tagName);
+        }
+
+
     public void deleteFeaturedImage(Media featuredImage) {
         try {   
             String storedFileName = Paths.get(featuredImage.getFileUrl()).getFileName().toString();
@@ -173,47 +186,3 @@ public class ArticleService {
 }
 
 
- //#region comments
-
-/*
-
-     if (content instanceof Article article) {
-        Article newArticle = new Article(
-         null,
-        content.getTitle(),
-        content.getDescription(),
-        0,
-        0,
-        java.time.LocalDateTime.now(),
-        content.getStatus(),
-        content.getCategory(),
-        content.getTags(),
-        article.getArticleBody()
-        );
-        return articleRepository.save(newArticle);
-        }
-
-
-*/
-
-/*
- // Update Article
-
-    public Article update(Article article) {
-            Article originalArticle = articleRepository.findById(article.getContentId())
-            .orElseThrow(() -> new RuntimeException("Article not found"));
-
-            article.setViewCount(originalArticle.getViewCount());
-            article.setLikeCount(originalArticle.getLikeCount());
-
-            if (article.getCategory() != null) {
-                Long categoryId = article.getCategory().getId();
-                categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-            }
-
-            return articleRepository.save(article);
-    }
-*/
-
-//#endregion
