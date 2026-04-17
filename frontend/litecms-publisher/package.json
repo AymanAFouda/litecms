@@ -10,11 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^41.4.2",
-    "@ckeditor/ckeditor5-react": "^11.0.1",
     "@fortawesome/fontawesome-free": "^7.1.0",
+    "@uppy/core": "^5.2.0",
+    "@uppy/dashboard": "^5.1.1",
+    "@uppy/image-editor": "^4.2.0",
+    "@uppy/react": "^5.2.0",
+    "@uppy/xhr-upload": "^5.1.1",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
+    "jodit": "^4.9.14",
+    "jodit-react": "^5.3.21",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
     "react-data-table-component": "^7.7.0",

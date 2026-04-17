@@ -1,0 +1,59 @@
+{
+  "site": {
+    "title": "LiteCMS",
+    "base_url": "/",
+    "favicon": "/images/fav-icon.png",
+    "logo": "/images/main-logo.png",
+    "logo_width": "180",
+    "logo_height": "36",
+    "logo_text": "Geeky"
+  },
+  "settings": {
+    "theme_switcher": true,
+    "default_theme": "system",
+    "pagination": 6,
+    "InnerPaginationOptions": {
+      "enableTop": false,
+      "enableBottom": true
+    },
+    "summary_length": 180,
+    "blog_folder": "posts"
+  },
+  "params": {
+    "tag_manager_id": "",
+    "footer_content": "Built by Ayman Fouda & Osama Fouda.",
+    "copyright": "© 2026 LiteCMS. All rights reserved."
+  },
+  "metadata": {
+    "meta_author": "Statichunt",
+    "meta_image": "/images/og-image.png",
+    "meta_description": "Geeky Nextjs Personal Blog Template"
+  },
+  "widgets": {
+    "about": {
+      "enable": true,
+      "content": "Lorem ipsum dolor sit amet, conse tfctetur adipiscing elit. Vel in in donec iaculis tempasus odio nunc laoreet . Libero ullam rgscorper."
+    },
+    "featured_posts": {
+      "enable": true,
+      "title": "Blog Categories",
+      "showPost": 3
+    },
+    "categories": {
+      "enable": true,
+      "title": "Blog Categories"
+    },
+    "newsletter": {
+      "enable": true,
+      "title": "Newsletter",
+      "content": "Subscribe to stay updated with our latest articles, insights, and exclusive content delivered straight to your inbox.",
+      "privacy_policy_page": "#",
+      "malichipm_url": ""
+    }
+  },
+  "disqus": {
+    "enable": true,
+    "shortname": "themefisher-template",
+    "settings": {}
+  }
+}

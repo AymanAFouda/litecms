@@ -1,11 +1,14 @@
 import { Link, useNavigate } from "react-router-dom"
+import { useEffect } from "react";
 
 export function NotFound() {
     const navigate = useNavigate();
 
+    useEffect(() => { 
+        document.title = "404 Not Found" 
+    }, []);
+
     return(
-    <>
-    <title>404 Not Found</title>
     <div className="error-bg">
         <div className="container-fluid d-flex align-items-center justify-content-center min-vh-100">
             <div className="row justify-content-center w-100">
@@ -29,7 +32,7 @@ export function NotFound() {
                                 <p className="text-muted lead">Sorry, the page you are looking for doesn't exist or has been moved.</p>
                             </div>
 
-                            <div className="d-grid gap-2 d-md-block mb-4">
+                            <div className="d-grid gap-4 d-md-block mb-4">
                                 <button type="button" className="btn btn-outline-secondary btn-lg" onClick={() => navigate(-1)}>
                                 <i className="fas fa-arrow-left me-2"></i>Go Back
                                 </button>
@@ -42,13 +45,12 @@ export function NotFound() {
 
                     <div className="text-center mt-4">
                         <p className="text-light opacity-75 mb-2">
-                        &copy; 2026 LiteCMS - All Rights Reserved.
+                            <i className="bi bi-c-circle"></i> 2026 LiteCMS - All Rights Reserved.
                         </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </>
     )
 }

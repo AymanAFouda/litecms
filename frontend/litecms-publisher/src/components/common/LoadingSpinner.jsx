@@ -1,13 +1,9 @@
-export function LoadingSpinner({ size }) {
-    const sizeClasses = {
-        'sm': 'small-spinner',
-        'md': 'medium-spinner',
-        'lg': 'large-spinner',
-    };
-
+export function LoadingSpinner() {
     return (
-        <div className={`${sizeClasses[size]} spinner-border text-primary`} role="status">
-            <span className="visually-hidden">Loading...</span>
-        </div>
+        <main className="spinner-container right_col d-flex justify-content-center align-items-center pt-0" role="main" aria-label="Main content"> 
+            <div className="large-spinner spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
+        </main>
     );
 }

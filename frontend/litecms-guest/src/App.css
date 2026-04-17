@@ -1,0 +1,12 @@
+a,
+button,
+.search-icon,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus:not(:focus-visible),
+.search-icon:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none;
+}
