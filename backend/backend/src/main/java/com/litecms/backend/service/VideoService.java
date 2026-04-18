@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.Category;
 import com.litecms.backend.entity.Media;
+import com.litecms.backend.entity.Status;
 import com.litecms.backend.entity.Tag;
 import com.litecms.backend.entity.Video;
 import com.litecms.backend.repositories.CategoryRepository;
@@ -49,7 +50,22 @@ public class VideoService {
 
     }
 
-      // Create Video
+    //get published Video
+    public List<Video> getPublishedVideos() {
+    return videoRepository.findByStatusOrderByCreatedAtDesc(Status.PUBLISHED);
+    }
+
+    //get Published Videos By Category
+    public List<Video> getPublishedVideosByCategory(String categoryName) {
+    return videoRepository.findByCategoryNameAndStatusOrderByCreatedAtDesc(categoryName, Status.PUBLISHED);
+    }
+
+    //get Published Videos By Tag
+    public List<Video> getPublishedVideosByTag(String tagName) {
+    return videoRepository.findByTagNameAndStatus(tagName, Status.PUBLISHED);
+    }
+
+    // Create Video
     @Transactional
     public Video create(Video content, MultipartFile featuredImage) throws IOException {
 

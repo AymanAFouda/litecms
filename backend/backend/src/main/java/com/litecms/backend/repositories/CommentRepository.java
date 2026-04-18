@@ -11,4 +11,6 @@ import com.litecms.backend.entity.Comment;
 public interface CommentRepository extends  JpaRepository<Comment, Long>{
 
         List<Comment> findByContentContentIdOrderByCreatedAtAsc(Long contentId);
+       
+        
 }

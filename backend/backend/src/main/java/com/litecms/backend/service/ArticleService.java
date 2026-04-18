@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.litecms.backend.entity.Article;
 import com.litecms.backend.entity.Category;
 import com.litecms.backend.entity.Media;
+import com.litecms.backend.entity.Status;
 import com.litecms.backend.entity.Tag;
 import com.litecms.backend.repositories.ArticleRepository;
 import com.litecms.backend.repositories.CategoryRepository;
@@ -45,6 +46,22 @@ public class ArticleService {
         this.mediaService = mediaService;
         this.mediaRepository = mediaRepository;
     }   
+
+    //get Published Articles
+    public List<Article> getPublishedArticles() {
+        return articleRepository.findByStatusOrderByCreatedAtDesc(Status.PUBLISHED);
+    }
+
+    //get Published Articles By Category
+    public List<Article> getPublishedArticlesByCategory(String categoryName) {
+    return articleRepository.findByStatusAndCategory_NameOrderByCreatedAtDesc(
+        Status.PUBLISHED, categoryName);
+    }
+
+    //get Published Articles By Tag
+    public List<Article> getPublishedArticlesByTag(String tagName) {
+    return articleRepository.findPublishedByTagName(Status.PUBLISHED, tagName);
+    }
 
     // Create Article  
     @Transactional
@@ -155,16 +172,15 @@ public class ArticleService {
     }
 
 
-        // Get articles by category name
-        public List<Article> getByCategory(String categoryName) {
-            return articleRepository.findByCategory_name(categoryName);
-        }
+    // Get articles by category name
+    public List<Article> getByCategory(String categoryName) {
+        return articleRepository.findByCategory_name(categoryName);
+    }
 
-        // Get articles by tag name
-        public List<Article> getByTag(String tagName) {
-            return articleRepository.findDistinctByTagName(tagName);
-        }
-
+    // Get articles by tag name
+    public List<Article> getByTag(String tagName) {
+        return articleRepository.findDistinctByTagName(tagName);
+    }
 
     public void deleteFeaturedImage(Media featuredImage) {
         try {   

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.litecms.backend.dto.CategoryCountDTO;
 import com.litecms.backend.entity.Category;
 import com.litecms.backend.repositories.CategoryRepository;
 
@@ -17,23 +18,28 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Category create(Category category) {
+    //get Category Counts
+    public List<CategoryCountDTO> getCategoryCounts() {
+    return categoryRepository.findCategoryCounts();
+    }
+    //Create Category
+    public Category createCategory(Category category) {
         return categoryRepository.save(category);
     }
-
-    public Category update(Long id, Category category) {
+    //Update Category
+    public Category updateCategory(Long id, Category category) {
         Category existing = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
         existing.setName(category.getName());
         return categoryRepository.save(existing);
     }
-
+    //Get all  Categories
     public List<Category> findAll() {
         return categoryRepository.findAll();
     }
-
-    public void delete(Long id) {
+    //Delete Category
+    public void deleteCategory(Long id) {
         categoryRepository.deleteById(id);
     }
 

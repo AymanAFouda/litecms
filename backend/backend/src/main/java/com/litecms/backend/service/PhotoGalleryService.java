@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.litecms.backend.entity.Category;
 import com.litecms.backend.entity.Media;
 import com.litecms.backend.entity.PhotoGallery;
+import com.litecms.backend.entity.Status;
 import com.litecms.backend.entity.Tag;
 import com.litecms.backend.repositories.CategoryRepository;
 import com.litecms.backend.repositories.MediaRepository;
@@ -47,6 +48,20 @@ public class PhotoGalleryService {
         this.mediaRepository = mediaRepository;
         this.tagRepository = tagRepository;
 
+    }
+    //find Published Galleries
+    public List<PhotoGallery> findPublishedGalleries() {
+    return photoGalleryRepository.findByStatusOrderByCreatedAtDesc(Status.PUBLISHED);
+    }
+
+    //get Published By Category
+    public List<PhotoGallery> getPublishedByCategory(String categoryName) {
+    return photoGalleryRepository.findByCategoryNameAndStatusOrderByCreatedAtDesc(categoryName, Status.PUBLISHED);
+    }
+
+    //get Published By Tag
+    public List<PhotoGallery> getPublishedByTag(String tagName) {
+    return photoGalleryRepository.findByTagNameAndStatus(tagName, Status.PUBLISHED);
     }
 
     // Create PhotoGallery  

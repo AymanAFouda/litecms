@@ -1,6 +1,7 @@
 package com.litecms.backend.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.litecms.backend.entity.Content;
+import com.litecms.backend.entity.Status;
 
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Long> {
@@ -37,4 +39,19 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     @EntityGraph(attributePaths = {"tags", "category"})
     @Query("SELECT DISTINCT c FROM Content c JOIN c.tags t WHERE t.tagName = :tagName")
     List<Content> findDistinctByTagName(@Param("tagName") String tagName);
+
+    @EntityGraph(attributePaths = {"tags", "category"})
+    List<Content> findByStatusOrderByCreatedAtDesc(Status status);
+
+    @EntityGraph(attributePaths = {"tags", "category"})
+    List<Content> findTop3ByStatusOrderByCreatedAtDesc(Status status);
+
+    @EntityGraph(attributePaths = {"tags", "category"})
+    List<Content> findByStatusAndCategory_NameOrderByCreatedAtDesc(Status status, String categoryName);
+
+    @EntityGraph(attributePaths = {"tags", "category"})
+    List<Content> findByStatusAndTags_TagNameOrderByCreatedAtDesc(Status status, String tagName);
+
+    @EntityGraph(attributePaths = {"tags", "category"})
+    Optional<Content> findByContentIdAndStatus(Long id, Status status);
 }

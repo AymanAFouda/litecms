@@ -35,60 +35,54 @@ public class Comment  {
     private Content content;
 
     public Comment(Long commentId, String guestName, String commentText, LocalDateTime createdAt, Content content) {
-        commentId = commentId;
+        this.commentId = commentId;
         this.guestName = guestName;
         this.commentText = commentText;
         this.createdAt = createdAt;
         this.content = content;
     }
+
     public Comment() {}
 
-    //#region Getters and Setters
     public Long getCommentId() {
         return commentId;
     }
 
-
     public void setCommentId(Long commentId) {
-        commentId = commentId;
+        this.commentId = commentId;
     }
-
 
     public String getGuestName() {
         return guestName;
     }
 
-
     public void setGuestName(String guestName) {
         this.guestName = guestName;
     }
-
 
     public String getCommentText() {
         return commentText;
     }
 
-
     public void setCommentText(String commentText) {
         this.commentText = commentText;
     }
 
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
     public Content getContent() {
-    return content;
+        return content;
     }
 
     public void setContent(Content content) {
         this.content = content;
     }
-    //#endregion
+
+    
 }
