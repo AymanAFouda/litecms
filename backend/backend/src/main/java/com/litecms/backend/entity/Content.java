@@ -185,10 +185,14 @@ public class Content {
     }
 
     public Set<Comment> getComments() {
-    return comments;
+        return comments;
     }
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
-    } 
+    }
+
+    public String getType() {
+        return type;
+    }
 }

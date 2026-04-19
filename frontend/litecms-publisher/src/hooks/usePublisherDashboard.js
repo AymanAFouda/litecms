@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react"
-
 import { getStats, getLatestContent } from "../services/dashboardApi"
-
 
 export function usePublisherDashboard() {
     const [stats, setStats] = useState([]);
@@ -14,10 +12,11 @@ export function usePublisherDashboard() {
             setIsLoading(true);
             try {
                 const data = await getStats();
-                setStats(stats);
+                setStats(data);
 
                 const content = await getLatestContent();
                 setLatestContent(content);
+                console.log(content)
 
                 setLoadError(null);
             } catch (er) {
@@ -30,5 +29,5 @@ export function usePublisherDashboard() {
         fetchData();
     }, []);
 
-    return { stats, latestContent, isLoading, loadError };
+    return { stats, latestContent, setLatestContent, isLoading, loadError };
 }

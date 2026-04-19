@@ -16,18 +16,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.Article;
 import com.litecms.backend.service.ArticleService;
-import com.litecms.backend.service.InteractionsService;
 
 @RestController
 @RequestMapping("/api")
 public class ArticleController {
     
     private final ArticleService articleService;
-    private final InteractionsService interactionsService;
 
-    public ArticleController(ArticleService articleService, InteractionsService interactionsService) {
+    public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
-        this.interactionsService = interactionsService;
     }
 
     //get Published Articles
@@ -57,7 +54,6 @@ public class ArticleController {
     // Get By Article Id 
     @GetMapping("/publisher/articles/{id}")
     public Article getContentById(@PathVariable Long id) {
-        interactionsService.incrementView(id); // COUNT VIEW
         return articleService.findById(id);
     }
 

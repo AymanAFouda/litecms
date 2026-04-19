@@ -1,8 +1,10 @@
 import { getAuthHeaders } from "../utils/publisherAuth"
-const CATEGORY_API_URL = "http://localhost:8080/publisher/categories"
+const CATEGORY_API_URL = "http://localhost:8080/api/publisher/categories"
 
 export async function getCategories() {
-    const response = await fetch(CATEGORY_API_URL);
+    const response = await fetch(CATEGORY_API_URL, {
+        headers: getAuthHeaders(),
+    });
     if(!response.ok) throw new Error('Failed to fetch Categories');
     
     const data = await response.json();
@@ -12,9 +14,9 @@ export async function getCategories() {
 export async function createCategory(categoryName) {
     const response = await fetch(CATEGORY_API_URL, {
         method: 'POST',
-        headers: {
+        headers: getAuthHeaders({
             'Content-Type': 'application/json',
-        },
+        }),
         body: JSON.stringify(categoryName),
     })
 
@@ -26,9 +28,9 @@ export async function createCategory(categoryName) {
 export async function updateCategory(category) {
     const response = await fetch(`${CATEGORY_API_URL}/${category.id}`, {
         method: 'PUT',
-        headers: {
+        headers: getAuthHeaders({
             'Content-Type': 'application/json',
-        },
+        }),
         body: JSON.stringify(category),
     })
 
@@ -40,6 +42,7 @@ export async function updateCategory(category) {
 export async function deleteCategory(id) {
     const response = await fetch(`${CATEGORY_API_URL}/${id}`, {
         method: 'DELETE',
+        headers: getAuthHeaders(),
     })
 
     if(!response.ok) throw new Error('Failed to delete Category');

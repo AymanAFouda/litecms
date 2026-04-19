@@ -8,8 +8,20 @@ export const formatDateTime = (dateString) => {
     });
 };
 
-export const  statusColorMap = {
-    DRAFT: "bg-secondary",
-    PUBLISHED: "bg-success",
-    ARCHIVED: "bg-info",
+export const statusColorMap = {
+    DRAFT: "draft-badge",
+    PUBLISHED: "published-badge",
+    ARCHIVED: "archived-badge",
+};
+
+export const contentTypeText = {
+    ARTICLE: "Article",
+    VIDEO: "Video",
+    PHOTOGALLERY: "Photo Gallery",
+};
+
+export const editButtonUrl = {
+    ARTICLE: "articles",
+    VIDEO: "videos",
+    PHOTOGALLERY: "galleries",
 };

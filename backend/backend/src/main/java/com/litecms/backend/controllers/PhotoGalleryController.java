@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.PhotoGallery;
-import com.litecms.backend.service.InteractionsService;
 import com.litecms.backend.service.PhotoGalleryService;
 
 @RestController
@@ -23,11 +22,9 @@ import com.litecms.backend.service.PhotoGalleryService;
 public class PhotoGalleryController {
 
     private final PhotoGalleryService photoGalleryService;
-    private final InteractionsService interactionsService;
 
-    public PhotoGalleryController(PhotoGalleryService photoGalleryService, InteractionsService interactionsService) {
+    public PhotoGalleryController(PhotoGalleryService photoGalleryService) {
         this.photoGalleryService = photoGalleryService;
-        this.interactionsService = interactionsService;
     }
 
     //get Published Galleries
@@ -57,7 +54,6 @@ public class PhotoGalleryController {
     // Get PhotoGallery by ID
     @GetMapping("/publisher/galleries/{id}")
     public PhotoGallery getContentById(@PathVariable Long id) {
-        interactionsService.incrementView(id); // COUNT VIEW
         return photoGalleryService.findById(id);
     }
 

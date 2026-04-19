@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.Video;
-import com.litecms.backend.service.InteractionsService;
 import com.litecms.backend.service.VideoService;
 
 @RestController
@@ -23,11 +22,9 @@ import com.litecms.backend.service.VideoService;
 public class VideoController {
   
     private final VideoService videoService;
-    private final InteractionsService interactionsService;
 
-    public VideoController(VideoService videoService, InteractionsService interactionsService) {
+    public VideoController(VideoService videoService) {
         this.videoService = videoService;
-        this.interactionsService = interactionsService ;
     }
 
     //get Published Videos
@@ -57,7 +54,6 @@ public class VideoController {
     // Get Video by ID
     @GetMapping("/publisher/videos/{id}")
     public Video getContentById(@PathVariable Long id) {
-        interactionsService.incrementView(id); // COUNT VIEW
         return videoService.findById(id);
     }
 

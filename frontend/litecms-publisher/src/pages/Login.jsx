@@ -23,6 +23,11 @@ export function Login() {
         return <Navigate to="/" replace />;
     }
 
+    const handleSubmit= (e) => {
+        e.preventDefault();
+        login(username, password);
+    }
+
     return(
         <div className="login-bg">
             <div className="container-fluid d-flex align-items-center justify-content-center min-vh-100">

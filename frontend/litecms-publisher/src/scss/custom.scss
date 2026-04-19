@@ -6805,3 +6805,24 @@ input[type="radio"].flat:disabled + label {
 .action-avatar-bg {
   background-color: #3b82f6;
 }
+
+.draft-badge {
+  background-color: #f59e0b;
+}
+
+.published-badge {
+  background-color: #16a34a;
+}
+
+.archived-badge {
+  background-color: #4b5563;
+}
+
+.data-table-badge {
+  color: #ffffff;
+  padding: 6px 10px !important;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}

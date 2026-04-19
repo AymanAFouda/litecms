@@ -1,8 +1,10 @@
 import { getAuthHeaders } from "../utils/publisherAuth"
-const PHOTO_GALLERY_API_URL = "http://localhost:8080/publisher/galleries"
+const PHOTO_GALLERY_API_URL = "http://localhost:8080/api/publisher/galleries"
 
 export async function getGalleries() {
-    const response = await fetch(PHOTO_GALLERY_API_URL);
+    const response = await fetch(PHOTO_GALLERY_API_URL, {
+        headers: getAuthHeaders(),
+    });
     if(!response.ok) throw new Error('Failed to fetch Photo Galleries');
     
     const galleries = await response.json();
@@ -10,7 +12,9 @@ export async function getGalleries() {
 }
 
 export async function getGallery(id) {
-    const response = await fetch(`${PHOTO_GALLERY_API_URL}/${id}`);
+    const response = await fetch(`${PHOTO_GALLERY_API_URL}/${id}`, {
+        headers: getAuthHeaders(),
+    });
     if(!response.ok) throw new Error('Failed to fetch Photo Gallery');
     
     return await response.json();
@@ -19,6 +23,7 @@ export async function getGallery(id) {
 export async function createGallery(gallery) {
     const response = await fetch(PHOTO_GALLERY_API_URL, {
         method: 'POST',
+        headers: getAuthHeaders(),
         body: gallery,
     })
 
@@ -30,6 +35,7 @@ export async function createGallery(gallery) {
 export async function updateGallery(id, gallery) {
     const response = await fetch(`${PHOTO_GALLERY_API_URL}/${id}`, {
         method: 'PUT',
+        headers: getAuthHeaders(),
         body: gallery,
     })
 
@@ -41,6 +47,7 @@ export async function updateGallery(id, gallery) {
 export async function deleteGallery(id) {
     const response = await fetch(`${PHOTO_GALLERY_API_URL}/${id}`, {
         method: 'DELETE',
+        headers: getAuthHeaders(),
     })
 
     if(!response.ok) throw new Error('Failed to delete Photo Gallery');

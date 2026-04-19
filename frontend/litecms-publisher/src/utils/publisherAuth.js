@@ -3,8 +3,7 @@ export function getPublisherAuth() {
 }
 
 export function isPublisherLoggedIn() {
-  //return !!getPublisherAuth();
-  return true;
+  return !!getPublisherAuth();
 }
 
 export function savePublisherAuth(authHeader) {
@@ -16,10 +15,10 @@ export function clearPublisherAuth() {
 }
 
 export function getAuthHeaders(extraHeaders = {}) {
-    const auth = getPublisherAuth();
+  const auth = getPublisherAuth();
 
-    return {
-        ...(auth && { Authorization: auth }),
-        ...extraHeaders,
-    };
+  return {
+      ...(auth && { Authorization: auth }),
+      ...extraHeaders,
+  };
 }
