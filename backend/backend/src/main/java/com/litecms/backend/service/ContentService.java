@@ -91,4 +91,9 @@ import com.litecms.backend.repositories.ContentRepository;
     public List<Content> getByTag(String tagName) {
         return contentRepository.findDistinctByTagName(tagName);
     }
+
+    // Get latest 10 contents for publisher
+    public List<Content> getLatestTenContents() {
+        return contentRepository.findTop10ByOrderByCreatedAtDesc();
+    }
 }

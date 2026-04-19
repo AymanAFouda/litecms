@@ -81,4 +81,10 @@ public class ContentController {
     public Content getContentById(@PathVariable Long id) {
         return contentService.getById(id);
     }
+
+    // Get latest 10 created contents
+    @GetMapping("/publisher/contents/latest-ten")
+    public List<Content> getLatestTenContents() {
+        return contentService.getLatestTenContents();
+    }
 }

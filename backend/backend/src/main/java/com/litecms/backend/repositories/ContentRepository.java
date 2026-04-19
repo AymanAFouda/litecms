@@ -67,4 +67,7 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
 
     @Query("SELECT SUM(c.likeCount) FROM Content c")
     Integer sumAllLikeCount();
+
+    @EntityGraph(attributePaths = {"tags", "category"})
+    List<Content> findTop10ByOrderByCreatedAtDesc();
 }
