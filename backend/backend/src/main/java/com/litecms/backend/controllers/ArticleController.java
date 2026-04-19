@@ -97,16 +97,4 @@ public class ArticleController {
     }
 }
 
-/*
-   // Get articles by category name
-    @GetMapping("/category/{name}")
-    public List<Article> getByCategory(@PathVariable String name) {
-        return articleService.getByCategory(name);
-    }
-
-    // Get articles by tag name
-    @GetMapping("/tags/{tagName}")
-    public List<Article> getByTag(@PathVariable String tagName) {
-        return articleService.getByTag(tagName);
-    }
- */
+ 

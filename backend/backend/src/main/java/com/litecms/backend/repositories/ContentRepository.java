@@ -1,5 +1,6 @@
 package com.litecms.backend.repositories;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,4 +55,17 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
 
     @EntityGraph(attributePaths = {"tags", "category"})
     Optional<Content> findByContentIdAndStatus(Long id, Status status);
+
+    // For contentThisWeek
+    long countByCreatedAtAfter(LocalDateTime date);
+
+    // For publishedContent (Using your Status enum)
+    long countByStatus(Status status);
+
+    // For totalViews and totalLikes
+    @Query("SELECT SUM(c.viewCount) FROM Content c")
+    Integer sumAllViewCount();
+
+    @Query("SELECT SUM(c.likeCount) FROM Content c")
+    Integer sumAllLikeCount();
 }

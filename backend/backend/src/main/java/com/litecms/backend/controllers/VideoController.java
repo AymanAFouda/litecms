@@ -49,7 +49,7 @@ public class VideoController {
     }
 
     //get Published Videos By Tag
-    @GetMapping("/videos/tags/{name}")  
+    @GetMapping("/videos/tag/{name}")  
     public List<Video> getPublishedVideosByTag(@PathVariable String name) {
         return videoService.getPublishedVideosByTag(name);
     }

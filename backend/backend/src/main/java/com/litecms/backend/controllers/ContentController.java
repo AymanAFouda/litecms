@@ -2,12 +2,10 @@ package com.litecms.backend.controllers;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.litecms.backend.entity.Content;
@@ -36,13 +34,13 @@ public class ContentController {
     }
 
     //get Published Contents By Category
-    @GetMapping("/contents/{name}")
+    @GetMapping("/contents/Category/{name}")
     public List<Content> getPublishedContentsByCategory(@PathVariable String name) {
         return contentService.getPublishedContentsByCategory(name);
     }
 
     //get Published Contents By Tag
-    @GetMapping("/contents/tags/{name}")
+    @GetMapping("/contents/tag/{name}")
     public List<Content> getPublishedContentsByTag(@PathVariable String name) {
         return contentService.getPublishedContentsByTag(name);
     }
@@ -55,24 +53,22 @@ public class ContentController {
     }
 
     //like Content
-    @PutMapping("/contents/{id}")
+    @PutMapping("/contents/like/{id}")
     public void likeContent(@PathVariable Long id) {
         contentService.likeContent(id);
-        
     }
 
     //unlike Content
-    @PutMapping("/contents/{id}/unlike")
+    @PutMapping("/contents/unlike/{id}")
     public void unlikeContent(@PathVariable Long id) {
         contentService.unlikeContent(id);
-       
     }
 
     //view Content
-    @PutMapping("/contents/{id}/view")
+    @PutMapping("/contents/view/{id}")
     public void viewContent(@PathVariable Long id) {
         contentService.viewContent(id);
-     }
+    }
 
     // Get all content
     @GetMapping("/publisher/contents")
@@ -82,21 +78,8 @@ public class ContentController {
 
     // Get content by ID
     @GetMapping("/publisher/contents/{id}")
-    public ResponseEntity<Content> getContentById(@PathVariable Long id) {
-        return ResponseEntity.ok(contentService.getById(id));
+    public Content getContentById(@PathVariable Long id) {
+        return contentService.getById(id);
     }
-
   
-    // Get content by category name
-    @GetMapping("/publisher/contents/category")
-    public List<Content> getByCategory(@RequestParam String name) {
-        return contentService.getByCategory(name);
-    }
-
-    // Get content by tag name
-    @GetMapping("/publisher/contents/tags/{tagName}")
-    public List<Content> getByTag(@PathVariable String tagName) {
-        return contentService.getByTag(tagName);
-    }
-    
 }
