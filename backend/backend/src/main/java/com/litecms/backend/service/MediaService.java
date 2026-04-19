@@ -22,11 +22,10 @@ public class MediaService {
    @Value("${file.upload-dir}")
     private String uploadDir;
 
-
     private final MediaRepository mediaRepository;
 
-public MediaService(MediaRepository mediaRepository) {
-    this.mediaRepository = mediaRepository;
+    public MediaService(MediaRepository mediaRepository) {
+        this.mediaRepository = mediaRepository;
     }   
 
     public Media saveFeaturedImage(MultipartFile file) throws IOException {
@@ -100,18 +99,22 @@ public MediaService(MediaRepository mediaRepository) {
 
         return mediaRepository.save(media);
     }
+
     public Media createMedia(Media media) {
         return mediaRepository.save(media);
     }
+
     //get all
     public List<Media> getAllMedia() {
         return mediaRepository.findAll();
     }
+
     //get by id
     public Media getMediaById(Long id) {
         return mediaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Media not found with id: " + id));
+            .orElseThrow(() -> new RuntimeException("Media not found with id: " + id));
     }
+
     //Delete
     public void deleteFile(Media media) {
         try {   
@@ -125,8 +128,7 @@ public MediaService(MediaRepository mediaRepository) {
         } catch (IOException e) {
             throw new RuntimeException("Failed to delete file: " + media, e);
         }
+        
         mediaRepository.delete(media); 
     }
-     
-
 }

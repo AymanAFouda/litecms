@@ -1,6 +1,5 @@
 package com.litecms.backend.entity;
 
- 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
@@ -75,7 +74,4 @@ public class Media {
     public void setPhotoGallery(PhotoGallery photoGallery) {
         this.photoGallery = photoGallery;
     }
- 
-    
-   
 }

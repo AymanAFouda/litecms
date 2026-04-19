@@ -1,5 +1,5 @@
 import { getAuthHeaders } from "../utils/publisherAuth"
-const ARTICLE_API_URL = "http://localhost:8080/articles"
+const ARTICLE_API_URL = "http://localhost:8080/publisher/articles"
 
 export async function getArticles() {
     const response = await fetch(ARTICLE_API_URL);

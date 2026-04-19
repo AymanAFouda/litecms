@@ -1,5 +1,5 @@
 import { getAuthHeaders } from "../utils/publisherAuth"
-const video_API_URL = "http://localhost:8080/videos"
+const video_API_URL = "http://localhost:8080/publisher/videos"
 
 export async function getVideos() {
     const response = await fetch(video_API_URL);

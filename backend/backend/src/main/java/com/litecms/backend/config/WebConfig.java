@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer{
             .addResourceLocations("file:" + uploadDir + "/");    
     }
 
-@Override
+    @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") 
             .allowedOrigins("http://localhost:5173", "http://localhost:5174")
@@ -27,5 +27,4 @@ public class WebConfig implements WebMvcConfigurer{
             .allowCredentials(true)
             .maxAge(3600); // cache preflight for 1 hour
     }
-    
 }

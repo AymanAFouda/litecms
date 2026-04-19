@@ -10,28 +10,16 @@ import { Modal } from 'react-bootstrap'
 
 import { deleteVideo } from "../../services/videoApi"
 import { useContents } from "../../hooks/useContents"
-import { useResponsivePageSize } from "../../hooks/useResponsivePageSize"
 
 export function Videos() {
     const { contents: videos, setContents: setVideos , isLoading, loadError} = useContents('videos')
     const [isDeleting, setIsDeleting] = useState(false);
     const [selectedVideo, setSelectedVideo] = useState(null)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const [searchInput, setSearchInput] = useState("")
 
     useEffect(() => {
         document.title = "Videos - LiteCMS"
     }, [])
-
-    const itemsPerPage = useResponsivePageSize({
-        mobile: 5,
-        desktop: 10
-    });
-
-    const filteredVideos = videos.filter((video) => 
-        video.title.toLowerCase().includes(searchInput.toLowerCase()
-        )
-    );
 
     const handleOpenDeleteModal = (video) => {
         setSelectedVideo(video)
@@ -92,12 +80,12 @@ export function Videos() {
                                         <DataTable
                                             id="datatable-responsive"
                                             columns={columns}
-                                            data={filteredVideos}
+                                            data={videos}
                                             pagination
                                             highlightOnHover 
                                             striped
-                                            paginationPerPage={itemsPerPage}
-                                            paginationRowsPerPageOptions={[5, 10, 20, 50, 100]} 
+                                            paginationPerPage={10}
+                                            paginationRowsPerPageOptions={[10, 20, 50, 100]} 
                                         />
                                     </div>
                                 </div>

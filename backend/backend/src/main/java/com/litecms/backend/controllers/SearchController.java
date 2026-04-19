@@ -30,7 +30,8 @@ public class SearchController {
             @RequestParam(required = false) String query,
             @RequestParam(required = false) String contentType,
             @RequestParam(required = false) String categoryName,
-            @RequestParam(required = false) String tagName) {
+            @RequestParam(required = false) String tagName
+        ) {
         return searchService.filteredSearch(query, contentType, categoryName, tagName);
     }
 

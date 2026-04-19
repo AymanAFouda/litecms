@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.litecms.backend.entity.Media;
 
 @Repository
-public interface MediaRepository extends JpaRepository<Media, Long>{
+public interface MediaRepository extends JpaRepository<Media, Long> {
 
 }

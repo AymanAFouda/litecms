@@ -23,7 +23,6 @@ import com.litecms.backend.repositories.TagRepository;
 
 import jakarta.transaction.Transactional;
  
-
 @Service
 public class ArticleService {
 
@@ -99,7 +98,7 @@ public class ArticleService {
     public Article update(Article article, MultipartFile newFeaturedImage) throws IOException {
 
         Article originalArticle = articleRepository.findById(article.getContentId())
-                .orElseThrow(() -> new RuntimeException("Article not found"));
+            .orElseThrow(() -> new RuntimeException("Article not found"));
 
         article.setViewCount(originalArticle.getViewCount());
         article.setLikeCount(originalArticle.getLikeCount());
@@ -155,22 +154,21 @@ public class ArticleService {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Article not found"));
     }
+
     //Delete
     @Transactional
     public void delete(Long id) {
-    // 1. Fetch the article first
-    Article article = articleRepository.findById(id)
+        // 1. Fetch the article first
+        Article article = articleRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Article not found"));
 
-    // 2. Clear the links to tags  
-    article.getTags().clear();
+        // 2. Clear the links to tags  
+        article.getTags().clear();
 
-    // 3. Delete the article  
+        // 3. Delete the article  
 
-    articleRepository.delete(article);
- 
+        articleRepository.delete(article);
     }
-
 
     // Get articles by category name
     public List<Article> getByCategory(String categoryName) {
@@ -195,10 +193,7 @@ public class ArticleService {
             throw new RuntimeException("Failed to delete file: " + featuredImage, e);
         }
         mediaRepository.delete(featuredImage); 
-    }
-
-
-        
+    }   
 }
 
 

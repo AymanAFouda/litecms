@@ -14,7 +14,6 @@ import com.litecms.backend.entity.Video;
 @Repository
 public interface VideoRepository extends JpaRepository<Video, Long> {
 
-
     @EntityGraph(attributePaths = {"tags", "category"})
     List<Video> findByCategoryName(String name);
 

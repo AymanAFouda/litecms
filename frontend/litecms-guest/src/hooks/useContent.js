@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
-import { getContent, getArticles, getVideos, getGalleries } from "../services/contentListApi"
+import { getAllContent, getArticles, getVideos, getGalleries, getContentById } from "../services/contentApi"
 
-export function useContentList(contentType) {
+export function useContent(contentType) {
     const [contents, setContents] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [loadError, setLoadError] = useState(null);
@@ -11,7 +11,7 @@ export function useContentList(contentType) {
             setIsLoading(true);
             try {
                 if(contentType === 'all') {
-                    const data = await getContent();
+                    const data = await getAllContent();
                     setContents(data);
                 } else if(contentType === 'articles') {
                     const data = await getArticles();
@@ -35,4 +35,30 @@ export function useContentList(contentType) {
     }, []);
 
     return { contents, isLoading, loadError };
+}
+
+export function useContentById(contentId) {
+    const [content, setContent] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadError, setLoadError] = useState(null);
+
+    useEffect(() => {
+        const fetchContentById = async () => {
+            setIsLoading(true);
+            try {
+                const data = await getContentById(contentId);
+                setContent(data);
+                
+                setLoadError(null);
+            } catch (er) {
+                setLoadError(er);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchContentById();
+    }, [contentId]);
+
+    return { content, isLoading, loadError };
 }

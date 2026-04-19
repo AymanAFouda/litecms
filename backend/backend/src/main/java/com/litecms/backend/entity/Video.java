@@ -10,12 +10,9 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue(value ="VIDEO")
 public class Video extends Content{
    
- 
     private String videoUrl;
 
-    public Video(){
-        
-    } 
+    public Video() {} 
     
     public Video(String videoUrl) {
         this.videoUrl = videoUrl;
@@ -29,13 +26,11 @@ public class Video extends Content{
         this.videoUrl = videoUrl;
     }
 
-    //#region Getters and Setters
     public String getVideoUrl() {
         return videoUrl;
     }
+
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
     }
-    //#endregion
-    
 }

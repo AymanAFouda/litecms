@@ -1,6 +1,5 @@
 package com.litecms.backend.entity;
 
-
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -27,9 +26,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-
-
-
 
 @Entity
 @Table(name = "contents")
@@ -86,14 +82,12 @@ public class Content {
     @Column(name = "Content_type", insertable = false, updatable = false)
     private String Type;
 
-    public Content(){
+    public Content() {}
 
-     }
-
-
-    public Content(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
-            LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, Media featuredImage,
-            Set<Comment> comments) {
+    public Content(Long contentId, String title, String description, Integer likeCount, 
+            Integer viewCount, LocalDateTime createdAt, Status status, Category category, 
+            Set<Tag> tags, Media featuredImage, Set<Comment> comments
+        ) {
         this.contentId = contentId;
         this.title = title;
         this.description = description;
@@ -106,8 +100,6 @@ public class Content {
         this.featuredImage = featuredImage;
         this.comments = comments;
     }
-
-
 
     public Long getContentId() {
         return contentId;
@@ -195,6 +187,5 @@ public class Content {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
-    }
-    
+    } 
 }

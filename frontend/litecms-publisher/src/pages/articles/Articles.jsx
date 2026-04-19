@@ -10,28 +10,17 @@ import { contentColumns } from "../../components/table/contentColumns"
 
 import { deleteArticle } from "../../services/articleApi"
 import { useContents } from "../../hooks/useContents"
-import { useResponsivePageSize } from "../../hooks/useResponsivePageSize"
 
 export function Articles() {
     const { contents: articles, setContents: setArticles , isLoading, loadError} = useContents('articles')
     const [isDeleting, setIsDeleting] = useState(false);
     const [selectedArticle, setSelectedArticle] = useState(null)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const [searchInput, setSearchInput] = useState("")
 
     useEffect(() => {
         document.title = "Articles - LiteCMS"
     }, [])
 
-    const itemsPerPage = useResponsivePageSize({
-        mobile: 5,
-        desktop: 10
-    });
-
-    const filteredArticles = articles.filter((article) => 
-        article.title.toLowerCase().includes(searchInput.toLowerCase()
-        )
-    );
 
     const handleOpenDeleteModal = (article) => {
         setSelectedArticle(article)
@@ -92,12 +81,12 @@ export function Articles() {
                                         <DataTable
                                             id="datatable-responsive"
                                             columns={columns}
-                                            data={filteredArticles}
+                                            data={articles}
                                             pagination
                                             highlightOnHover 
                                             striped
-                                            paginationPerPage={itemsPerPage}
-                                            paginationRowsPerPageOptions={[5, 10, 20, 50, 100]} 
+                                            paginationPerPage={10}
+                                            paginationRowsPerPageOptions={[10, 20, 50, 100]} 
                                         />
                                     </div>
                                 </div>

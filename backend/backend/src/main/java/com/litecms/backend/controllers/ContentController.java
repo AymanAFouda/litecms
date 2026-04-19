@@ -2,7 +2,6 @@ package com.litecms.backend.controllers;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,12 +15,12 @@ import com.litecms.backend.service.ContentService;
 @RequestMapping("/api")
 public class ContentController {
 
-
     private final ContentService contentService;
 
     public ContentController(ContentService contentService) {
         this.contentService = contentService;
     }
+
     //get Published Contents
     @GetMapping("/contents")
     public List<Content> getPublishedContents() {
@@ -82,5 +81,4 @@ public class ContentController {
     public Content getContentById(@PathVariable Long id) {
         return contentService.getById(id);
     }
-  
 }

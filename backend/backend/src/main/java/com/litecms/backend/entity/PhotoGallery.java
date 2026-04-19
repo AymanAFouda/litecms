@@ -19,9 +19,7 @@ public class PhotoGallery extends Content{
     @JsonManagedReference
     private List<Media> mediaList;
 
-    public PhotoGallery() {
-    }
- 
+    public PhotoGallery() {}
 
     public PhotoGallery(List<Media> mediaList) {
         this.mediaList = mediaList;
@@ -35,16 +33,13 @@ public class PhotoGallery extends Content{
         this.mediaList = mediaList;
     }
 
-
     public List<Media> getMediaList() {
         return mediaList;
     }
 
     public void setMediaList(List<Media> mediaList) {
         this.mediaList = mediaList;
-    }
-
-   
+    } 
 }
 
 

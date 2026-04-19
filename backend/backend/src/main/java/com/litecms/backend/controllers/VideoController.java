@@ -23,12 +23,9 @@ import com.litecms.backend.service.VideoService;
 @RequestMapping("/api")
 public class VideoController {
   
-    
     private final VideoService videoService;
     private final SearchService searchService ;
     private final InteractionsService interactionsService;
-
-
 
     public VideoController(VideoService videoService, SearchService searchService, InteractionsService interactionsService) {
         this.videoService = videoService;
@@ -56,29 +53,30 @@ public class VideoController {
 
     //Create Video
     @PostMapping(value = "/publisher/videos/ ", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) 
-    public  Video createVideo(@RequestPart("video") Video video, @RequestPart(value="featuredImage", required=false)
-     MultipartFile featuredImage)throws IOException {
+    public  Video createVideo(
+            @RequestPart("video") Video video, 
+            @RequestPart(value="featuredImage", required=false) MultipartFile featuredImage
+        ) throws IOException {
 
         Video savedVideo = videoService.create(video, featuredImage);
         searchService.indexContent(savedVideo);
         return savedVideo;
     }
 
- 
     // Update Video
     @PutMapping(value = "/publisher/videos//{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Video updateVideo(@PathVariable Long id,
-        @RequestPart("video") Video video, 
-        @RequestPart(value = "featuredImage", required = false)
-        MultipartFile featuredImage) throws IOException{
+            @RequestPart("video") Video video, 
+            @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage
+        ) throws IOException{
 
-            video.setContentId(id);
-            Video updatedVideo = videoService.update(video, featuredImage);
-            searchService.indexContent(updatedVideo);
-            return updatedVideo;
+        video.setContentId(id);
+        Video updatedVideo = videoService.update(video, featuredImage);
+        searchService.indexContent(updatedVideo);
+        return updatedVideo;
     } 
 
-   // Get all Videos
+    // Get all Videos
     @GetMapping("/publisher/videos")
     public List<Video> getAllContents() {
         return videoService.findAll();
@@ -91,31 +89,9 @@ public class VideoController {
         return videoService.findById(id);
     } 
 
-  
-
-
     // Delete Video
    @DeleteMapping("/publisher/videos/{id}")
     public void deleteContent(@PathVariable Long id) {
         videoService.delete(id);
     }
-
-
 }
-
-/*
-  // Like article
-    @PostMapping("/{id}/like")
-    public ResponseEntity<Void> likeArticle(@PathVariable Long id) {
-        interactionsService.incrementLike(id); // COUNT LIKE
-        return ResponseEntity.ok().build();
-    }
-
-    // Unlike article
-    @PostMapping("/{id}/unlike")
-    public ResponseEntity<Void> unlikeArticle(@PathVariable Long id) {
-        interactionsService.decrementLike(id); // COUNT UNLIKE
-        return ResponseEntity.ok().build();
-    }
-
- */

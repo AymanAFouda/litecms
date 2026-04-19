@@ -28,42 +28,35 @@ public class Tag {
     @JsonIgnore
     private Set<Content> contents = new HashSet<>();
 
-   
-    
-     public Tag(Long tagId, String tagName, Set<Content> contents) {
-
+    public Tag(Long tagId, String tagName, Set<Content> contents) {
         this.tagId = tagId;
         this.tagName = tagName;
         this.contents = contents;
-
     }
 
-     public Tag() {}
+    public Tag() {}
 
-     public Long getTagId() {
-         return tagId;
-     }
+    public Long getTagId() {
+        return tagId;
+    }
 
-     public void setTagId(Long tagId) {
-         this.tagId = tagId;
-     }
+    public void setTagId(Long tagId) {
+        this.tagId = tagId;
+    }
 
-     public String getTagName() {
-         return tagName;
-     }
+    public String getTagName() {
+        return tagName;
+    }
 
-     public void setTagName(String tagName) {
-         this.tagName = tagName;
-     }
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
 
-     public Set<Content> getContents() {
-         return contents;
-     }
+    public Set<Content> getContents() {
+        return contents;
+    }
 
-     public void setContents(Set<Content> contents) {
-         this.contents = contents;
-     }
-
-
-     
+    public void setContents(Set<Content> contents) {
+        this.contents = contents;
+    }    
 }

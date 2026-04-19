@@ -13,24 +13,19 @@ import com.litecms.backend.service.TagService;
 @RequestMapping("/api/tags")
 public class TagController {
 
-
- private final TagService tagService;
+    private final TagService tagService;
 
     public TagController(TagService tagService) {
         this.tagService = tagService;
     }
 
-   
     @GetMapping("/popular")
     public List<Tag> getPopularTags() {
         return tagService.getPopularTags();
     } 
 
-    
-
     @GetMapping
     public List<Tag> getAllTags() {
         return tagService.findAll();
     }
-
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
- import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.PhotoGallery;
@@ -23,12 +23,9 @@ import com.litecms.backend.service.SearchService;
 @RequestMapping("/api")
 public class PhotoGalleryController {
 
-
     private final PhotoGalleryService photoGalleryService;
     private final SearchService searchService ;
     private final InteractionsService interactionsService;
-
-
 
     public PhotoGalleryController(PhotoGalleryService photoGalleryService, SearchService searchService, InteractionsService interactionsService) {
         this.photoGalleryService = photoGalleryService;
@@ -57,29 +54,30 @@ public class PhotoGalleryController {
     //Create PhotoGallery
     @PostMapping(value = "/publisher/galleries",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
     public PhotoGallery createPhotoGallery(
-        @RequestPart("files") MultipartFile[] files,
-        @RequestPart("gallery") PhotoGallery photoGallery,
-        @RequestPart(value = "featuredImage", required = false)
-        MultipartFile featuredImage)throws IOException {
+            @RequestPart("files") MultipartFile[] files,
+            @RequestPart("gallery") PhotoGallery photoGallery,
+            @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage
+        )throws IOException {
  
-            PhotoGallery savedPhotoGallery = photoGalleryService.create(photoGallery, files, featuredImage);
-            searchService.indexContent(savedPhotoGallery);
-            return savedPhotoGallery;
+        PhotoGallery savedPhotoGallery = photoGalleryService.create(photoGallery, files, featuredImage);
+        searchService.indexContent(savedPhotoGallery);
+        return savedPhotoGallery;
     }
+
     //Update PhotoGallery
     @PutMapping(value = "/publisher/galleries/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public PhotoGallery updatePhotoGallery(
-        @PathVariable Long id,
-        @RequestPart("files") MultipartFile[] files,
-        @RequestPart("gallery") PhotoGallery photoGallery,
-        @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage
+            @PathVariable Long id,
+            @RequestPart("files") MultipartFile[] files,
+            @RequestPart("gallery") PhotoGallery photoGallery,
+            @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage
         ) throws IOException {
 
-            photoGallery.setContentId(id);
-            PhotoGallery updatedPhotoGallery = photoGalleryService.update(photoGallery, files, featuredImage);
-            searchService.indexContent(updatedPhotoGallery);
+        photoGallery.setContentId(id);
+        PhotoGallery updatedPhotoGallery = photoGalleryService.update(photoGallery, files, featuredImage);
+        searchService.indexContent(updatedPhotoGallery);
 
-            return updatedPhotoGallery;
+        return updatedPhotoGallery;
     }
 
     // Get all PhotoGallery
@@ -95,40 +93,9 @@ public class PhotoGalleryController {
         return photoGalleryService.findById(id);
     }
 
-  
-
     @DeleteMapping("/publisher/galleries/{id}")
     public void deleteContent(@PathVariable Long id) {
         photoGalleryService.delete(id);
       
-    }
-
-    
+    } 
 }
-/*
-  // Like article
-    @PostMapping("/{id}/like")
-    public ResponseEntity<Void> likeArticle(@PathVariable Long id) {
-        interactionsService.incrementLike(id); // COUNT LIKE
-        return ResponseEntity.ok().build();
-    }
-
-    // Unlike article
-    @PostMapping("/{id}/unlike")
-    public ResponseEntity<Void> unlikeArticle(@PathVariable Long id) {
-        interactionsService.decrementLike(id); // COUNT UNLIKE
-        return ResponseEntity.ok().build();
-    }
-    
-    // Get galleries by category name
-    @GetMapping("/category/{name}")
-    public List<PhotoGallery> getByCategory(@PathVariable String name) {
-        return photoGalleryService.getByCategory(name);
-    }
-
-    // Get galleries by tag name
-    @GetMapping("/tags/{tagName}")
-    public List<PhotoGallery> getByTag(@PathVariable String tagName) {
-        return photoGalleryService.getByTag(tagName);
-    }
-*/

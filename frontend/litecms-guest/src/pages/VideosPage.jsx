@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { markdownify } from "../utils/textConverter";
 import ContentList from "../components/layouts/ContentList";
 import Sidebar from "../components/partials/Sidebar";
-import { useContentList } from "../hooks/useContentList";
+import { useContent } from "../hooks/useContent";
 import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
 
 export const VideosPage = () => {
-    const { contents, isLoading, loadError} = useContentList('videos')
+    const { contents, isLoading, loadError} = useContent('videos')
 
     useEffect(() => {
         document.title = "Videos - LiteCMS"

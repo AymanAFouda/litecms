@@ -13,10 +13,10 @@ import com.litecms.backend.entity.Category;
 public interface CategoryRepository extends  JpaRepository<Category, Long> {
 
     @Query("SELECT new com.litecms.backend.dto.CategoryCountDTO(c.name, COUNT(cont)) " +
-            "FROM Category c " +
-            "LEFT JOIN c.contents cont " +
-            "WHERE cont.status = com.litecms.backend.entity.Status.PUBLISHED " +
-            "GROUP BY c.name " +
-            "ORDER BY COUNT(cont) DESC")
-        List<CategoryCountDTO> findCategoryCounts();
+        "FROM Category c " +
+        "LEFT JOIN c.contents cont " +
+        "WHERE cont.status = com.litecms.backend.entity.Status.PUBLISHED " +
+        "GROUP BY c.name " +
+        "ORDER BY COUNT(cont) DESC")
+    List<CategoryCountDTO> findCategoryCounts();
 }

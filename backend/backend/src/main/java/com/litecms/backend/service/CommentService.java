@@ -9,7 +9,6 @@ import com.litecms.backend.entity.Content;
 import com.litecms.backend.repositories.CommentRepository;
 import com.litecms.backend.repositories.ContentRepository;
 
-
 @Service
 public class CommentService {
 
@@ -24,22 +23,17 @@ public class CommentService {
    //CREATE COMMENT FOR A CONTENT
     public Comment create(Long contentId, Comment comment) {
         Content content = contentRepository.findById(contentId)
-                .orElseThrow(() -> new RuntimeException("Content not found"));
+            .orElseThrow(() -> new RuntimeException("Content not found"));
 
         comment.setContent(content);
         return commentRepository.save(comment);
     }
 
-
     //GET COMMENTS BY CONTENT (ORDERED)
     public List<Comment> getCommentsByContent(Long contentId) {
         return commentRepository
-                .findByContentContentIdOrderByCreatedAtAsc(contentId);
-    }
-
-
-
-     
+            .findByContentContentIdOrderByCreatedAtAsc(contentId);
+    }   
 }
 
 

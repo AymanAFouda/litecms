@@ -2,7 +2,6 @@ package com.litecms.backend.controllers;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,8 +38,7 @@ public class CategoryController {
     }
 
     @PutMapping("/publisher/categories/{id}")
-    public Category updateCategory(@PathVariable Long id,
-                           @RequestBody Category category) {
+    public Category updateCategory(@PathVariable Long id, @RequestBody Category category) {
         return categoryService.updateCategory(id, category);
     }
 
@@ -53,5 +51,4 @@ public class CategoryController {
     public void deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
     }
-
 }

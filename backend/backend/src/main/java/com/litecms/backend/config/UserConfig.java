@@ -13,8 +13,8 @@ public class UserConfig {
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails publisher = User.withUsername("publisher")
-                .password(passwordEncoder.encode("123456"))
-                .build();
+            .password(passwordEncoder.encode("123456"))
+            .build();
 
         return new InMemoryUserDetailsManager(publisher);
     }

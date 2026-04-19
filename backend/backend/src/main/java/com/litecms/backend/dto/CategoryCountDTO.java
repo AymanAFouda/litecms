@@ -24,7 +24,5 @@ public class CategoryCountDTO {
 
     public void setCount(Long count) {
         this.count = count;
-    }
- 
-    
+    }   
 }

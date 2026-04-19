@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,17 +53,19 @@ public class ArticleController {
 
     // Create Article
     @PostMapping(value = "/publisher/articles", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) 
-    public Article createArticle(@RequestPart(value = "featuredImage", required = false)
-        MultipartFile featuredImage, @RequestPart("article") Article article) throws IOException {
+    public Article createArticle(
+            @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage, 
+            @RequestPart("article") Article article
+        ) throws IOException {
 
-            Article savedArticle = articleService.create(article, featuredImage);
-            searchService.indexContent(savedArticle);
-            return savedArticle;
+        Article savedArticle = articleService.create(article, featuredImage);
+        searchService.indexContent(savedArticle);
+        return savedArticle;
     }
 
     //Update Article
     @PutMapping(value = "/publisher/articles/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public  Article updateArticle(
+    public Article updateArticle(
             @PathVariable Long id,
             @RequestPart("article") Article article,
             @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage
@@ -84,7 +85,7 @@ public class ArticleController {
     }
   
     // Get By Article Id 
-   @GetMapping("/publisher/articles/{id}")
+    @GetMapping("/publisher/articles/{id}")
     public Article getContentById(@PathVariable Long id) {
         interactionsService.incrementView(id); // COUNT VIEW
         return articleService.findById(id);
@@ -92,7 +93,7 @@ public class ArticleController {
  
  
     //Delete Article
-   @DeleteMapping("/publisher/articles/{id}")
+    @DeleteMapping("/publisher/articles/{id}")
     public void deleteContent(@PathVariable Long id) {
         articleService.delete(id);
     }

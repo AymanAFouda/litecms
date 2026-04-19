@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { formatDateTime, statusColorMap } from "../../utils/dataTableUtils"
 
-export function contentColumns({ onDelete }) {
+export function dashboardContentColumns({ onDelete }) {
     return [
         {name: "Title", selector: content => content.title, wrap: true},
         {
@@ -14,6 +14,7 @@ export function contentColumns({ onDelete }) {
                 </span>
             )
         },
+        {name: "Type", selector: content => content.type, width: "200px"},
         {name: "Created at", selector: content => formatDateTime(content.createdAt), wrap: true, width: "200px"},
         {name: "Views", selector: content => content.viewCount, width: "120px"},
         {name: "Likes", selector: content => content.likeCount, width: "120px"},

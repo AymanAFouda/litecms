@@ -1,60 +1,27 @@
 import { useState, useEffect } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { isPublisherLoggedIn, savePublisherAuth } from "../utils/publisherAuth";
-
+import { Navigate } from "react-router-dom";
+import { isPublisherLoggedIn } from "../utils/publisherAuth";
+import { useLogin } from "../hooks/useLogin";
 
 export function Login() {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    if (isPublisherLoggedIn()) {
-        return <Navigate to="/" replace />;
-    }
-
-    const from = location.state?.from?.pathname || "/";
+    const { login, loading, error } = useLogin();
 
     useEffect(() => { 
         document.title = "Login - LiteCMS" 
     }, []);
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-        setError("");
-        setLoading(true);
-
-        const API_BASE = "http://localhost:8080"
-        const authHeader = "Basic " + btoa(`${username}:${password}`);
-
-        try {
-            const response = await fetch(`${API_BASE}/api/publisher/auth/me`, {
-                method: "GET",
-                headers: {
-                    Authorization: authHeader,
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error("Invalid username or password");
-            }
-
-            savePublisherAuth(authHeader);
-            navigate(from, { replace: true });
-        } catch (err) {
-            setError("Login failed. Please check your username and password.");
-        } finally {
-            setLoading(false);
-        }
-    }
 
     const togglePasswordVisibility = () => {
         setShowPassword((prev) => !prev);
     };
+
+    if (isPublisherLoggedIn()) {
+        return <Navigate to="/" replace />;
+    }
 
     return(
         <div className="login-bg">
@@ -62,17 +29,14 @@ export function Login() {
                 <div className="row justify-content-center w-100">
                     <div className="col-xl-4 col-lg-5 col-md-6 col-sm-8 col-10">
                     
-                        {/*Login Form Card*/}
                         <div className="card shadow-lg border-0" id="loginCard">
                             <div className="card-body p-5">
-                                {/*Brand Header*/}
                                 <div className="text-center mb-4">
                                     <div className="d-flex align-items-center justify-content-center mb-3">
                                         <img src="/images/logo.png" alt="LiteCMS" className="login-logo"/>
                                     </div>
                                 </div>
 
-                                {/*Login Form*/}
                                 <form id="loginForm" onSubmit={handleSubmit}>
                                     <div className="mb-3">
                                         <label htmlFor="username" className="form-label text-muted">Username</label>
@@ -131,7 +95,6 @@ export function Login() {
                             </div>
                         </div>
 
-                        {/*Footer*/}
                         <div className="text-center mt-4">
                             <p className="text-light opacity-75 mb-2">
                                 <i className="bi bi-c-circle"></i> 2026 LiteCMS - All Rights Reserved.

@@ -2,7 +2,6 @@ package com.litecms.backend.controllers;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +16,7 @@ import com.litecms.backend.service.CommentService;
 @RequestMapping("/api") 
 public class CommentController {
 
- private final CommentService commentService;
+    private final CommentService commentService;
 
     public CommentController( CommentService commentService) {
         this.commentService = commentService;
@@ -25,19 +24,13 @@ public class CommentController {
     
     //CREATE COMMENT FOR A CONTENT
     @PostMapping("/comment/{contentId}")
-    public Comment create(@PathVariable Long contentId,
-                          @RequestBody Comment comment) {
+    public Comment create(@PathVariable Long contentId, @RequestBody Comment comment) {
         return commentService.create(contentId, comment);
     }
     
- 
-
     //GET COMMENTS BY CONTENT
     @GetMapping("/comment/content/{contentId}")
     public List<Comment> getCommentsByContent(@PathVariable Long contentId) {
         return commentService.getCommentsByContent(contentId);
     }
-
-
-
 }

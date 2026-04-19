@@ -27,28 +27,26 @@ import jakarta.transaction.Transactional;
 @Service
 public class PhotoGalleryService {
 
-
     private final PhotoGalleryRepository photoGalleryRepository;
-
     private final CategoryRepository categoryRepository;
-
     private final MediaService mediaService;
-
     private final MediaRepository mediaRepository;
-
     private final TagRepository tagRepository;
 
 
     private final String uploadDir = "uploads";
 
-    public PhotoGalleryService(PhotoGalleryRepository photoGalleryRepository, CategoryRepository categoryRepository, MediaService mediaService ,MediaRepository mediaRepository,  TagRepository tagRepository) {
+    public PhotoGalleryService(PhotoGalleryRepository photoGalleryRepository, 
+            CategoryRepository categoryRepository, MediaService mediaService,
+            MediaRepository mediaRepository,  TagRepository tagRepository
+        ) {
         this.photoGalleryRepository = photoGalleryRepository;
         this.categoryRepository = categoryRepository;
         this.mediaService = mediaService;
         this.mediaRepository = mediaRepository;
         this.tagRepository = tagRepository;
-
     }
+
     //find Published Galleries
     public List<PhotoGallery> findPublishedGalleries() {
     return photoGalleryRepository.findByStatusOrderByCreatedAtDesc(Status.PUBLISHED);
@@ -72,18 +70,18 @@ public class PhotoGalleryService {
 
             Long categoryId = gallery.getCategory().getId();
             Category category = categoryRepository.findById(categoryId)
-            .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new RuntimeException("Category not found"));
             gallery.setCategory(category);
         } 
 
         if (gallery.getTags() != null) {
-        Set<Tag> processedTags = gallery.getTags().stream()
-            .map((Tag tag) -> tagRepository.findByTagName(tag.getTagName())
-                .orElseGet(() -> tagRepository.save(tag)))
-            .collect(Collectors.toSet());
+            Set<Tag> processedTags = gallery.getTags().stream()
+                .map((Tag tag) -> tagRepository.findByTagName(tag.getTagName())
+                    .orElseGet(() -> tagRepository.save(tag)))
+                .collect(Collectors.toSet());
 
-        gallery.setTags(processedTags);
-    }
+            gallery.setTags(processedTags);
+        }
 
         if (featuredImage != null ){
             Media savedFeaturedImage = mediaService.saveFeaturedImage(featuredImage);
@@ -99,8 +97,8 @@ public class PhotoGalleryService {
         return createdGallery;
     }
 
-    @Transactional
     // Update PhotoGallery
+    @Transactional
     public PhotoGallery update(PhotoGallery photoGallery, MultipartFile[] files, MultipartFile newFeaturedImage) throws IOException {
 
         PhotoGallery original = photoGalleryRepository.findById(photoGallery.getContentId())
@@ -162,6 +160,7 @@ public class PhotoGalleryService {
     public List<PhotoGallery> findAll() {
         return photoGalleryRepository.findAll();
     }
+    
     // Get  by ID
     public PhotoGallery findById(Long id) {
         return photoGalleryRepository.findById(id)

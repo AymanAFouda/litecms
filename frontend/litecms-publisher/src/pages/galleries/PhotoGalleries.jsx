@@ -10,28 +10,16 @@ import { contentColumns } from "../../components/table/contentColumns"
 
 import { deleteGallery } from "../../services/galleryApi"
 import { useContents } from "../../hooks/useContents"
-import { useResponsivePageSize } from "../../hooks/useResponsivePageSize"
 
 export function PhotoGalleries() {
     const { contents: photoGalleries, setContents: setPhotoGalleries , isLoading, loadError} = useContents('galleries')
     const [isDeleting, setIsDeleting] = useState(false);
     const [selectedPhotoGallery, setSelectedPhotoGallery] = useState(null)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const [searchInput, setSearchInput] = useState("")
 
     useEffect(() => {
         document.title = "Photo Galleries - LiteCMS"
     }, [])
-
-    const itemsPerPage = useResponsivePageSize({
-        mobile: 5,
-        desktop: 10
-    });
-
-    const filteredPhotoGalleries = photoGalleries.filter((gallery) => 
-        gallery.title.toLowerCase().includes(searchInput.toLowerCase()
-        )
-    );
 
     const handleOpenDeleteModal = (gallery) => {
         setSelectedPhotoGallery(gallery)
@@ -92,12 +80,12 @@ export function PhotoGalleries() {
                                         <DataTable
                                             id="datatable-responsive"
                                             columns={columns}
-                                            data={filteredPhotoGalleries}
+                                            data={photoGalleries}
                                             pagination
                                             highlightOnHover 
                                             striped
-                                            paginationPerPage={itemsPerPage}
-                                            paginationRowsPerPageOptions={[5, 10, 20, 50, 100]} 
+                                            paginationPerPage={10}
+                                            paginationRowsPerPageOptions={[10, 20, 50, 100]} 
                                         />
                                     </div>
                                 </div>

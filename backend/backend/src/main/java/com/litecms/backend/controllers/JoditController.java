@@ -72,7 +72,6 @@ public class JoditController {
 
         return response;
     }
-    
 
     @PostMapping("/api/upload")
     public Map<String, Object> upload(@RequestParam("files") MultipartFile[] files) throws IOException {

@@ -13,14 +13,13 @@ import com.litecms.backend.repositories.TagRepository;
 @Service
 public class TagService {
 
- 
     private final TagRepository tagRepository;
 
     public TagService(TagRepository tagRepository) {
         this.tagRepository = tagRepository;
     }
 
-      public Tag create(Tag tag) {
+    public Tag create(Tag tag) {
         return tagRepository.save(tag);
     }
 
@@ -45,6 +44,4 @@ public class TagService {
         // PageRequest.of(0, 10) ensures we only get the top 10 results
         return tagRepository.findTopPopularTags(oneMonthAgo, PageRequest.of(0, 10));
     }
-
-
 }

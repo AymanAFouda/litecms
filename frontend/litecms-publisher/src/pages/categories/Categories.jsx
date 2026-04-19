@@ -8,8 +8,8 @@ import { LoadingSpinner } from '../../components/common/LoadingSpinner'
 import { LoadError } from "../../components/common/LoadError";
 
 import { useCategories } from "../../hooks/useCategories"
-import { useResponsivePageSize } from "../../hooks/useResponsivePageSize"
 import { updateCategory, deleteCategory } from '../../services/categoryApi'
+import { categoryTableColumns } from "../../components/table/categoryTableColumns";
 
 export function Categories() {
     const { categories, setCategories, isLoading , loadError} = useCategories()
@@ -22,11 +22,6 @@ export function Categories() {
     useEffect(() => {
         document.title = "Categories - LiteCMS"
     }, [])
-
-    const itemsPerPage = useResponsivePageSize({
-        mobile: 5,
-        desktop: 10
-    });
 
     const handleOpenEditModal = (category) => {
         setSelectedCategory(category)
@@ -93,24 +88,10 @@ export function Categories() {
         }
     }
 
-    const columns = [
-        { name: "Category", selector: category => category.name, wrap: true},
-        { 
-            name: "Actions", 
-            cell: category => (
-                <div className="d-flex gap-2" >
-                    <button className="btn btn-success m-0 me-2" type="button" onClick={() => handleOpenEditModal(category)}>
-                        <i className="bi bi-pencil-square me-2"></i>Edit
-                    </button>
-                    <button className="btn btn-danger m-0" type="button" onClick={() => handleOpenDeleteModal(category)}>
-                        <i className="bi bi-trash me-2"></i>Delete
-                    </button>
-                </div>
-            ),
-
-            width: "225px"
-        },
-    ];
+    const columns = categoryTableColumns({ 
+        handleOpenEditModal: handleOpenEditModal, 
+        handleOpenDeleteModal: handleOpenDeleteModal 
+    })
 
     if(isLoading) { return <LoadingSpinner /> }
 
@@ -145,8 +126,8 @@ export function Categories() {
                                             pagination
                                             highlightOnHover 
                                             striped
-                                            paginationPerPage={itemsPerPage} 
-                                            paginationRowsPerPageOptions={[5, 10, 20, 50, 100]} 
+                                            paginationPerPage={10} 
+                                            paginationRowsPerPageOptions={[10, 20, 50, 100]} 
                                         />
                                     </div>
                                 </div>

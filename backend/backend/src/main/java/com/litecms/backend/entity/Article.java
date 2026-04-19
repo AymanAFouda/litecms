@@ -22,25 +22,23 @@ public class Article extends Content{
         this.articleBody = articleBody;
     }
   
-    public Article(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
-            LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, Media featuredImage,
-            Set<Comment> comments, String articleBody) {
-        super(contentId, title, description, likeCount, viewCount, createdAt, status, category, tags, featuredImage,
-                comments);
+    public Article(Long contentId, String title, String description, Integer likeCount, 
+            Integer viewCount, LocalDateTime createdAt, Status status, Category category, 
+            Set<Tag> tags, Media featuredImage, Set<Comment> comments, String articleBody
+        ) {
+            
+        super(contentId, title, description, likeCount, 
+            viewCount, createdAt, status, category, 
+            tags, featuredImage, comments
+        );
         this.articleBody = articleBody;
     }
 
-
-
-    //#region Getters and Setters
     public String getArticleBody() {
         return articleBody;
     }
 
-
-
     public void setArticleBody(String articleBody) {
         this.articleBody = articleBody;
     }
-    //#endregion  
 }

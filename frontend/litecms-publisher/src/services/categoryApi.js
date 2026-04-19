@@ -1,5 +1,5 @@
 import { getAuthHeaders } from "../utils/publisherAuth"
-const CATEGORY_API_URL = "http://localhost:8080/categories"
+const CATEGORY_API_URL = "http://localhost:8080/publisher/categories"
 
 export async function getCategories() {
     const response = await fetch(CATEGORY_API_URL);

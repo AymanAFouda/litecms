@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaRegCalendar, FaUserAlt, FaEye, FaThumbsUp } from "react-icons/fa";
 
-import config from "../../config/config.json";
 import dateFormat from "../../utils/dateFormat";
 import { markdownify } from "../../utils/textConverter";
 
@@ -13,19 +12,20 @@ import ArticleBody from "../common/ArticleBody";
 import { PhotoGallery } from "../common/PhotoGallery";
 import { VideoEmbed } from "../common/VideoEmbed";
 
-const { meta_author } = config.metadata;
 
-const PostSingle = ({ data, relatedPosts }) => {
+const PostSingle = ({ 
+  content, liked, likeCount, onLikeClick, 
+  likeButtonIsLoading, comments, commentFormData, 
+  setCommentFormData, onSubmitComment
+}) => {
+
   let { 
-    image, title, description, tags, 
-    likeCount: originalLikeCount, viewCount, 
-    createdAt, category, publisher, comments, 
-    articleBody, mediaList, videoUrl 
-  } = data;
+    featuredImage, title, description, 
+    tags, viewCount, createdAt, 
+    category, publisherName, type, 
+    articleBody, mediaList, videoUrl
+  } = content;
   
-  const contentPublisher = publisher ? publisher : meta_author;
-  const [liked, setLiked] = useState(false)
-  const [likeCount, setLikeCount] = useState(originalLikeCount? originalLikeCount: 0)
   const [largeMedia, setLargeMedia] = useState(false)
 
   return (
@@ -35,10 +35,10 @@ const PostSingle = ({ data, relatedPosts }) => {
           <div className={`p-0 ${largeMedia? 'lg:col-12' : 'lg:col-8'} order-1`}>
             <article>
               <div className="relative">
-                {image && (
+                {featuredImage && (
                   <div className="w-full h-[350px] object-cover overflow-hidden rounded-lg">
                     <img
-                      src={image}
+                      src={`http://localhost:8080${featuredImage.fileUrl}`}
                       height={300}
                       width={1000}
                       alt={title}
@@ -50,13 +50,12 @@ const PostSingle = ({ data, relatedPosts }) => {
                   {category && (
                     <li
                       className="mx-2 inline-flex h-7 rounded-[35px] bg-primary px-3 text-white"
-                      key={category}
                     >
                       <Link
                         className="capitalize"
-                        to={`/categories/${category.replace(" ", "-")}`}
+                        to={`/categories/${category.name.replace(" ", "-")}`}
                       >
-                        {category}
+                        {category.name}
                       </Link>
                     </li>
                   )}
@@ -69,7 +68,7 @@ const PostSingle = ({ data, relatedPosts }) => {
                 <div className="flex sm:space-x-5 flex-col sm:flex-row space-x-0 space-y-4 sm:space-y-0">
                   <li className="inline-flex items-center font-secondary text-s leading-3">
                       <FaUserAlt className="mr-1.5"/>
-                      {contentPublisher}
+                      {publisherName}
                   </li>
                   <li className="inline-flex items-center font-secondary text-s leading-3">
                     <FaRegCalendar className="mr-1.5"/>
@@ -88,7 +87,7 @@ const PostSingle = ({ data, relatedPosts }) => {
                           ? "text-blue-600"
                           : "text-gray-500 hover:text-blue-500 dark:text-white dark:hover:text-blue-500"
                         }`} 
-                      onClick={() => { liked? setLikeCount(prev => prev-1) : setLikeCount(prev => prev+1); setLiked(prev => !prev); }}    
+                      onClick={onLikeClick}
                     />
                     {likeCount} Likes
                   </li>
@@ -101,7 +100,7 @@ const PostSingle = ({ data, relatedPosts }) => {
                 </div>
               )}
 
-              {!mediaList.length == 0 && (
+              {mediaList && !mediaList.length == 0 && (
                 <div id="gallery" className="content mb-8 mt-6">
                   <PhotoGallery mediaList={mediaList} largeMedia={largeMedia}/>
                   <LargeMediaButton 
@@ -126,7 +125,12 @@ const PostSingle = ({ data, relatedPosts }) => {
           <Sidebar variant={"content-detail"} contentTags={tags} largeMedia={largeMedia}/>
 
           <div className={`lg:col-8 p-0 mb-8 ${largeMedia? "order-2" : "order-3"}`}>
-            <CommentSection comments={comments} />
+            <CommentSection 
+              comments={comments}
+              commentFormData={commentFormData}
+              setCommentFormData={setCommentFormData}
+              onSubmitComment={onSubmitComment}
+              />
           </div>
         </div>
       </div>

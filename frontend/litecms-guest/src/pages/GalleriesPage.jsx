@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import ContentList from "../components/layouts/ContentList";
 import { markdownify } from "../utils/textConverter";
 import Sidebar from "../components/partials/Sidebar";
-import { useContentList } from "../hooks/useContentList";
+import { useContent } from "../hooks/useContent";
 import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
 
 export const GalleriesPage = () => {
-    const { contents, isLoading, loadError} = useContentList('galleries')
+    const { contents, isLoading, loadError} = useContent('galleries')
 
     useEffect(() => {
         document.title = "Photo Galleries - LiteCMS"

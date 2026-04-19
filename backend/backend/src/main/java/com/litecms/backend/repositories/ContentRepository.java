@@ -30,7 +30,6 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     @Query("UPDATE Content c SET c.likeCount = CASE WHEN c.likeCount > 0 THEN c.likeCount - 1 ELSE 0 END WHERE c.contentId = :id")
     void decrementLike(@Param("id") Long id);
 
-
     @EntityGraph(attributePaths = {"tags", "category"})
     List<Content> findAll();
 

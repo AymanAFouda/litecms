@@ -11,10 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.litecms.backend.entity.PhotoGallery;
 import com.litecms.backend.entity.Status;
 
-
 @Repository
 public interface PhotoGalleryRepository  extends JpaRepository<PhotoGallery, Long> {
-
 
     @EntityGraph(attributePaths = {"tags", "category"})
     List<PhotoGallery> findByCategoryName(String name);
