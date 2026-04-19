@@ -17,19 +17,16 @@ import org.springframework.web.multipart.MultipartFile;
 import com.litecms.backend.entity.Article;
 import com.litecms.backend.service.ArticleService;
 import com.litecms.backend.service.InteractionsService;
-import com.litecms.backend.service.SearchService;
 
 @RestController
 @RequestMapping("/api")
 public class ArticleController {
     
     private final ArticleService articleService;
-    private final SearchService searchService ;
     private final InteractionsService interactionsService;
 
-    public ArticleController(ArticleService articleService,SearchService searchService,InteractionsService interactionsService) {
+    public ArticleController(ArticleService articleService, InteractionsService interactionsService) {
         this.articleService = articleService;
-        this.searchService = searchService;
         this.interactionsService = interactionsService;
     }
 
@@ -51,33 +48,6 @@ public class ArticleController {
         return articleService.getPublishedArticlesByTag(name);
     }
 
-    // Create Article
-    @PostMapping(value = "/publisher/articles", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) 
-    public Article createArticle(
-            @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage, 
-            @RequestPart("article") Article article
-        ) throws IOException {
-
-        Article savedArticle = articleService.create(article, featuredImage);
-        searchService.indexContent(savedArticle);
-        return savedArticle;
-    }
-
-    //Update Article
-    @PutMapping(value = "/publisher/articles/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Article updateArticle(
-            @PathVariable Long id,
-            @RequestPart("article") Article article,
-            @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage
-        ) throws IOException {
-
-        article.setContentId(id);
-        Article updatedArticle = articleService.update(article, featuredImage);
-        searchService.indexContent(updatedArticle);
-
-        return updatedArticle;
-    }
-
     // Get all Article
     @GetMapping("/publisher/articles")
     public List<Article> getAllContents() {
@@ -90,7 +60,28 @@ public class ArticleController {
         interactionsService.incrementView(id); // COUNT VIEW
         return articleService.findById(id);
     }
- 
+
+    // Create Article
+    @PostMapping(value = "/publisher/articles", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) 
+    public Article createArticle(
+            @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage, 
+            @RequestPart("article") Article article
+        ) throws IOException {
+
+        return articleService.create(article, featuredImage);
+    }
+
+    //Update Article
+    @PutMapping(value = "/publisher/articles/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Article updateArticle(
+            @PathVariable Long id,
+            @RequestPart("article") Article article,
+            @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage
+        ) throws IOException {
+
+        article.setContentId(id);
+        return articleService.update(article, featuredImage);
+    }
  
     //Delete Article
     @DeleteMapping("/publisher/articles/{id}")

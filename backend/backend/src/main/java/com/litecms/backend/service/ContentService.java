@@ -28,19 +28,19 @@ import com.litecms.backend.repositories.ContentRepository;
 
     //get Published Contents By Category
     public List<Content> getPublishedContentsByCategory(String categoryName) {
-    return contentRepository.findByStatusAndCategory_NameOrderByCreatedAtDesc(Status.PUBLISHED, categoryName);
+        return contentRepository.findByStatusAndCategory_NameOrderByCreatedAtDesc(Status.PUBLISHED, categoryName);
     }
 
     //get Published Contents By Tag
     public List<Content> getPublishedContentsByTag(String tagName) {
-    return contentRepository.findByStatusAndTags_TagNameOrderByCreatedAtDesc(
-        Status.PUBLISHED,tagName);
+        return contentRepository.findByStatusAndTags_TagNameOrderByCreatedAtDesc(
+            Status.PUBLISHED,tagName);
     }
 
     //get Published Contents By Id
     public Content getPublishedById(Long id) {
-    return contentRepository.findByContentIdAndStatus(id, Status.PUBLISHED)
-        .orElseThrow(() -> new RuntimeException("Published content not found with ID: " + id));
+        return contentRepository.findByContentIdAndStatus(id, Status.PUBLISHED)
+            .orElseThrow(() -> new RuntimeException("Published content not found with ID: " + id));
     }
 
     //like Content

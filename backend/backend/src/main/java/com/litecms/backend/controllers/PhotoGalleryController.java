@@ -17,19 +17,16 @@ import org.springframework.web.multipart.MultipartFile;
 import com.litecms.backend.entity.PhotoGallery;
 import com.litecms.backend.service.InteractionsService;
 import com.litecms.backend.service.PhotoGalleryService;
-import com.litecms.backend.service.SearchService;
 
 @RestController
 @RequestMapping("/api")
 public class PhotoGalleryController {
 
     private final PhotoGalleryService photoGalleryService;
-    private final SearchService searchService ;
     private final InteractionsService interactionsService;
 
-    public PhotoGalleryController(PhotoGalleryService photoGalleryService, SearchService searchService, InteractionsService interactionsService) {
+    public PhotoGalleryController(PhotoGalleryService photoGalleryService, InteractionsService interactionsService) {
         this.photoGalleryService = photoGalleryService;
-        this.searchService = searchService;
         this.interactionsService = interactionsService;
     }
 
@@ -51,35 +48,6 @@ public class PhotoGalleryController {
         return photoGalleryService.getPublishedByTag(name);
     }
 
-    //Create PhotoGallery
-    @PostMapping(value = "/publisher/galleries",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
-    public PhotoGallery createPhotoGallery(
-            @RequestPart("files") MultipartFile[] files,
-            @RequestPart("gallery") PhotoGallery photoGallery,
-            @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage
-        )throws IOException {
- 
-        PhotoGallery savedPhotoGallery = photoGalleryService.create(photoGallery, files, featuredImage);
-        searchService.indexContent(savedPhotoGallery);
-        return savedPhotoGallery;
-    }
-
-    //Update PhotoGallery
-    @PutMapping(value = "/publisher/galleries/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public PhotoGallery updatePhotoGallery(
-            @PathVariable Long id,
-            @RequestPart("files") MultipartFile[] files,
-            @RequestPart("gallery") PhotoGallery photoGallery,
-            @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage
-        ) throws IOException {
-
-        photoGallery.setContentId(id);
-        PhotoGallery updatedPhotoGallery = photoGalleryService.update(photoGallery, files, featuredImage);
-        searchService.indexContent(updatedPhotoGallery);
-
-        return updatedPhotoGallery;
-    }
-
     // Get all PhotoGallery
     @GetMapping("/publisher/galleries")
     public List<PhotoGallery> getAllContents() {
@@ -93,9 +61,31 @@ public class PhotoGalleryController {
         return photoGalleryService.findById(id);
     }
 
+    //Create PhotoGallery
+    @PostMapping(value = "/publisher/galleries",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
+    public PhotoGallery createPhotoGallery(
+            @RequestPart("files") MultipartFile[] files,
+            @RequestPart("gallery") PhotoGallery photoGallery,
+            @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage
+        )throws IOException {
+ 
+        return photoGalleryService.create(photoGallery, files, featuredImage);
+    }
+
+    //Update PhotoGallery
+    @PutMapping(value = "/publisher/galleries/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public PhotoGallery updatePhotoGallery(
+            @PathVariable Long id,
+            @RequestPart("files") MultipartFile[] files,
+            @RequestPart("gallery") PhotoGallery photoGallery,
+            @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage
+        ) throws IOException {
+        photoGallery.setContentId(id);
+        return photoGalleryService.update(photoGallery, files, featuredImage);
+    }
+
     @DeleteMapping("/publisher/galleries/{id}")
     public void deleteContent(@PathVariable Long id) {
         photoGalleryService.delete(id);
-      
     } 
 }

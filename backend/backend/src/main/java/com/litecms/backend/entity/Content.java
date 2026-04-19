@@ -6,6 +6,8 @@ import java.util.Set;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
@@ -77,10 +79,11 @@ public class Content {
     private Media featuredImage;
 
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<Comment> comments;
 
     @Column(name = "Content_type", insertable = false, updatable = false)
-    private String Type;
+    private String type;
 
     public Content() {}
 

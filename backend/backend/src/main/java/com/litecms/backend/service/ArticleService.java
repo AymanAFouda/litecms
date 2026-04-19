@@ -1,9 +1,6 @@
 package com.litecms.backend.service;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,7 +15,6 @@ import com.litecms.backend.entity.Status;
 import com.litecms.backend.entity.Tag;
 import com.litecms.backend.repositories.ArticleRepository;
 import com.litecms.backend.repositories.CategoryRepository;
-import com.litecms.backend.repositories.MediaRepository;
 import com.litecms.backend.repositories.TagRepository;
 
 import jakarta.transaction.Transactional;
@@ -27,23 +23,19 @@ import jakarta.transaction.Transactional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-
     private final CategoryRepository categoryRepository;
-
     private final TagRepository tagRepository;
-
     private final MediaService mediaService;
+    private final SearchService searchService;
 
-    private final MediaRepository mediaRepository;
-
-    private final String uploadDir = "uploads";
-
-    public ArticleService(ArticleRepository articleRepository, CategoryRepository categoryRepository, TagRepository tagRepository, MediaService mediaService, MediaRepository mediaRepository) {
+    public ArticleService(ArticleRepository articleRepository, CategoryRepository categoryRepository,
+            TagRepository tagRepository, MediaService mediaService, SearchService searchService
+        ) {
         this.articleRepository = articleRepository;
         this.categoryRepository = categoryRepository;
         this.tagRepository = tagRepository;
         this.mediaService = mediaService;
-        this.mediaRepository = mediaRepository;
+        this.searchService = searchService;
     }   
 
     //get Published Articles
@@ -53,48 +45,71 @@ public class ArticleService {
 
     //get Published Articles By Category
     public List<Article> getPublishedArticlesByCategory(String categoryName) {
-    return articleRepository.findByStatusAndCategory_NameOrderByCreatedAtDesc(
+        return articleRepository.findByStatusAndCategory_NameOrderByCreatedAtDesc(
         Status.PUBLISHED, categoryName);
     }
 
     //get Published Articles By Tag
     public List<Article> getPublishedArticlesByTag(String tagName) {
-    return articleRepository.findPublishedByTagName(Status.PUBLISHED, tagName);
+        return articleRepository.findPublishedByTagName(Status.PUBLISHED, tagName);
+    }
+
+    // Get all Article
+    public List<Article> findAll() {
+        return articleRepository.findAll();
+    }
+
+    // Get Article by ID
+    public Article findById(Long id) {
+        return articleRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Article not found"));
+    }
+
+    // Get articles by category name
+    public List<Article> getByCategory(String categoryName) {
+        return articleRepository.findByCategory_name(categoryName);
+    }
+
+    // Get articles by tag name
+    public List<Article> getByTag(String tagName) {
+        return articleRepository.findDistinctByTagName(tagName);
     }
 
     // Create Article  
     @Transactional
-    public Article create(Article content, MultipartFile featuredImage) throws IOException {
+    public Article create(Article article, MultipartFile featuredImage) throws IOException {
 
         // Ensure category exists
-        if (content.getCategory() != null) {
-            Long categoryId = content.getCategory().getId();
+        if (article.getCategory() != null) {
+            Long categoryId = article.getCategory().getId();
             Category category = categoryRepository.findById(categoryId)
-            .orElseThrow(() -> new RuntimeException("Category not found"));
-            content.setCategory(category);
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+            article.setCategory(category);
         }
 
         //Handle Tags 
-        if (content.getTags() != null) {
-            Set<Tag> processedTags = content.getTags().stream()
+        if (article.getTags() != null) {
+            Set<Tag> processedTags = article.getTags().stream()
                 .map(tag -> tagRepository.findByTagName(tag.getTagName())
                 .orElseGet(() -> tagRepository.save(tag))) 
-                .collect(Collectors.toSet()); // Change .toList() to this
+                .collect(Collectors.toSet());
             
-            content.setTags(processedTags);
+            article.setTags(processedTags);
         }
 
         //Handle Featured Image
         if (featuredImage != null ){
             Media savedFeaturedImage = mediaService.saveFeaturedImage(featuredImage);
-            content.setFeaturedImage(savedFeaturedImage);
+            article.setFeaturedImage(savedFeaturedImage);
         }
         
-        return articleRepository.save(content);
+        Article createdArticle = articleRepository.save(article);
+        searchService.indexContent(createdArticle);
+        return createdArticle;
     }
 
     // Update Article
-   @Transactional
+    @Transactional
     public Article update(Article article, MultipartFile newFeaturedImage) throws IOException {
 
         Article originalArticle = articleRepository.findById(article.getContentId())
@@ -114,13 +129,13 @@ public class ArticleService {
         // Handle Tags
         if (article.getTags() != null) {
             Set<Tag> processedTags = article.getTags().stream()
-                    .map(tag -> tagRepository.findByTagName(tag.getTagName())
-                            .orElseGet(() -> {
-                                Tag newTag = new Tag();
-                                newTag.setTagName(tag.getTagName());
-                                return tagRepository.save(newTag);
-                            }))
-                    .collect(Collectors.toSet());
+                .map(tag -> tagRepository.findByTagName(tag.getTagName())
+                    .orElseGet(() -> {
+                        Tag newTag = new Tag();
+                        newTag.setTagName(tag.getTagName());
+                        return tagRepository.save(newTag);
+                    }))
+                .collect(Collectors.toSet());
 
             article.setTags(processedTags);
         }
@@ -130,7 +145,7 @@ public class ArticleService {
 
             // Delete old image if exists
             if (originalArticle.getFeaturedImage() != null) {
-                deleteFeaturedImage(originalArticle.getFeaturedImage());
+                mediaService.deleteFile(originalArticle.getFeaturedImage());
             }
 
             // Save new image
@@ -141,59 +156,26 @@ public class ArticleService {
             article.setFeaturedImage(originalArticle.getFeaturedImage());
         }
 
-        return articleRepository.save(article);
-    }
-
-    // Get all Article
-    public List<Article> findAll() {
-        return articleRepository.findAll();
-    }
-
-    // Get Article by ID
-    public Article findById(Long id) {
-        return articleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Article not found"));
+        Article updatedArticle = articleRepository.save(article);
+        searchService.indexContent(updatedArticle);
+        return updatedArticle;
     }
 
     //Delete
     @Transactional
     public void delete(Long id) {
-        // 1. Fetch the article first
         Article article = articleRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Article not found"));
 
-        // 2. Clear the links to tags  
         article.getTags().clear();
 
-        // 3. Delete the article  
+        if(article.getFeaturedImage() != null) {
+            mediaService.deleteFile(article.getFeaturedImage());
+        }
 
+        searchService.deleteContentFromIndex(id);
         articleRepository.delete(article);
     }
-
-    // Get articles by category name
-    public List<Article> getByCategory(String categoryName) {
-        return articleRepository.findByCategory_name(categoryName);
-    }
-
-    // Get articles by tag name
-    public List<Article> getByTag(String tagName) {
-        return articleRepository.findDistinctByTagName(tagName);
-    }
-
-    public void deleteFeaturedImage(Media featuredImage) {
-        try {   
-            String storedFileName = Paths.get(featuredImage.getFileUrl()).getFileName().toString();
-
-            Path filePath = Paths.get(uploadDir)
-                .resolve(storedFileName)
-                .normalize();
-
-            Files.deleteIfExists(filePath);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to delete file: " + featuredImage, e);
-        }
-        mediaRepository.delete(featuredImage); 
-    }   
 }
 
 

@@ -1,9 +1,6 @@
 package com.litecms.backend.service;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -18,7 +15,6 @@ import com.litecms.backend.entity.PhotoGallery;
 import com.litecms.backend.entity.Status;
 import com.litecms.backend.entity.Tag;
 import com.litecms.backend.repositories.CategoryRepository;
-import com.litecms.backend.repositories.MediaRepository;
 import com.litecms.backend.repositories.PhotoGalleryRepository;
 import com.litecms.backend.repositories.TagRepository;
 
@@ -30,39 +26,57 @@ public class PhotoGalleryService {
     private final PhotoGalleryRepository photoGalleryRepository;
     private final CategoryRepository categoryRepository;
     private final MediaService mediaService;
-    private final MediaRepository mediaRepository;
     private final TagRepository tagRepository;
-
-
+    private final SearchService searchService;
     private final String uploadDir = "uploads";
 
     public PhotoGalleryService(PhotoGalleryRepository photoGalleryRepository, 
             CategoryRepository categoryRepository, MediaService mediaService,
-            MediaRepository mediaRepository,  TagRepository tagRepository
+            TagRepository tagRepository, SearchService searchService
         ) {
         this.photoGalleryRepository = photoGalleryRepository;
         this.categoryRepository = categoryRepository;
         this.mediaService = mediaService;
-        this.mediaRepository = mediaRepository;
         this.tagRepository = tagRepository;
+        this.searchService = searchService;
     }
 
     //find Published Galleries
     public List<PhotoGallery> findPublishedGalleries() {
-    return photoGalleryRepository.findByStatusOrderByCreatedAtDesc(Status.PUBLISHED);
+        return photoGalleryRepository.findByStatusOrderByCreatedAtDesc(Status.PUBLISHED);
     }
 
     //get Published By Category
     public List<PhotoGallery> getPublishedByCategory(String categoryName) {
-    return photoGalleryRepository.findByCategoryNameAndStatusOrderByCreatedAtDesc(categoryName, Status.PUBLISHED);
+        return photoGalleryRepository.findByCategoryNameAndStatusOrderByCreatedAtDesc(categoryName, Status.PUBLISHED);
     }
 
     //get Published By Tag
     public List<PhotoGallery> getPublishedByTag(String tagName) {
-    return photoGalleryRepository.findByTagNameAndStatus(tagName, Status.PUBLISHED);
+        return photoGalleryRepository.findByTagNameAndStatus(tagName, Status.PUBLISHED);
     }
 
-    // Create PhotoGallery  
+    // Get all 
+    public List<PhotoGallery> findAll() {
+        return photoGalleryRepository.findAll();
+    }
+    
+    // Get  by ID
+    public PhotoGallery findById(Long id) {
+        return photoGalleryRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("PhotoGallery not found"));
+    }
+
+    public List<PhotoGallery> getByCategory(String categoryName) {
+        return photoGalleryRepository.findByCategoryName(categoryName);
+    }
+
+    public List<PhotoGallery> getByTag(String tagName) {
+        return photoGalleryRepository.findDistinctByTagName(tagName);
+    }
+
+    // Create PhotoGallery
+    @Transactional
     public PhotoGallery create(PhotoGallery gallery, MultipartFile[] files,  MultipartFile featuredImage) throws IOException {
 
         // Ensure category exists
@@ -91,34 +105,35 @@ public class PhotoGalleryService {
         PhotoGallery createdGallery = photoGalleryRepository.save(gallery);
 
         for (MultipartFile file : files) {
-            Media media = mediaService.saveFile(file, createdGallery);
+            mediaService.saveFile(file, createdGallery);
         }
 
+        searchService.indexContent(createdGallery);
         return createdGallery;
     }
 
     // Update PhotoGallery
     @Transactional
-    public PhotoGallery update(PhotoGallery photoGallery, MultipartFile[] files, MultipartFile newFeaturedImage) throws IOException {
+    public PhotoGallery update(PhotoGallery gallery, MultipartFile[] files, MultipartFile newFeaturedImage) throws IOException {
 
-        PhotoGallery original = photoGalleryRepository.findById(photoGallery.getContentId())
+        PhotoGallery original = photoGalleryRepository.findById(gallery.getContentId())
         .orElseThrow(() -> new RuntimeException("PhotoGallery not found"));
 
         // Keep view and like counts
-        original.setViewCount(photoGallery.getViewCount());
-        original.setLikeCount(photoGallery.getLikeCount());
+        original.setViewCount(gallery.getViewCount());
+        original.setLikeCount(gallery.getLikeCount());
 
         // Handle Category
-        if (photoGallery.getCategory() != null) {
-            Long categoryId = photoGallery.getCategory().getId();
+        if (gallery.getCategory() != null) {
+            Long categoryId = gallery.getCategory().getId();
             Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
             original.setCategory(category);
         }
 
         // Handle Tags
-        if (photoGallery.getTags() != null) {
-            Set<Tag> processedTags = photoGallery.getTags().stream()
+        if (gallery.getTags() != null) {
+            Set<Tag> processedTags = gallery.getTags().stream()
                 .map(tag -> tagRepository.findByTagName(tag.getTagName())
                     .orElseGet(() -> {
                         Tag newTag = new Tag();
@@ -151,30 +166,14 @@ public class PhotoGalleryService {
             }
             Media savedImage = mediaService.saveFeaturedImage(newFeaturedImage);
             original.setFeaturedImage(savedImage);
-        } 
+        }
 
-        return photoGalleryRepository.save(original);
+        PhotoGallery updatedGallery = photoGalleryRepository.save(gallery);
+        searchService.indexContent(updatedGallery);
+        return updatedGallery;
     }
 
-    // Get all 
-    public List<PhotoGallery> findAll() {
-        return photoGalleryRepository.findAll();
-    }
-    
-    // Get  by ID
-    public PhotoGallery findById(Long id) {
-        return photoGalleryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("PhotoGallery not found"));
-    }
-
-    public List<PhotoGallery> getByCategory(String categoryName) {
-        return photoGalleryRepository.findByCategoryName(categoryName);
-    }
-
-    public List<PhotoGallery> getByTag(String tagName) {
-        return photoGalleryRepository.findDistinctByTagName(tagName);
-    }
-
+    @Transactional
     // Delete 
     public void delete(Long id) {
         PhotoGallery photoGallery = photoGalleryRepository.findById(id)
@@ -186,24 +185,13 @@ public class PhotoGalleryService {
             mediaService.deleteFile(media);
         }
 
-        //Clear the links to tags  
         photoGallery.getTags().clear();
-        
-        photoGalleryRepository.delete(photoGallery);
-    }
 
-    public void deleteFeaturedImage(Media featuredImage) {
-        try {   
-            String storedFileName = Paths.get(featuredImage.getFileUrl()).getFileName().toString();
-
-            Path filePath = Paths.get(uploadDir)
-                .resolve(storedFileName)
-                .normalize();
-
-            Files.deleteIfExists(filePath);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to delete file: " + featuredImage, e);
+        if(photoGallery.getFeaturedImage() != null) {
+            mediaService.deleteFile(photoGallery.getFeaturedImage());
         }
-        mediaRepository.delete(featuredImage);
+        
+        searchService.deleteContentFromIndex(id);
+        photoGalleryRepository.delete(photoGallery);
     }
 }

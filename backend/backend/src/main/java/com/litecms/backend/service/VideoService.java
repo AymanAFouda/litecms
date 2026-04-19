@@ -1,12 +1,9 @@
 package com.litecms.backend.service;
 
  import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
- import java.util.stream.Collectors;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +14,6 @@ import com.litecms.backend.entity.Status;
 import com.litecms.backend.entity.Tag;
 import com.litecms.backend.entity.Video;
 import com.litecms.backend.repositories.CategoryRepository;
-import com.litecms.backend.repositories.MediaRepository;
 import com.litecms.backend.repositories.TagRepository;
 import com.litecms.backend.repositories.VideoRepository;
 
@@ -30,19 +26,16 @@ public class VideoService {
     private final CategoryRepository categoryRepository;
     private final TagRepository tagRepository;
     private final MediaService mediaService;
-    private final MediaRepository mediaRepository;
-    private final String uploadDir = "uploads";
-
+    private final SearchService searchService;
 
     public VideoService(VideoRepository videoRepository, CategoryRepository categoryRepository,
-            TagRepository tagRepository, MediaService mediaService, 
-            MediaRepository mediaRepository
+            TagRepository tagRepository, MediaService mediaService, SearchService searchService
         ) {
         this.videoRepository = videoRepository;
         this.categoryRepository = categoryRepository;
         this.tagRepository = tagRepository;
         this.mediaService = mediaService;
-        this.mediaRepository = mediaRepository;
+        this.searchService = searchService;
     }
 
     //get published Video
@@ -58,6 +51,27 @@ public class VideoService {
     //get Published Videos By Tag
     public List<Video> getPublishedVideosByTag(String tagName) {
         return videoRepository.findByTagNameAndStatus(tagName, Status.PUBLISHED);
+    }
+
+    // Get all Video
+    public List<Video> findAll() {
+        return videoRepository.findAll();
+    }
+
+    // Get Video by ID
+    public Video findById(Long id) {
+        return videoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Article not found"));
+    }
+
+    // Get videos by category name
+    public List<Video> getByCategory(String categoryName) {
+        return videoRepository.findByCategoryName(categoryName);
+    }
+
+    // Get videos by tag name
+    public List<Video> getByTag(String tagName) {
+        return videoRepository.findDistinctByTagName(tagName);
     }
 
     // Create Video
@@ -89,7 +103,9 @@ public class VideoService {
             video.setFeaturedImage(savedFeaturedImage);
         }
             
-        return videoRepository.save(video);
+        Video createdVideo = videoRepository.save(video);
+        searchService.indexContent(createdVideo);
+        return createdVideo;
     }
 
     // Update Video
@@ -119,7 +135,6 @@ public class VideoService {
                 }))
                 .collect(Collectors.toSet());
 
-            // This replaces the old set with the new set of managed tags
             video.setTags(processedTags);
         }
 
@@ -128,7 +143,7 @@ public class VideoService {
 
             // Delete old image if exists
             if (originalVideo.getFeaturedImage() != null) {
-                deleteFeaturedImage(originalVideo.getFeaturedImage());
+                mediaService.deleteFile(originalVideo.getFeaturedImage());
             }
 
             // Save new image
@@ -139,58 +154,25 @@ public class VideoService {
             video.setFeaturedImage(originalVideo.getFeaturedImage());
         }
 
-        return videoRepository.save(video);
+        Video updatedVideo = videoRepository.save(video);
+        searchService.indexContent(updatedVideo);
+        return updatedVideo;
     }
 
-    // Get all Video
-    public List<Video> findAll() {
-        return videoRepository.findAll();
-    }
-
-    // Get Video by ID
-    public Video findById(Long id) {
-        return videoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Article not found"));
-    }
-
-    // Get videos by category name
-    public List<Video> getByCategory(String categoryName) {
-        return videoRepository.findByCategoryName(categoryName);
-    }
-
-    // Get videos by tag name
-    public List<Video> getByTag(String tagName) {
-        return videoRepository.findDistinctByTagName(tagName);
-    }
-
-    @Transactional
     // Delete Video
+    @Transactional
     public void delete(Long id) {
-
-        // 1. Fetch the Video first
         Video video = videoRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Article not found"));
 
-        // 2. Clear the links to tags  
         video.getTags().clear();
 
-        // 3. Delete the Video  
-        videoRepository.delete(video);
-    }
-    
-    public void deleteFeaturedImage(Media featuredImage) {
-        try {   
-            String storedFileName = Paths.get(featuredImage.getFileUrl()).getFileName().toString();
-
-            Path filePath = Paths.get(uploadDir)
-                .resolve(storedFileName)
-                .normalize();
-
-            Files.deleteIfExists(filePath);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to delete file: " + featuredImage, e);
+        if(video.getFeaturedImage() != null) {
+            mediaService.deleteFile(video.getFeaturedImage());
         }
-        mediaRepository.delete(featuredImage); 
+        
+        searchService.deleteContentFromIndex(id);
+        videoRepository.delete(video);
     }
 }
 

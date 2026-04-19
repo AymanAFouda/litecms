@@ -21,7 +21,7 @@ public class SearchService {
 
     public SearchService(RestClient.Builder builder, @Value("${elasticsearch.url}") String baseUrl) {
 
-        // Set your Elasticsearch host
+        // Set Elasticsearch host
         this.restClient = builder
             .baseUrl(baseUrl)
             .defaultHeader("Content-Type", "application/json")
@@ -29,7 +29,6 @@ public class SearchService {
     }
 
     public String indexContent(Content data) {
-
         return restClient.post()
             .uri("/my-index/_doc/"+data.getContentId().toString()) 
             .body(data)                  // RestClient converts the object to JSON
@@ -37,12 +36,18 @@ public class SearchService {
             .body(String.class);         // Elasticsearch returns a confirmation JSON
     }
 
+    public String deleteContentFromIndex(Long contentId) {
+        return restClient.delete()
+            .uri("/my-index/_doc/" + contentId)
+            .retrieve()
+            .body(String.class);
+    }
+
     public JsonNode search(String qery) {
         String json = restClient.post()
-            .uri("/my-index/_search?q="+qery) 
-            //.body(qery)                  // RestClient converts the object to JSON
+            .uri("/my-index/_search?q=" + qery)
             .retrieve()
-            .body(String.class);         // Elasticsearch returns a confirmation JSON
+            .body(String.class);
 
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(json);
@@ -112,10 +117,10 @@ public class SearchService {
 
         try {
             String responseJson = restClient.post()
-                    .uri("/my-index/_search")
-                    .body(queryBody)
-                    .retrieve()
-                    .body(String.class);
+                .uri("/my-index/_search")
+                .body(queryBody)
+                .retrieve()
+                .body(String.class);
 
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(responseJson);

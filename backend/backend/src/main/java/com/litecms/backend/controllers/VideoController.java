@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.litecms.backend.entity.Video;
 import com.litecms.backend.service.InteractionsService;
-import com.litecms.backend.service.SearchService;
 import com.litecms.backend.service.VideoService;
 
 @RestController
@@ -24,12 +23,10 @@ import com.litecms.backend.service.VideoService;
 public class VideoController {
   
     private final VideoService videoService;
-    private final SearchService searchService ;
     private final InteractionsService interactionsService;
 
-    public VideoController(VideoService videoService, SearchService searchService, InteractionsService interactionsService) {
+    public VideoController(VideoService videoService, InteractionsService interactionsService) {
         this.videoService = videoService;
-        this.searchService = searchService;
         this.interactionsService = interactionsService ;
     }
 
@@ -51,16 +48,26 @@ public class VideoController {
         return videoService.getPublishedVideosByTag(name);
     }
 
+    // Get all Videos
+    @GetMapping("/publisher/videos")
+    public List<Video> getAllContents() {
+        return videoService.findAll();
+    }
+
+    // Get Video by ID
+    @GetMapping("/publisher/videos/{id}")
+    public Video getContentById(@PathVariable Long id) {
+        interactionsService.incrementView(id); // COUNT VIEW
+        return videoService.findById(id);
+    }
+
     //Create Video
     @PostMapping(value = "/publisher/videos/ ", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) 
     public  Video createVideo(
             @RequestPart("video") Video video, 
             @RequestPart(value="featuredImage", required=false) MultipartFile featuredImage
         ) throws IOException {
-
-        Video savedVideo = videoService.create(video, featuredImage);
-        searchService.indexContent(savedVideo);
-        return savedVideo;
+        return videoService.create(video, featuredImage);
     }
 
     // Update Video
@@ -71,26 +78,11 @@ public class VideoController {
         ) throws IOException{
 
         video.setContentId(id);
-        Video updatedVideo = videoService.update(video, featuredImage);
-        searchService.indexContent(updatedVideo);
-        return updatedVideo;
-    } 
-
-    // Get all Videos
-    @GetMapping("/publisher/videos")
-    public List<Video> getAllContents() {
-        return videoService.findAll();
-    }
-
-    // Get Video by ID
-     @GetMapping("/publisher/videos/{id}")
-    public Video getContentById(@PathVariable Long id) {
-        interactionsService.incrementView(id); // COUNT VIEW
-        return videoService.findById(id);
-    } 
+        return videoService.update(video, featuredImage);
+    }  
 
     // Delete Video
-   @DeleteMapping("/publisher/videos/{id}")
+    @DeleteMapping("/publisher/videos/{id}")
     public void deleteContent(@PathVariable Long id) {
         videoService.delete(id);
     }
