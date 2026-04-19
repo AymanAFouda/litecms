@@ -11,7 +11,7 @@ import com.litecms.backend.service.SearchService;
 import tools.jackson.databind.JsonNode;
 
 @RestController
-@RequestMapping("/search")
+@RequestMapping("/api/search")
 public class SearchController {
 
     private final SearchService  searchService;

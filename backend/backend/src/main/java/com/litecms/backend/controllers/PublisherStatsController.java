@@ -7,7 +7,7 @@ import com.litecms.backend.dto.StatsDTO;
 import com.litecms.backend.service.PublisherStatsService;
 
 @RestController
-@RequestMapping("/publisher")
+@RequestMapping("/api/publisher")
 public class PublisherStatsController {
 
     private final PublisherStatsService statsService;
