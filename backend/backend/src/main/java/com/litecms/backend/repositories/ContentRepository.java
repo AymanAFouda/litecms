@@ -37,7 +37,7 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     List<Content> findByCategory_name(String name);
 
     @EntityGraph(attributePaths = {"tags", "category"})
-    @Query("SELECT DISTINCT c FROM Content c JOIN c.tags t WHERE t.tagName = :tagName")
+    @Query("SELECT DISTINCT c FROM Content c JOIN c.tags t WHERE t.name = :tagName")
     List<Content> findDistinctByTagName(@Param("tagName") String tagName);
 
     @EntityGraph(attributePaths = {"tags", "category"})
@@ -50,7 +50,7 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     List<Content> findByStatusAndCategory_NameOrderByCreatedAtDesc(Status status, String categoryName);
 
     @EntityGraph(attributePaths = {"tags", "category"})
-    List<Content> findByStatusAndTags_TagNameOrderByCreatedAtDesc(Status status, String tagName);
+    List<Content> findByStatusAndTags_NameOrderByCreatedAtDesc(Status status, String name);
 
     @EntityGraph(attributePaths = {"tags", "category"})
     Optional<Content> findByContentIdAndStatus(Long id, Status status);

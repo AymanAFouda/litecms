@@ -6,24 +6,15 @@
     },
     {
       "name": "Articles",
-      "url": "/articles",
-      "hasChildren": true,
-      "children": [
-      ]
+      "url": "/articles"
     },
     {
       "name": "Galleries",
-      "url": "/galleries",
-      "hasChildren": true,
-      "children": [
-      ]
+      "url": "/galleries"
     },
     {
       "name": "Videos",
-      "url": "/videos",
-      "hasChildren": true,
-      "children": [
-      ]
+      "url": "/videos"
     },
     {
       "name": "categories",

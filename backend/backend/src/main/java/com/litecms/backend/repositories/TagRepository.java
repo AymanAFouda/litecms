@@ -13,12 +13,12 @@ import com.litecms.backend.entity.Tag;
 
 @Repository
 public interface TagRepository extends  JpaRepository<Tag, Long>{
-    Optional<Tag> findByTagName(String tagName);
+    Optional<Tag> findByName(String name);
 
     @Query("SELECT t FROM Tag t " +
         "JOIN t.contents c " +
         "WHERE c.createdAt >= :startDate " +
-        "GROUP BY t.tagId " +
+        "GROUP BY t.id " +
         "ORDER BY COUNT(c) DESC")
     List<Tag> findTopPopularTags(LocalDateTime startDate, Pageable pageable);
 }

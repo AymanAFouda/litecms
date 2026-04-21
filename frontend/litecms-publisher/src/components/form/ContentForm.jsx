@@ -59,7 +59,7 @@ export const ContentForm = ({
                 <input
                     type="text"
                     id="publisher-name"  
-                    name="publisher-name"
+                    name="publisherName"
                     placeholder="Enter publisher name"
                     className="form-control"
                     value={formData.publisherName}

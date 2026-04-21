@@ -18,7 +18,7 @@ public interface PhotoGalleryRepository  extends JpaRepository<PhotoGallery, Lon
     List<PhotoGallery> findByCategoryName(String name);
 
     @EntityGraph(attributePaths = {"tags", "category"})
-    @Query("SELECT DISTINCT p FROM PhotoGallery p JOIN p.tags t WHERE t.tagName = :tagName")
+    @Query("SELECT DISTINCT p FROM PhotoGallery p JOIN p.tags t WHERE t.name = :tagName")
     List<PhotoGallery> findDistinctByTagName(@Param("tagName") String tagName);
 
     List<PhotoGallery> findByStatusOrderByCreatedAtDesc(Status status);
@@ -26,7 +26,7 @@ public interface PhotoGalleryRepository  extends JpaRepository<PhotoGallery, Lon
     List<PhotoGallery> findByCategoryNameAndStatusOrderByCreatedAtDesc(String name, Status status);
 
     @Query("SELECT DISTINCT p FROM PhotoGallery p JOIN p.tags t " +
-           "WHERE t.tagName = :tagName AND p.status = :status " +
+           "WHERE t.name = :tagName AND p.status = :status " +
            "ORDER BY p.createdAt DESC")
     List<PhotoGallery> findByTagNameAndStatus(@Param("tagName") String tagName, @Param("status") Status status);
 }

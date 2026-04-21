@@ -90,7 +90,7 @@ public class VideoService {
         //Handle Tags 
         if (video.getTags() != null) {
             Set<Tag> processedTags = video.getTags().stream()
-                .map(tag -> tagRepository.findByTagName(tag.getTagName())
+                .map(tag -> tagRepository.findByName(tag.getName())
                     .orElseGet(() -> tagRepository.save(tag))) 
                 .collect(Collectors.toSet()); // Change .toList() to this
             
@@ -126,11 +126,11 @@ public class VideoService {
         // Handle Tags 
         if (video.getTags() != null) {
             Set<Tag> processedTags = video.getTags().stream()
-                .map(tag -> tagRepository.findByTagName(tag.getTagName())
+                .map(tag -> tagRepository.findByName(tag.getName())
                 .orElseGet(() -> {
                     // Important: If it's a new tag, we must save it first
                     Tag newTag = new Tag();
-                    newTag.setTagName(tag.getTagName());
+                    newTag.setName(tag.getName());
                     return tagRepository.save(newTag);
                 }))
                 .collect(Collectors.toSet());

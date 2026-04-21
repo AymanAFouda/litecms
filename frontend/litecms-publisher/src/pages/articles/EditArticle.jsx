@@ -21,6 +21,7 @@ export function EditArticle() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [formData, setFormData] = useState({
         title: "",
+        publisherName: "",
         description: "",
         tags: [],
         category: "",
@@ -36,12 +37,13 @@ export function EditArticle() {
 
         if(article) {
             const data = {
-                title: article.title,
+                title: article.title, 
+                publisherName: article.publisherName,
                 description: article.description,
                 tags: article.tags
                     ? article.tags.map(tag => ({
-                        label: tag.tagName,
-                        value: tag.tagName
+                        label: tag.name,
+                        value: tag.name
                     }))
                     : [],
                 category: article.category?.name ?? "",
@@ -86,8 +88,9 @@ export function EditArticle() {
 
             const payload = {
                 title: formData.title,
+                publisherName: formData.publisherName,
                 description: formData.description,
-                tags: formData.tags.map(tag => ({tagName: tag.value})),
+                tags: formData.tags.map(tag => ({name: tag.value})),
                 category: selectedCategory? {
                     id: selectedCategory.id
                 } : null,
@@ -111,11 +114,9 @@ export function EditArticle() {
         }
     }
     
-
     if(isLoading) { return <LoadingSpinner /> }
 
     if (articleLoadError || categoriesLoadError) { return <LoadError message="Failed to load Page" /> }
-
 
     return (
         <main className="right_col" role="main" aria-label="Main content">

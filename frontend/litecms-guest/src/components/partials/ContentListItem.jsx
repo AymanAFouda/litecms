@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
-import config from "../../config/config.json";
 import dateFormat from "../../utils/dateFormat";
 import { Link } from "react-router-dom";
 import { FaRegCalendar, FaUserAlt, FaEye } from "react-icons/fa";
 
 const ContentListItem = ({ content }) => {
-  const { meta_author } = config.metadata;
-  const author = content.author ? content.author : meta_author;
   const [maxChars, setMaxChars] = useState(280);
 
   useEffect(() => {
@@ -24,7 +21,7 @@ const ContentListItem = ({ content }) => {
     return () => window.removeEventListener("resize", updateLength);
   }, []);
 
-  const { title, featuredImage, category, createdAt, viewCount } = content
+  const { contentId, title, publisherName, featuredImage, category, createdAt, viewCount, type } = content;
 
   const description = content.description?.trim()
     ? content.description
@@ -37,7 +34,7 @@ const ContentListItem = ({ content }) => {
           className="flex-shrink-0 rounded-lg !object-cover !h-[220px] !w-[440px] md:!h-[130px] md:!w-[200px]"
           src={
             featuredImage
-              ? `http://localhost:8080${featuredImage}`
+              ? `http://localhost:8080${featuredImage.fileUrl}`
               : "/images/default-image.png"
           }
           onError={(e) => {
@@ -53,9 +50,9 @@ const ContentListItem = ({ content }) => {
             >
               <Link
                 className="capitalize"
-                to={`/categories/${category.replace(" ", "-")}`}
+                to={`/categories/${encodeURIComponent(category.name)}`}
               >
-                {category.length>20? `${category.slice(0, 18)}..` : category}
+                {category.length>20? `${category.name.slice(0, 18)}..` : category.name}
               </Link>
             </li>
           )}
@@ -64,22 +61,24 @@ const ContentListItem = ({ content }) => {
       <div className="flex flex-col justify-start flex-1 mx-2 mt-2 md:ml-4 md:mr-6 md:mt-1">
         <h3 className="h5 mb-1">
           <Link
-            to={`/`}
+            to={`/content/${contentId}`}
             className="block hover:text-primary"
           >
             {title}
           </Link>
         </h3>
         <ul className="flex flex-wrap items-center">
-          <li className="mr-4">
-            <Link
-              className="inline-flex items-center font-secondary text-xs leading-3"
-              to="/about"
-            >
-              <FaUserAlt className="mr-1.5" />
-              {author}
-            </Link>
-          </li>
+          {publisherName && (
+            <li className="mr-4">
+              <Link
+                className="inline-flex items-center font-secondary text-xs leading-3"
+                to="/about"
+              >
+                <FaUserAlt className="mr-1.5" />
+                {publisherName}
+              </Link>
+            </li>
+          )}
           <li className="mr-4 inline-flex items-center font-secondary text-xs leading-3">
             <FaRegCalendar className="mr-1.5" />
             {dateFormat(createdAt)}
@@ -89,7 +88,7 @@ const ContentListItem = ({ content }) => {
             {viewCount}
           </li>
         </ul>
-        <p className="mt-1 prose content dark:text-gray-300 leading-snug">{description.length > maxChars? description.slice(0, maxChars) + "..." : description + " "}<a href="#">read more</a></p>
+        <p className="mt-1 prose content dark:text-gray-300 leading-snug">{description.length > maxChars? description.slice(0, maxChars) + "..." : description + " "}<Link to={`/content/${contentId}`}>read more</Link></p>
       </div>
     </div>
   );

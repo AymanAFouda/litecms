@@ -21,6 +21,7 @@ export function EditVideo() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [formData, setFormData] = useState({
         title: "",
+        publisherName: "",
         description: "",
         tags: [],
         category: "",
@@ -37,11 +38,12 @@ export function EditVideo() {
         if(video) {
             const data = {
                 title: video.title,
+                publisherName: video.publisherName,
                 description: video.description,
                 tags: video.tags
                     ? video.tags.map(tag => ({
-                        label: tag.tagName,
-                        value: tag.tagName
+                        label: tag.name,
+                        value: tag.name
                     }))
                     : [],
                 category: video.category?.name ?? "",
@@ -87,8 +89,9 @@ export function EditVideo() {
 
             const payload = {
                 title: formData.title,
+                publisherName: formData.publisherName,
                 description: formData.description,
-                tags: formData.tags.map(tag => ({tagName: tag.value})),
+                tags: formData.tags.map(tag => ({name: tag.value})),
                 category: selectedCategory? {
                     id: selectedCategory.id
                 } : null,

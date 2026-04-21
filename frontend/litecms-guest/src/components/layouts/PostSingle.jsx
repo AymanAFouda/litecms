@@ -7,7 +7,7 @@ import { markdownify } from "../../utils/textConverter";
 
 import Sidebar from "../partials/Sidebar";
 import CommentSection from "../common/CommentSection";
-import LargeMediaButton from "../common/LargeMediaButton";
+import LargeMediaButton from "../shortcodes/LargeMediaButton";
 import ArticleBody from "../common/ArticleBody";
 import { PhotoGallery } from "../common/PhotoGallery";
 import { VideoEmbed } from "../common/VideoEmbed";
@@ -16,7 +16,9 @@ import { VideoEmbed } from "../common/VideoEmbed";
 const PostSingle = ({ 
   content, liked, likeCount, onLikeClick, 
   likeButtonIsLoading, comments, commentFormData, 
-  setCommentFormData, onSubmitComment
+  setCommentFormData, onSubmitComment,
+  commentsAreLoading, commentsLoadError,
+  relatedContent
 }) => {
 
   let { 
@@ -53,7 +55,7 @@ const PostSingle = ({
                     >
                       <Link
                         className="capitalize"
-                        to={`/categories/${category.name.replace(" ", "-")}`}
+                        to={`/categories/${encodeURIComponent(category.name)}`}
                       >
                         {category.name}
                       </Link>
@@ -100,10 +102,10 @@ const PostSingle = ({
                 </div>
               )}
 
-              {mediaList && !mediaList.length == 0 && (
+              {mediaList && mediaList.length > 0 && (
                 <div id="gallery" className="content mb-8 mt-6">
                   <PhotoGallery mediaList={mediaList} largeMedia={largeMedia}/>
-                  <LargeMediaButton 
+                  <LargeMediaButton
                     largeMedia={largeMedia} 
                     setLargeMedia={setLargeMedia} 
                   />
@@ -122,15 +124,17 @@ const PostSingle = ({
             </article>                 
           </div>
 
-          <Sidebar variant={"content-detail"} contentTags={tags} largeMedia={largeMedia}/>
+          <Sidebar variant={"content-detail"} contentTags={tags} relatedContent={relatedContent} largeMedia={largeMedia}/>
 
           <div className={`lg:col-8 p-0 mb-8 ${largeMedia? "order-2" : "order-3"}`}>
             <CommentSection 
               comments={comments}
+              commentsAreLoading={commentsAreLoading}
+              commentsLoadError={commentsLoadError}
               commentFormData={commentFormData}
               setCommentFormData={setCommentFormData}
               onSubmitComment={onSubmitComment}
-              />
+            />
           </div>
         </div>
       </div>

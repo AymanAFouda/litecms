@@ -25,6 +25,7 @@ export const EditPhotoGallery = () => {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [formData, setFormData] = useState({
         title: "",
+        publisherName: "",
         description: "",
         tags: [],
         category: "",
@@ -41,11 +42,12 @@ export const EditPhotoGallery = () => {
         if(gallery) {
             const data = {
                 title: gallery.title,
+                publisherName: gallery.publisherName,
                 description: gallery.description,
                 tags: gallery.tags
                     ? gallery.tags.map(tag => ({
-                        label: tag.tagName,
-                        value: tag.tagName
+                        label: tag.name,
+                        value: tag.name
                     }))
                     : [],
                 category: gallery.category?.name ?? "",
@@ -111,8 +113,9 @@ export const EditPhotoGallery = () => {
 
             const payload = {
                 title: formData.title,
+                publisherName: formData.publisherName,
                 description: formData.description,
-                tags: formData.tags.map(tag => ({tagName: tag.value})),
+                tags: formData.tags.map(tag => ({name: tag.value})),
                 category: selectedCategory? {
                     id: selectedCategory.id
                 } : null,

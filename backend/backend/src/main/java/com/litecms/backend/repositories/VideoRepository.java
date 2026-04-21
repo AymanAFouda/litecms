@@ -18,13 +18,13 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     List<Video> findByCategoryName(String name);
 
     @EntityGraph(attributePaths = {"tags", "category"})
-    @Query("SELECT DISTINCT v FROM Video v JOIN v.tags t WHERE t.tagName = :tagName")
+    @Query("SELECT DISTINCT v FROM Video v JOIN v.tags t WHERE t.name = :tagName")
     List<Video> findDistinctByTagName(@Param("tagName") String tagName);
 
     List<Video> findByStatusOrderByCreatedAtDesc(Status status);
 
     List<Video> findByCategoryNameAndStatusOrderByCreatedAtDesc(String categoryName, Status status);
 
-    @Query("SELECT DISTINCT v FROM Video v JOIN v.tags t " +"WHERE t.tagName = :tagName AND v.status = :status " +"ORDER BY v.createdAt DESC")
+    @Query("SELECT DISTINCT v FROM Video v JOIN v.tags t " +"WHERE t.name = :tagName AND v.status = :status " +"ORDER BY v.createdAt DESC")
     List<Video> findByTagNameAndStatus(@Param("tagName") String tagName, @Param("status") Status status);
 }

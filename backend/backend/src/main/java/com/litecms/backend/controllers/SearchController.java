@@ -25,7 +25,7 @@ public class SearchController {
         return searchService.search(qery);
     }
 
-    @GetMapping("/filtered")
+    @GetMapping
     public JsonNode filteredSearch(
             @RequestParam(required = false) String query,
             @RequestParam(required = false) String contentType,

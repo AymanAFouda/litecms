@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useSearchParams } from "react-router-dom";
-import { useSearchByQuery } from "../hooks/useSearchByQuery"
+import { useSearch } from "../hooks/useSearch"
 
 import ContentList from "../components/layouts/ContentList";
 import { FaSearch } from "react-icons/fa";
@@ -15,10 +15,7 @@ export const SearchPage = () => {
         contentType: searchParams.get("content-type") || "All content",
         category: searchParams.get("category") || "",
         tag: searchParams.get("tag") || ""
-    })
-    const [searchTrigger, setSearchTrigger] = useState(0);
-
-    const { results, total, isLoading, loadError } = useSearchByQuery(searchParams.get("q"), searchTrigger)
+    });
 
     useEffect(() => {
         document.title = "Search - LiteCMS";
@@ -30,8 +27,24 @@ export const SearchPage = () => {
             contentType: searchParams.get("content-type") || "All content",
             category: searchParams.get("category") || "",
             tag: searchParams.get("tag") || ""
-        })
+        });
     }, [searchParams]);
+
+    const currentQuery = searchParams.get("q") || "";
+    const currentFilters = {
+        contentType: searchParams.get("content-type") || "All content",
+        category: searchParams.get("category") || "",
+        tag: searchParams.get("tag") || ""
+    };
+
+    const { results, total, fetchResults, isLoading, loadError } = useSearch(
+        currentQuery,
+        currentFilters
+    );
+
+    useEffect(() => {
+        fetchResults(currentQuery, currentFilters);
+    }, [currentQuery, currentFilters.contentType, currentFilters.category, currentFilters.tag]);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -39,12 +52,13 @@ export const SearchPage = () => {
         const params = {};
 
         if (query.trim()) params.q = query.trim();
-        if (filters.contentType) params["content-type"] = filters.contentType;
-        if (filters.category) params.category = filters.category.trim();
-        if (filters.tag) params.tag = filters.tag.trim();
+        if (filters.contentType && filters.contentType !== "All content") {
+            params["content-type"] = filters.contentType;
+        }
+        if (filters.category.trim()) params.category = filters.category.trim();
+        if (filters.tag.trim()) params.tag = filters.tag.trim();
 
         setSearchParams(params);
-        setSearchTrigger((prev) => prev + 1);
     };
 
     return(
@@ -113,12 +127,10 @@ export const SearchPage = () => {
                         {loadError && <p className="w-fit mx-auto font-secondary">Something went wrong.</p>}
 
                         {!isLoading && !loadError && results?.length > 0 && (
-                            <>
                             <ContentList
                                 tabs={false}
                                 contents={results}
                             />
-                            </>
                         )}
                     </div>
                 </div>

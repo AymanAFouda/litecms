@@ -11,7 +11,7 @@ const data = {
 
 export const ContactPage = () => {
     useEffect(() => {
-        document.title = "Contact Us"
+        document.title = "Contact Us - LiteCMS"
     }, []);
 
     return (<ContactLayout data={data} />)

@@ -1,9 +1,37 @@
-const SEARCH_API_URL = "http://localhost:8080/search"
+const SEARCH_API_URL = "http://localhost:8080/api/search"
 
-export async function search(query) {
-    const response = await fetch(`${SEARCH_API_URL}/?term=${encodeURIComponent(query)}`)
+export async function search(query, filters = {}) {
+  const params = new URLSearchParams();
 
-    if(!response.ok) throw new Error('Failed to get search results');
-    
+  if (query?.trim()) params.append("query", query.trim());
+
+  if (
+    filters.contentType &&
+    filters.contentType !== "All content"
+  ) {
+    params.append("contentType", filters.contentType);
+  }
+
+  if (filters.category?.trim()) {
+    params.append("categoryName", filters.category.trim());
+  }
+
+  if (filters.tag?.trim()) {
+    params.append("tagName", filters.tag.trim());
+  }
+
+  const response = await fetch(`${SEARCH_API_URL}?${params.toString()}`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch search results");
+  }
+
+  return await response.json();
+}
+
+export async function getRelatedContent(contentId) {
+    const response = await fetch(`${SEARCH_API_URL}/related/${contentId}`);
+
+    if(!response.ok) throw new Error('Failed to fetch related content');
     return await response.json();
 }

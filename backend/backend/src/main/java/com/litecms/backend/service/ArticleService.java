@@ -90,7 +90,7 @@ public class ArticleService {
         //Handle Tags 
         if (article.getTags() != null) {
             Set<Tag> processedTags = article.getTags().stream()
-                .map(tag -> tagRepository.findByTagName(tag.getTagName())
+                .map(tag -> tagRepository.findByName(tag.getName())
                 .orElseGet(() -> tagRepository.save(tag))) 
                 .collect(Collectors.toSet());
             
@@ -129,10 +129,10 @@ public class ArticleService {
         // Handle Tags
         if (article.getTags() != null) {
             Set<Tag> processedTags = article.getTags().stream()
-                .map(tag -> tagRepository.findByTagName(tag.getTagName())
+                .map(tag -> tagRepository.findByName(tag.getName())
                     .orElseGet(() -> {
                         Tag newTag = new Tag();
-                        newTag.setTagName(tag.getTagName());
+                        newTag.setName(tag.getName());
                         return tagRepository.save(newTag);
                     }))
                 .collect(Collectors.toSet());

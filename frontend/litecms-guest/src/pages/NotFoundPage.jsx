@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 export const NotFoundPage = () => {
     useEffect(() => {
-        document.title = "Page not found"
+        document.title = "Page not found - LiteCMS"
     }, []);
 
     return (

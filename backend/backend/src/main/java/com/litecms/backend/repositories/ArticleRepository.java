@@ -25,7 +25,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findByCategory_name(String name);
 
     @EntityGraph(attributePaths = {"tags", "category"})
-    @Query("SELECT DISTINCT a FROM Article a JOIN a.tags t WHERE t.tagName = :tagName")
+    @Query("SELECT DISTINCT a FROM Article a JOIN a.tags t WHERE t.name = :tagName")
     List<Article> findDistinctByTagName(@Param("tagName") String tagName);
 
     // In ArticleRepository.java
@@ -36,7 +36,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findByStatusAndCategory_NameOrderByCreatedAtDesc(Status status, String categoryName);
 
     @EntityGraph(attributePaths = {"tags", "category"})
-    @Query("SELECT DISTINCT a FROM Article a JOIN a.tags t WHERE a.status = :status AND t.tagName = :tagName ORDER BY a.createdAt DESC")
+    @Query("SELECT DISTINCT a FROM Article a JOIN a.tags t WHERE a.status = :status AND t.name = :tagName ORDER BY a.createdAt DESC")
     List<Article> findPublishedByTagName(@Param("status") Status status, @Param("tagName") String tagName);
 }
 

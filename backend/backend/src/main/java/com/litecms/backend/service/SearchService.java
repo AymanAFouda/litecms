@@ -18,9 +18,9 @@ import tools.jackson.databind.ObjectMapper;
 public class SearchService {
 
     private final RestClient restClient;
+    private ObjectMapper mapper = new ObjectMapper();
 
     public SearchService(RestClient.Builder builder, @Value("${elasticsearch.url}") String baseUrl) {
-
         // Set Elasticsearch host
         this.restClient = builder
             .baseUrl(baseUrl)
@@ -49,13 +49,12 @@ public class SearchService {
             .retrieve()
             .body(String.class);
 
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readTree(json);
+        return mapper.readTree(json);
     }
 
     //filtered Search
     public JsonNode filteredSearch(String query, String contentType, String categoryName, String tagName) {
-        // 1. Build the Elasticsearch Query DSL structure
+        // Build the Elasticsearch Query DSL structure
         Map<String, Object> bool = new HashMap<>();
         List<Map<String, Object>> must = new ArrayList<>();
         List<Map<String, Object>> filter = new ArrayList<>();
@@ -68,21 +67,23 @@ public class SearchService {
             )));
         }
 
+        filter.add(Map.of("term", Map.of("status", "PUBLISHED")));
+
         // Exact match filters
         if (contentType != null) {
-            filter.add(Map.of("term", Map.of("Type", contentType)));
+            filter.add(Map.of("term", Map.of("type", contentType)));
         }
         if (categoryName != null) {
             filter.add(Map.of("term", Map.of("category.name", categoryName)));
         }
         if (tagName != null) {
-            filter.add(Map.of("term", Map.of("tags.tagName", tagName)));
+            filter.add(Map.of("term", Map.of("tags.name", tagName)));
         }
 
         Map<String, Object> queryBody = Map.of("query", Map.of("bool", 
             Map.of("must", must, "filter", filter)));
 
-        // 2. Execute the POST request
+        // Execute the POST request
         try {
             String responseJson = restClient.post()
                     .uri("/my-index/_search")
@@ -90,7 +91,6 @@ public class SearchService {
                     .retrieve()
                     .body(String.class);
 
-            ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(responseJson);
         } catch (Exception e) {
             // Handle exceptions or return an empty JsonNode
@@ -101,18 +101,40 @@ public class SearchService {
     //get Related Content
     public JsonNode getRelatedContent(Long contentId) {
         // Construct the More Like This query
-        // This looks for documents similar to the one with the provided ID
         Map<String, Object> mltParams = new HashMap<>();
-        mltParams.put("fields", List.of("title", "description")); // Fields to compare
+        mltParams.put("fields", List.of(
+            "title",
+            "description",
+            "articleBody",
+            "category.name",
+            "tags.name"
+        ));
+
         mltParams.put("like", List.of(
             Map.of("_index", "my-index", "_id", contentId.toString())
         ));
+
         mltParams.put("min_term_freq", 1);
-        mltParams.put("max_query_terms", 12);
+        mltParams.put("min_doc_freq", 2);
+
+        Map<String, Object> moreLikeThisQuery = Map.of(
+            "more_like_this", mltParams
+        );
+
+        Map<String, Object> statusFilter = Map.of(
+            "term", Map.of("status", "PUBLISHED")
+        );
+
+        Map<String, Object> boolQuery = Map.of(
+            "must", List.of(moreLikeThisQuery),
+            "filter", List.of(statusFilter)
+        );
 
         Map<String, Object> queryBody = Map.of(
-            "size", 3, // Return up to three related contents
-            "query", Map.of("more_like_this", mltParams)
+            "size", 3,
+            "query", Map.of(
+                "bool", boolQuery
+            )
         );
 
         try {
@@ -122,7 +144,6 @@ public class SearchService {
                 .retrieve()
                 .body(String.class);
 
-            ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(responseJson);
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch related content from Elasticsearch", e);

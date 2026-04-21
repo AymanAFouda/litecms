@@ -2,10 +2,9 @@ import { Link } from "react-router-dom"
 import dateFormat from "../../utils/dateFormat";
 import { FaRegCalendar, FaEye } from "react-icons/fa";
 
-
 export const ContentSuggestions  = ({ title, content}) => {
     
-    if(content == null) return(<></>)
+    if(content == null) return <></>
 
     return(
         <div className="rounded border border-border px-6 pt-6 dark:border-darkmode-border mb-6">
@@ -18,15 +17,21 @@ export const ContentSuggestions  = ({ title, content}) => {
                 }`}
                 key={`key-${i}`}
                 >
-                    {content.featuredImage && (
-                        <img
-                            className="mr-3 h-[85px] w-[85px] rounded-md object-cover"
-                            src={content.featuredImage}
-                            alt={content.title}
-                            width={105}
-                            height={85}
-                        />
-                    )}
+                    <img
+                        className="mr-3 h-[85px] w-[85px] rounded-md object-cover"
+                        src={
+                            content.featuredImage
+                            ? `http://localhost:8080${content.featuredImage.fileUrl}`
+                            : "/images/default-image.png"
+                        }
+                        onError={(e) => {
+                            e.target.onerror = null; // prevent infinite loop
+                            e.target.src = "/images/default-image.png";
+                        }}
+                        width={105}
+                        height={85}
+                        alt={content.title}
+                    />
                     <div>
                         <h3 className="h5 mb-2">
                             <Link

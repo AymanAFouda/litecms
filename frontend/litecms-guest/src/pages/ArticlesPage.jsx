@@ -2,11 +2,12 @@ import { useEffect } from "react";
 import { markdownify } from "../utils/textConverter";
 import ContentList from "../components/layouts/ContentList";
 import Sidebar from "../components/partials/Sidebar";
-import { useContent } from "../hooks/useContent";
 import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
+import { useContent } from "../hooks/useContent";
+
 
 export const ArticlesPage = () => {
-    const { contents, isLoading, loadError} = useContent('articles')
+    const { contentList, isLoading, loadError} = useContent('articles')
 
     useEffect(() => {
         document.title = "Articles - LiteCMS"
@@ -31,7 +32,7 @@ export const ArticlesPage = () => {
                         <div className="lg:col-8">
                             <ContentList
                                 tabs={false}
-                                contents={contents}
+                                contents={contentList}
                             />
                         </div>
                         <Sidebar />
@@ -41,10 +42,3 @@ export const ArticlesPage = () => {
         </div>
     )
 }
-
-/*
-<button 
-    className="d-block btn btn-primary w-[250px] mx-auto block mb-12">
-    Load More
-</button>
-*/

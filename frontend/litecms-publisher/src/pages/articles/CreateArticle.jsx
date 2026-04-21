@@ -18,6 +18,7 @@ export function CreateArticle() {
     const [resetTrigger, setResetTrigger] = useState(0);
     const [formData, setFormData] = useState({
         title: "",
+        publisherName: "",
         description: "",
         tags: [],
         category: "",
@@ -31,6 +32,7 @@ export function CreateArticle() {
     const resetForm = () => {
         setFormData({
             title: "",
+            publisherName: "",
             description: "",
             tags: [],
             category: "",
@@ -52,8 +54,9 @@ export function CreateArticle() {
 
             const payload = {
                 title: formData.title,
+                publisherName: formData.publisherName,
                 description: formData.description,
-                tags: formData.tags.map(tag => ({tagName: tag.value})),
+                tags: formData.tags.map(tag => ({name: tag.value})),
                 category: selectedCategory? {
                     id: selectedCategory.id
                 } : null,

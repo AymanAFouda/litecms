@@ -28,7 +28,7 @@ public class VideoController {
     }
 
     //get Published Videos
-    @GetMapping("/api/videos")
+    @GetMapping("/videos")
     public List<Video> getPublishedVideos() {
         return videoService.getPublishedVideos();
     }

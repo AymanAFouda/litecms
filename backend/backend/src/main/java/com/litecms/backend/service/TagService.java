@@ -27,7 +27,7 @@ public class TagService {
         Tag existing = tagRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tag not found"));
 
-        existing.setTagName(tag.getTagName());
+        existing.setName(tag.getName());
         return tagRepository.save(existing);
     }
 

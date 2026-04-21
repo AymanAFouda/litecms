@@ -33,7 +33,7 @@ import com.litecms.backend.repositories.ContentRepository;
 
     //get Published Contents By Tag
     public List<Content> getPublishedContentsByTag(String tagName) {
-        return contentRepository.findByStatusAndTags_TagNameOrderByCreatedAtDesc(
+        return contentRepository.findByStatusAndTags_NameOrderByCreatedAtDesc(
             Status.PUBLISHED,tagName);
     }
 

@@ -1,28 +1,24 @@
 import { useState, useEffect } from "react";
 import { useParams, Navigate } from "react-router-dom";
+import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
 import PostSingle from "../components/layouts/PostSingle";
 
 import { useContentById } from "../hooks/useContent";
-import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
-
+import { useContentLike } from "../hooks/useUserEngagement"
+import { useComments, useSubmitComment } from "../hooks/useComments";
+import { useSearchRelatedContent } from "../hooks/useSearch";
+import { isContentLiked, addLikedContent, removeLikedContent } from "../utils/localStorageUtils";
 
 export const ContentDetailPage = () => {
   const { id } = useParams();
 
-  useEffect(() => {
-    document.title = "LiteCMS";
+  const { content, isLoading, loadError } = useContentById(id);
+  const { comments, commentsAreLoading, commentsLoadError } = useComments(content?.contentId);
+  const { relatedContent, relatedContentLoading, relatedContentLoadError } = useSearchRelatedContent(content?.contentId);
 
-    if (content) {
-      document.title = content.title || "LiteCMS";
-      setLikeCount(content.likeCount || 0);
-      setComments(content.comments || []);
-    }
-  }, [content]);
-
-  const { content, isLoading, loadError } = useContentById(id)
-  const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(content.likeCount || 0);
   const [comments, setComments] = useState([]);
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
   const [commentFormData, setCommentFormData] = useState({
     guestName: "",
     commentText: "",
@@ -35,14 +31,33 @@ export const ContentDetailPage = () => {
     submitCommentLoadError,
   } = useSubmitComment();
 
+  useEffect(() => {
+    document.title = content?.title || "LiteCMS";
+  }, [content]);
+
+  useEffect(() => {
+    if (!content) return;
+
+    setLikeCount(content.likeCount || 0);
+    setLiked(isContentLiked(content.contentId));
+  }, [content]);
+
+  useEffect(() => {
+    setComments(fetchedComments || []);
+  }, [fetchedComments]);
+
   const onLikeClick = async () => {
+    if (!content?.contentId) return;
+
     try {
       if (liked) {
-        await handleUnlike(content.id);
+        await handleUnlike(content.contentId);
+        removeLikedContent(content.contentId);
         setLiked(false);
-        setLikeCount((prev) => prev - 1);
+        setLikeCount((prev) => Math.max(prev - 1, 0));
       } else {
-        await handleLike(content.id);
+        await handleLike(content.contentId);
+        addLikedContent(content.contentId);
         setLiked(true);
         setLikeCount((prev) => prev + 1);
       }
@@ -60,7 +75,7 @@ export const ContentDetailPage = () => {
     };
 
     try {
-      const newComment = await handleSubmitComment(payload, content.id);
+      const newComment = await handleSubmitComment(payload, content.contentId);
       setComments((prev) => [newComment, ...prev]);
       setCommentFormData({
         guestName: "",
@@ -75,20 +90,22 @@ export const ContentDetailPage = () => {
 
   if(loadError) return <p>Failed to load content.</p>;
 
-  if (!content) return <Navigate to="*" replace />;
+  if (!content) return <Navigate to="/404" replace />;
 
   return (
     <PostSingle 
       content={content}
-      //relatedContent={}
       liked={liked}
       likeCount={likeCount}
       onLikeClick={onLikeClick}
       likeButtonIsLoading={likeButtonIsLoading}
       comments={comments}
+      commentsAreLoading={commentsAreLoading}
+      commentsLoadError={commentsLoadError}
       commentFormData={commentFormData}
       setCommentFormData={setCommentFormData}
       onSubmitComment={onSubmitComment}
+      relatedContent={relatedContent}
     />
   )
 }

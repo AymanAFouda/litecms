@@ -1,14 +1,9 @@
-import config from "../../config/config.json";
 import dateFormat from "../../utils/dateFormat";
 import { Link } from "react-router-dom";
 import { FaRegCalendar, FaUserAlt, FaEye } from "react-icons/fa";
 import { useState, useEffect } from "react";
 
-
 const Post = ({ content }) => {
-  const { meta_author } = config.metadata;
-  const author = meta_author;
-
   const [maxChars, setMaxChars] = useState(300);
 
   useEffect(() => {
@@ -31,8 +26,15 @@ const Post = ({ content }) => {
         {content.featuredImage && (
           <img
             className="rounded w-full"
-            src={content.featuredImage}
-            alt={content.featuredImage.alt}
+            src={
+              featuredImage
+                ? `http://localhost:8080${featuredImage.fileUrl}`
+                : "/images/default-image.png"
+            }
+            onError={(e) => {
+              e.target.onerror = null; // prevent infinite loop
+              e.target.src = "/images/default-image.png";
+            }}
           />
         )}
         <ul className="absolute top-3 left-2 flex flex-wrap items-center">
@@ -42,9 +44,9 @@ const Post = ({ content }) => {
             >
               <Link
                 className="capitalize"
-                to={`/categories/${content.category.replace(" ", "-")}`}
+                to={`/categories/${encodeURIComponent(content.category.name)}`}
               >
-                {content.category}
+                {content.category.name}
               </Link>
             </li>
           )}
@@ -65,7 +67,7 @@ const Post = ({ content }) => {
             to="/about"
           >
             <FaUserAlt className="mr-1.5" />
-            {author}
+            {content.publisherName}
           </Link>
         </li>
         <li className="mr-4 inline-flex items-center font-secondary text-xs leading-3">

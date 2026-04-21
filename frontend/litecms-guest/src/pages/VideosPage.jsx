@@ -6,7 +6,7 @@ import { useContent } from "../hooks/useContent";
 import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
 
 export const VideosPage = () => {
-    const { contents, isLoading, loadError} = useContent('videos')
+    const { contentList, isLoading, loadError} = useContent('videos')
 
     useEffect(() => {
         document.title = "Videos - LiteCMS"
@@ -31,7 +31,7 @@ export const VideosPage = () => {
                         <div className="lg:col-8">
                             <ContentList
                                 tabs={false}
-                                contents={contents}
+                                contents={contentList}
                             />   
                         </div>
                         <Sidebar />

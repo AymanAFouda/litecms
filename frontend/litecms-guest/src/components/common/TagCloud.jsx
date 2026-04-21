@@ -1,15 +1,14 @@
 import { Link } from "react-router-dom"
 
 export const TagCloud = ({ title, tags}) => {
-    
-    if(tags == null) return(<></>)
+    if(tags == null || tags.lenght > 0) return;
 
     return(
         <div className="relative rounded border border-border p-6 dark:border-darkmode-border mb-6">
             <h4 className="section-title mb-5">{title? title : "Tags"}</h4>
             <div className="flex flex-wrap gap-2 mx-auto text-sm">
                 {tags.map((tag, index) => (
-                    <Link to={`/tags/${tag}`}
+                    <Link to={`/tags/${encodeURIComponent(tag.name)}`}
                         key={index} 
                         className="text-sm font-medium
                             px-3 py-1.5 

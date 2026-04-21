@@ -36,32 +36,3 @@ export function useContentLike() {
 
   return { handleLike, handleUnlike, likeButtonIsLoading, likeButtonLoadError };
 }
-
-export function useSubmitComment() {
-  const [createdComment, setCreatedComment] = useState(null);
-  const [submitCommentIsLoading, setSubmitCommentIsLoading] = useState(false);
-  const [submitCommentLoadError, setSubmitCommentLoadError] = useState(null);
-
-  const handleSubmitComment = async (commentData, contentId) => {
-    setSubmitCommentIsLoading(true);
-    setSubmitCommentLoadError(null);
-
-    try {
-      const newComment = await createComment(commentData, contentId);
-      setCreatedComment(newComment);
-      return newComment;
-    } catch (er) {
-      setSubmitCommentLoadError(er);
-      throw er;
-    } finally {
-      setSubmitCommentIsLoading(false);
-    }
-  };
-
-  return {
-    createdComment,
-    handleSubmitComment,
-    submitCommentIsLoading,
-    submitCommentLoadError,
-  };
-}

@@ -1,10 +1,7 @@
-import config from "../../config/config.json";
-import { plainify } from "../../utils/textConverter";
+import { useEffect } from "react"; 
+import { useLocation, Outlet } from "react-router-dom";
 import Footer from "../partials/Footer";
 import Header from "../partials/Header";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react"; 
-import { Outlet } from "react-router-dom";
 
 const Base = () => {
   const location = useLocation();

@@ -64,7 +64,7 @@ LiteCMS prioritizes:
 export const AboutPage = () => {
 
     useEffect(() => {
-        document.title = "About"
+        document.title = "About - LiteCMS"
     }, []);
 
     return (<AboutLayout data={data} />)

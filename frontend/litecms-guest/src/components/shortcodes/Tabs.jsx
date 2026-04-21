@@ -9,10 +9,6 @@ function Tabs({ selectedTab, setSelectedTab }) {
     setSelectedTab(tabs[index])
   };
 
-  useEffect(()=>{
-    setSelectedTab(tabs[0])
-  }, [])
-
   return (
     <div className="relative border-b-[2px] border-primary">
       <ul className="mb-0 flex list-none items-center pl-0">  

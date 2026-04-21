@@ -19,37 +19,37 @@ public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tagId; 
+    private Long id; 
 
     @Column(unique = true, nullable = false)
-    private String tagName;
+    private String name;
 
     @ManyToMany(mappedBy = "tags")
     @JsonIgnore
     private Set<Content> contents = new HashSet<>();
 
-    public Tag(Long tagId, String tagName, Set<Content> contents) {
-        this.tagId = tagId;
-        this.tagName = tagName;
+    public Tag(Long id, String name, Set<Content> contents) {
+        this.id = id;
+        this.name = name;
         this.contents = contents;
     }
 
     public Tag() {}
 
-    public Long getTagId() {
-        return tagId;
+    public Long getId() {
+        return id;
     }
 
-    public void setTagId(Long tagId) {
-        this.tagId = tagId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getTagName() {
-        return tagName;
+    public String getName() {
+        return name;
     }
 
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<Content> getContents() {

@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import ContentList from "../components/layouts/ContentList";
 import { markdownify } from "../utils/textConverter";
+import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
+import ContentList from "../components/layouts/ContentList";
 import Sidebar from "../components/partials/Sidebar";
 import { useContent } from "../hooks/useContent";
-import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
 
 export const GalleriesPage = () => {
-    const { contents, isLoading, loadError} = useContent('galleries')
+    const { contentList, isLoading, loadError} = useContent('galleries')
 
     useEffect(() => {
         document.title = "Photo Galleries - LiteCMS"
@@ -31,7 +31,7 @@ export const GalleriesPage = () => {
                         <div className="lg:col-8">
                             <ContentList
                                 tabs={false}
-                                contents={contents}
+                                contents={contentList}
                             />   
                         </div>
                         <Sidebar />

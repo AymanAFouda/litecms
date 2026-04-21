@@ -90,7 +90,7 @@ public class PhotoGalleryService {
 
         if (gallery.getTags() != null) {
             Set<Tag> processedTags = gallery.getTags().stream()
-                .map((Tag tag) -> tagRepository.findByTagName(tag.getTagName())
+                .map((Tag tag) -> tagRepository.findByName(tag.getName())
                     .orElseGet(() -> tagRepository.save(tag)))
                 .collect(Collectors.toSet());
 
@@ -134,10 +134,10 @@ public class PhotoGalleryService {
         // Handle Tags
         if (gallery.getTags() != null) {
             Set<Tag> processedTags = gallery.getTags().stream()
-                .map(tag -> tagRepository.findByTagName(tag.getTagName())
+                .map(tag -> tagRepository.findByName(tag.getName())
                     .orElseGet(() -> {
                         Tag newTag = new Tag();
-                        newTag.setTagName(tag.getTagName());
+                        newTag.setName(tag.getName());
                         return tagRepository.save(newTag);
                     }))
                 .collect(Collectors.toSet());
