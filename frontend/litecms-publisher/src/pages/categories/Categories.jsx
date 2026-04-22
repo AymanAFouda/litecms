@@ -169,9 +169,6 @@ export function Categories() {
                     minLength={2}
                     value={categoryName}
                     onChange={(e) => setCategoryName(e.target.value)} />
-                    <div className="invalid-feedback">
-                        minimum 2 characters
-                    </div>
                 </div>
                 <div className="col-md-12 mt-4 d-flex justify-content-end">
                     <button type="button" className="btn btn-secondary me-2" onClick={handleCloseEditModal} >Cancel</button>

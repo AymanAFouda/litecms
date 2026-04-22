@@ -104,7 +104,6 @@ export async function likeContent(id) {
     })
 
     if(!response.ok) throw new Error('Failed to like content');
-    return await response.json();
 }
 
 export async function unlikeContent(id) {
@@ -113,7 +112,6 @@ export async function unlikeContent(id) {
     })
 
     if(!response.ok) throw new Error('Failed to unlike content');
-    return await response.json();
 }
 
 export async function incrementContentViewCount(id) {
@@ -122,5 +120,4 @@ export async function incrementContentViewCount(id) {
     })
 
     if(!response.ok) throw new Error('Failed to call API');
-    return await response.json();
 }

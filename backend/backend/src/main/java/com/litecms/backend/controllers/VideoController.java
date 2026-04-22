@@ -58,7 +58,7 @@ public class VideoController {
     }
 
     //Create Video
-    @PostMapping(value = "/publisher/videos/ ", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) 
+    @PostMapping(value = "/publisher/videos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) 
     public  Video createVideo(
             @RequestPart("video") Video video, 
             @RequestPart(value="featuredImage", required=false) MultipartFile featuredImage
@@ -67,7 +67,7 @@ public class VideoController {
     }
 
     // Update Video
-    @PutMapping(value = "/publisher/videos//{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/publisher/videos/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Video updateVideo(@PathVariable Long id,
             @RequestPart("video") Video video, 
             @RequestPart(value = "featuredImage", required = false) MultipartFile featuredImage

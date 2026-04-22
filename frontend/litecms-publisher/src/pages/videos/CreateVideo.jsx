@@ -67,7 +67,9 @@ export function CreateVideo() {
 
             const submitData = new FormData();
             submitData.append("video", new Blob([JSON.stringify(payload)], { type: "application/json" }))
-            if (!formData.featuredImage == null) submitData.append("featuredImage", formData.featuredImage.data, formData.featuredImage.name);
+            if (formData.featuredImage) {
+                submitData.append("featuredImage", formData.featuredImage.data, formData.featuredImage.name);
+            }
 
             const createdVideo = await createVideo(submitData)
             toast.success("Video created successfully!")

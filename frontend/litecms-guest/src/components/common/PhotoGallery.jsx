@@ -15,11 +15,15 @@ export const PhotoGallery = ({ mediaList, largeMedia }) => {
         <div key={largeMedia} className="hs-carousel relative w-full overflow-hidden transition-all duration-500" data-hs-carousel='{"loadingClasses": "opacity-0", "isInfinite": false}'>
             <div className='relative relative'>
                 <div className="hs-carousel-body flex justify-center items-center flex-nowrap transition-transform duration-700 w-full">
-                    {mediaList.map((image) => (
-                        <div key={`${image.url}-${largeMedia}`} className="hs-carousel-slide flex items-center justify-center w-full">
+                    {mediaList.map((image, index) => (
+                        <div key={index} className="hs-carousel-slide flex items-center justify-center w-full">
                             <img
-                                src={image.url}
-                                alt={image.alt}
+                                src={`http://localhost:8080${image.fileUrl}`}
+                                onError={(e) => {
+                                    e.target.onerror = null; // prevent infinite loop
+                                    e.target.src = "/images/default-image.png";
+                                }}
+                                alt={image.fileName}
                                 className="transition duration-700 m-0 rounded-none w-full sm:max-h-[83vh] object-contain sm:max-w-[90vw]"
                             />
                         </div>

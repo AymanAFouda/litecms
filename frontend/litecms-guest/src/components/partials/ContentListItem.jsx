@@ -1,17 +1,24 @@
 import { useState, useEffect } from "react";
 import dateFormat from "../../utils/dateFormat";
 import { Link } from "react-router-dom";
-import { FaRegCalendar, FaUserAlt, FaEye } from "react-icons/fa";
+import { FaRegCalendar, FaUserAlt, FaEye, FaVideo, FaImages } from "react-icons/fa";
+import { FaNewspaper } from "react-icons/fa6";
+
+const iconMap = {
+  PHOTOGALLERY: <FaImages />,
+  VIDEO: <FaVideo />,
+  ARTICLE: <FaNewspaper />
+};
 
 const ContentListItem = ({ content }) => {
-  const [maxChars, setMaxChars] = useState(280);
+  const [maxChars, setMaxChars] = useState(200);
 
   useEffect(() => {
     const updateLength = () => {
       if (window.innerWidth < 640) {
-        setMaxChars(180); // small screens
+        setMaxChars(160); // small screens
       } else {
-        setMaxChars(225); // larger screens
+        setMaxChars(200); // larger screens
       }
     };
 
@@ -43,20 +50,20 @@ const ContentListItem = ({ content }) => {
           }}
           alt={title}
         />
-        <ul className="absolute top-3 left-2 flex flex-wrap items-center">
-          {category && (
-            <li
-              className="inline-flex rounded-2xl bg-primary px-3 text-white py-1 text-sm"
+        {category && (
+          <div className="absolute top-3 left-2 flex flex-wrap items-center">
+            <Link
+              className="capitalize inline-flex rounded-2xl bg-primary px-3 text-white py-1 text-sm"
+              to={`/categories/${encodeURIComponent(category.name)}`}
             >
-              <Link
-                className="capitalize"
-                to={`/categories/${encodeURIComponent(category.name)}`}
-              >
-                {category.length>20? `${category.name.slice(0, 18)}..` : category.name}
-              </Link>
-            </li>
-          )}
-        </ul>
+              {category.name.length > 20? `${category.name.slice(0, 18)}..` : category.name}
+            </Link>
+          </div>
+        )}
+
+        <div className="absolute bottom-2 right-2 text-white text-2xl drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">
+          {iconMap[type] || <FaNewspaper />}
+        </div>
       </div>
       <div className="flex flex-col justify-start flex-1 mx-2 mt-2 md:ml-4 md:mr-6 md:mt-1">
         <h3 className="h5 mb-1">
@@ -88,7 +95,7 @@ const ContentListItem = ({ content }) => {
             {viewCount}
           </li>
         </ul>
-        <p className="mt-1 prose content dark:text-gray-300 leading-snug">{description.length > maxChars? description.slice(0, maxChars) + "..." : description + " "}<Link to={`/content/${contentId}`}>read more</Link></p>
+        <p className="mt-1 prose content dark:text-gray-300 leading-snug">{description.length > maxChars? description.slice(0, maxChars) : description}..<Link to={`/content/${contentId}`}>read more</Link></p>
       </div>
     </div>
   );

@@ -53,7 +53,7 @@ export function EditArticle() {
 
             setFormData(data)
             setInitialData(data)
-            if(!article.featuredImage == null) {loadFeaturedImageFromBackend()}
+            if(article.featuredImage) {loadFeaturedImageFromBackend()}
         }
     }, [article])
 
@@ -100,7 +100,19 @@ export function EditArticle() {
 
             const submitData = new FormData();
             submitData.append("article", new Blob([JSON.stringify(payload)], { type: "application/json" }))
-            if (!formData.featuredImage == null) submitData.append("featuredImage", formData.featuredImage.data, formData.featuredImage.name);
+            if (formData.featuredImage) {
+                console.log("featuredImage:", formData.featuredImage);
+                console.log("featuredImage.name:", formData.featuredImage.name);
+                console.log("featuredImage.type:", formData.featuredImage.type);
+                console.log("featuredImage.data:", formData.featuredImage.data);
+                console.log("featuredImage.data instanceof File:", formData.featuredImage.data instanceof File);
+                console.log("featuredImage.data.type:", formData.featuredImage.data?.type);
+                console.log("featuredImage.data.name:", formData.featuredImage.data?.name);
+
+                submitData.append("featuredImage", formData.featuredImage.data, formData.featuredImage.name);
+            } else {
+                console.log("No featured image");
+            }
 
             const updatedArticle = await updateArticle(id, submitData)
             navigate("/articles")

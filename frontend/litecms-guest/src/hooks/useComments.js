@@ -1,4 +1,5 @@
-import { getComments } from "../services/commentApi"
+import { useState, useEffect } from "react";
+import { getComments, createComment } from "../services/commentApi"
 
 export function useComments(contentId) {
     const [comments, setComments] = useState([]);
@@ -7,6 +8,11 @@ export function useComments(contentId) {
 
     useEffect(() => {
         const fetchComments = async () => {
+            if (!contentId) {
+                setComments([]);
+                return;
+            }
+            
             setCommentsAreLoading(true);
             try {
                 const data = await getComments(contentId);

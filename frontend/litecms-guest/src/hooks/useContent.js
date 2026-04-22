@@ -1,17 +1,12 @@
 import { useState, useEffect } from "react";
 import { getAllContent, getArticles,
-    getVideos, getGalleries,
-    getContentById, incrementContentViewCount,
-    getRecentThreeContent
-} from "../services/contentApi";
-
-import { getContentByTag, getArticlesByTag,
+    getVideos, getGalleries, getContentById, 
+    incrementContentViewCount, getRecentThreeContent, 
+    getContentByCategory, getArticlesByCategory, 
+    getGalleriesByCategory, getVideosByCategory,
+    getContentByTag, getArticlesByTag,
     getGalleriesByTag, getVideosByTag
-} from "../services/tagApi";
-
-import { getContentByCategory, getArticlesByCategory, 
-    getGalleriesByCategory, getVideosByCategory 
-} from "../services/categoryApi";
+} from "../services/contentApi";
 
 export function useContentById(contentId) {
     const [content, setContent] = useState(null);
@@ -28,7 +23,7 @@ export function useContentById(contentId) {
                 incrementContentViewCount(contentId);
                 setContent(prev => ({
                     ...prev,
-                    likeCount: prev.likeCount + 1
+                    viewCount: prev.viewCount + 1
                 }))
 
                 setLoadError(null);
@@ -76,7 +71,7 @@ export function useContent(contentType) {
         };
 
         fetchContent();
-    }, []);
+    }, [contentType]);
 
     return { contentList, isLoading, loadError };
 }
@@ -112,7 +107,7 @@ export function useContentByCategory(selectedTab, name) {
         };
 
         fetchContent();
-    }, [selectedTab]);
+    }, [selectedTab, name]);
 
     return { contentList, isLoading, loadError };
 }
@@ -126,13 +121,13 @@ export function useContentByTag(selectedTab, name) {
         const fetchContent = async () => {
             setIsLoading(true);
             try {
-                if(selectedTab === 'articles') {
+                if(selectedTab === 'Articles') {
                     const data = await getArticlesByTag(name);
                     setContentList(data);
-                } else if(selectedTab === 'videos') {
+                } else if(selectedTab === 'Videos') {
                     const data = await getVideosByTag(name);
                     setContentList(data);
-                } else if(selectedTab === 'galleries') {
+                } else if(selectedTab === 'Galleries') {
                     const data = await getGalleriesByTag(name);
                     setContentList(data);
                 } else {
@@ -148,7 +143,7 @@ export function useContentByTag(selectedTab, name) {
         };
 
         fetchContent();
-    }, [selectedTab]);
+    }, [selectedTab, name]);
 
     return { contentList, isLoading, loadError };
 }

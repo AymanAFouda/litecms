@@ -12,7 +12,6 @@ import ArticleBody from "../common/ArticleBody";
 import { PhotoGallery } from "../common/PhotoGallery";
 import { VideoEmbed } from "../common/VideoEmbed";
 
-
 const PostSingle = ({ 
   content, liked, likeCount, onLikeClick, 
   likeButtonIsLoading, comments, commentFormData, 
@@ -37,31 +36,41 @@ const PostSingle = ({
           <div className={`p-0 ${largeMedia? 'lg:col-12' : 'lg:col-8'} order-1`}>
             <article>
               <div className="relative">
-                {featuredImage && (
-                  <div className="w-full h-[350px] object-cover overflow-hidden rounded-lg">
-                    <img
-                      src={`http://localhost:8080${featuredImage.fileUrl}`}
-                      height={300}
-                      width={1000}
-                      alt={title}
-                      className="w-full h-full object-cover"
-                    />
+                {featuredImage ? ( 
+                  <>
+                    <div className="w-full h-[350px] object-cover overflow-hidden rounded-lg">
+                      <img
+                        src={`http://localhost:8080${featuredImage.fileUrl}`}
+                        height={300}
+                        width={1000}
+                        alt={title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="absolute top-2 left-2 flex flex-wrap items-center">
+                      {category && (
+                        <Link
+                          className="capitalize ml-2 mt-2 inline-flex rounded-2xl bg-primary px-3 text-white py-1 text-lg"
+                          to={`/categories/${encodeURIComponent(category.name)}`}
+                        >
+                          {category.name}
+                        </Link>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <div className="absolute absolute top-[-40px]">
+                    {category && (
+                        <Link
+                          className="capitalize inline-flex rounded-2xl bg-primary px-3 text-white py-1 text-md"
+                          to={`/categories/${encodeURIComponent(category.name)}`}
+                        >
+                          {category.name}
+                        </Link>
+                    )}
                   </div>
                 )}
-                <ul className="absolute top-3 left-2 flex flex-wrap items-center">
-                  {category && (
-                    <li
-                      className="mx-2 inline-flex h-7 rounded-[35px] bg-primary px-3 text-white"
-                    >
-                      <Link
-                        className="capitalize"
-                        to={`/categories/${encodeURIComponent(category.name)}`}
-                      >
-                        {category.name}
-                      </Link>
-                    </li>
-                  )}
-                </ul>
+                
               </div>
 
               {markdownify(title, "h1", "lg:text-[42px] mt-4 mb-1")}

@@ -1,7 +1,14 @@
 import dateFormat from "../../utils/dateFormat";
 import { Link } from "react-router-dom";
-import { FaRegCalendar, FaUserAlt, FaEye } from "react-icons/fa";
+import { FaRegCalendar, FaUserAlt, FaEye, FaVideo, FaImages } from "react-icons/fa";
+import { FaNewspaper } from "react-icons/fa6";
 import { useState, useEffect } from "react";
+
+const iconMap = {
+  PHOTOGALLERY: <FaImages />,
+  VIDEO: <FaVideo />,
+  ARTICLE: <FaNewspaper />
+};
 
 const Post = ({ content }) => {
   const [maxChars, setMaxChars] = useState(300);
@@ -27,8 +34,8 @@ const Post = ({ content }) => {
           <img
             className="rounded w-full"
             src={
-              featuredImage
-                ? `http://localhost:8080${featuredImage.fileUrl}`
+              content.featuredImage
+                ? `http://localhost:8080${content.featuredImage.fileUrl}`
                 : "/images/default-image.png"
             }
             onError={(e) => {
@@ -37,24 +44,25 @@ const Post = ({ content }) => {
             }}
           />
         )}
-        <ul className="absolute top-3 left-2 flex flex-wrap items-center">
-          {content.category && (
-            <li
-              className="mx-2 inline-flex h-7 rounded-[35px] bg-primary px-3 text-white"
+
+        {content.category && (
+          <div className="absolute top-3 left-2 flex flex-wrap items-center">
+            <Link
+              className="capitalize mx-2 inline-flex h-7 rounded-[35px] bg-primary px-3 text-white"
+              to={`/categories/${encodeURIComponent(content.category.name)}`}
             >
-              <Link
-                className="capitalize"
-                to={`/categories/${encodeURIComponent(content.category.name)}`}
-              >
-                {content.category.name}
-              </Link>
-            </li>
-          )}
-        </ul>
+              {content.category.name}
+            </Link>
+          </div>
+        )}
+
+        <div className="absolute bottom-5 right-5 text-white text-6xl drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">
+          {iconMap[content.type] || <FaNewspaper />}
+        </div>
       </div>
       <h3 className="h5 mb-2 mt-4">
         <Link
-          to="#"
+          to={`/content/${content.contentId}`}
           className="block hover:text-primary"
         >
           {content.title}
@@ -79,7 +87,7 @@ const Post = ({ content }) => {
           {content.viewCount}
         </li>
       </ul>
-      <p className="mt-1 prose content dark:text-gray-300">{content.description.slice(0, maxChars)}.. <a href="#"> read more</a></p>
+      <p className="mt-1 prose content dark:text-gray-300">{content.description.slice(0, maxChars)}..<a href="#">read more</a></p>
     </div>
   );
 };

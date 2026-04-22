@@ -63,21 +63,21 @@ public class SearchService {
         if (query != null && !query.isEmpty()) {
             must.add(Map.of("multi_match", Map.of(
                 "query", query,
-                "fields", List.of("title", "description")
+                "fields", List.of("title", "description", "articleBody", "publisherName", "tags.name")
             )));
         }
 
-        filter.add(Map.of("term", Map.of("status", "PUBLISHED")));
+        filter.add(Map.of("term", Map.of("status.keyword", "PUBLISHED")));
 
         // Exact match filters
         if (contentType != null) {
-            filter.add(Map.of("term", Map.of("type", contentType)));
+            filter.add(Map.of("term", Map.of("type.keyword", contentType)));
         }
         if (categoryName != null) {
-            filter.add(Map.of("term", Map.of("category.name", categoryName)));
+            filter.add(Map.of("term", Map.of("category.name.keyword", categoryName)));
         }
         if (tagName != null) {
-            filter.add(Map.of("term", Map.of("tags.name", tagName)));
+            filter.add(Map.of("term", Map.of("tags.name.keyword", tagName)));
         }
 
         Map<String, Object> queryBody = Map.of("query", Map.of("bool", 
@@ -122,7 +122,7 @@ public class SearchService {
         );
 
         Map<String, Object> statusFilter = Map.of(
-            "term", Map.of("status", "PUBLISHED")
+            "term", Map.of("status.keyword", "PUBLISHED")
         );
 
         Map<String, Object> boolQuery = Map.of(

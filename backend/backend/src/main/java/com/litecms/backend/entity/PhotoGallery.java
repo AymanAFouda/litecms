@@ -25,10 +25,13 @@ public class PhotoGallery extends Content{
         this.mediaList = mediaList;
     }
 
-    public PhotoGallery(Long contentId, String title, String description, Integer likeCount, Integer viewCount,
-            LocalDateTime createdAt, Status status, Category category, Set<Tag> tags, Media featuredImage,
-            Set<Comment> comments, List<Media> mediaList) {
-        super(contentId, title, description, likeCount, viewCount, createdAt, status, category, tags, featuredImage,
+    public PhotoGallery(Long contentId, String title, String publisherName,
+            String description, Integer likeCount, Integer viewCount,
+            LocalDateTime createdAt, Status status, Category category, 
+            Set<Tag> tags, Media featuredImage, Set<Comment> comments,
+            List<Media> mediaList
+        ) {
+        super(contentId, title, publisherName, description, likeCount, viewCount, createdAt, status, category, tags, featuredImage,
                 comments);
         this.mediaList = mediaList;
     }

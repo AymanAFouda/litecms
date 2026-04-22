@@ -50,17 +50,17 @@ function CommentSection({ comments, commentFormData, setCommentFormData, onSubmi
 
                 {commentsAreLoading && <LoadingSpinner />}
                     
-                {commentsLoadError && <p className="w-fit mx-auto font-secondary">Something went wrong.</p>}
+                {commentsLoadError && <p className="w-fit mx-auto font-secondary">Something went wrong. {commentsLoadError.message}</p>}
 
                 {!commentsAreLoading && !commentsLoadError && (<>
                     {comments.map((comment, index) => (
                         <article key={index} className="p-6 mb-4 text-base rounded-3xl border border-border dark:border-darkmode-border">
                             <div className="flex justify-between items-center mb-2">
                                 <div className="flex items-center">
-                                <p className="inline-flex items-center font-secondary mr-3 text-sm text-gray-900 dark:text-white font-semibold">
+                                <p className="inline-flex items-center font-secondary mr-3 text-md text-gray-900 dark:text-white font-bold">
                                     {comment.guestName}
                                 </p>
-                                <p className="text-sm text-gray-600 font-secondary dark:text-gray-400">
+                                <p className="text-sm text-gray-600 font-secondary text-sm dark:text-gray-400">
                                     <time>{dateFormat(comment.createdAt)}</time>
                                 </p>
                                 </div>

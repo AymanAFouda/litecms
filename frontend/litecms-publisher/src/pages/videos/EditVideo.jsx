@@ -53,7 +53,7 @@ export function EditVideo() {
 
             setFormData(data)
             setInitialData(data)
-            if(!video.featuredImage == null) {loadFeaturedImageFromBackend()}
+            if(video.featuredImage) {loadFeaturedImageFromBackend()}
         }
     }, [video])
 
@@ -101,7 +101,9 @@ export function EditVideo() {
 
             const submitData = new FormData();
             submitData.append("video", new Blob([JSON.stringify(payload)], { type: "application/json" }))
-            if (!formData.featuredImage == null) submitData.append("featuredImage", formData.featuredImage.data, formData.featuredImage.name);
+            if (formData.featuredImage) {
+                submitData.append("featuredImage", formData.featuredImage.data, formData.featuredImage.name);
+            }
 
             const updatedVideo = await updateVideo(id, submitData)
             navigate("/videos")

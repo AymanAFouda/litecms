@@ -32,6 +32,11 @@ public class CategoryController {
         return categoryService.getCategoryCounts();
     }
 
+    @GetMapping("/categories")
+    public List<Category> getAllCategories() {
+        return categoryService.findAll();
+    }
+
     @PostMapping("/publisher/categories")
     public Category createCategory(@RequestBody Category category) {
         return categoryService.createCategory(category);
@@ -40,11 +45,6 @@ public class CategoryController {
     @PutMapping("/publisher/categories/{id}")
     public Category updateCategory(@PathVariable Long id, @RequestBody Category category) {
         return categoryService.updateCategory(id, category);
-    }
-
-    @GetMapping("/publisher/categories")
-    public List<Category> getAllCategories() {
-        return categoryService.findAll();
     }
 
     @DeleteMapping("/publisher/categories/{id}")

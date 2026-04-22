@@ -30,13 +30,13 @@ const Sidebar = ({ className, variant = "default", contentTags = [], relatedCont
             <ContentSuggestions title={contentTitle} content={recentContent} />
           )}
           {!popularTagsAreLoading && !popularTagsLoadError && (
-            <TagCloud title={tagCloudTitle} tags={popularTags}/>
+            <TagCloud title={tagCloudTitle} tags={popularTagList}/>
           )}
         </>
       )}
 
       {(variant=== "home") && !popularTagsAreLoading && !popularTagsLoadError && (
-        <TagCloud title={tagCloudTitle} tags={tags}/>
+        <TagCloud title={tagCloudTitle} tags={popularTagList}/>
       )}
 
       {variant=== "content-detail" && (
@@ -45,7 +45,7 @@ const Sidebar = ({ className, variant = "default", contentTags = [], relatedCont
             <TagCloud title={tagCloudTitle} tags={contentTags}/>
           )}
           {relatedContent.length > 0 && (
-            <ContentSuggestions title={contentTitle} content={content} />
+            <ContentSuggestions title={contentTitle} content={relatedContent} />
           )}
         </>
       )}

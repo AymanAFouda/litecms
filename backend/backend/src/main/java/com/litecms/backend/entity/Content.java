@@ -46,7 +46,10 @@ public class Content {
     @Column(name = "content_title")
     private String title;
 
-    @Column(name = "content_description")
+    @Column(name = "publisher_name")
+    private String publisherName;
+
+    @Column(name = "content_description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "like_count")
@@ -87,12 +90,13 @@ public class Content {
 
     public Content() {}
 
-    public Content(Long contentId, String title, String description, Integer likeCount, 
-            Integer viewCount, LocalDateTime createdAt, Status status, Category category, 
+    public Content(Long contentId, String title, String publisherName, String description, Integer likeCount,
+            Integer viewCount, LocalDateTime createdAt, Status status, Category category,
             Set<Tag> tags, Media featuredImage, Set<Comment> comments
         ) {
         this.contentId = contentId;
         this.title = title;
+        this.publisherName = publisherName;
         this.description = description;
         this.likeCount = likeCount;
         this.viewCount = viewCount;
@@ -118,6 +122,14 @@ public class Content {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getPublisherName() {
+        return publisherName;
+    }
+
+    public void setPublisherName(String publisherName) {
+        this.publisherName = publisherName;
     }
 
     public String getDescription() {

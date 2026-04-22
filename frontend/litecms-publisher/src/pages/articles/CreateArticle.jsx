@@ -66,7 +66,9 @@ export function CreateArticle() {
 
             const submitData = new FormData();
             submitData.append("article", new Blob([JSON.stringify(payload)], { type: "application/json" }))
-            if (!formData.featuredImage == null) submitData.append("featuredImage", formData.featuredImage.data, formData.featuredImage.name);
+            if (formData.featuredImage) {
+                submitData.append("featuredImage", formData.featuredImage.data, formData.featuredImage.name);
+            }
 
             const createdArticle = await createArticle(submitData)
             toast.success("Article created successfully!")

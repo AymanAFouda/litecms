@@ -23,13 +23,13 @@ public class CommentController {
     }
     
     //CREATE COMMENT FOR A CONTENT
-    @PostMapping("/comment/{contentId}")
+    @PostMapping("/comments/{contentId}")
     public Comment create(@PathVariable Long contentId, @RequestBody Comment comment) {
         return commentService.create(contentId, comment);
     }
     
     //GET COMMENTS BY CONTENT
-    @GetMapping("/comment/content/{contentId}")
+    @GetMapping("/comments/content/{contentId}")
     public List<Comment> getCommentsByContent(@PathVariable Long contentId) {
         return commentService.getCommentsByContent(contentId);
     }

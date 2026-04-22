@@ -13,7 +13,7 @@ export const ContentDetailPage = () => {
   const { id } = useParams();
 
   const { content, isLoading, loadError } = useContentById(id);
-  const { comments, commentsAreLoading, commentsLoadError } = useComments(content?.contentId);
+  const { comments: fetchedComments, commentsAreLoading, commentsLoadError } = useComments(content?.contentId);
   const { relatedContent, relatedContentLoading, relatedContentLoadError } = useSearchRelatedContent(content?.contentId);
 
   const [comments, setComments] = useState([]);
@@ -90,22 +90,24 @@ export const ContentDetailPage = () => {
 
   if(loadError) return <p>Failed to load content.</p>;
 
-  if (!content) return <Navigate to="/404" replace />;
-
   return (
-    <PostSingle 
-      content={content}
-      liked={liked}
-      likeCount={likeCount}
-      onLikeClick={onLikeClick}
-      likeButtonIsLoading={likeButtonIsLoading}
-      comments={comments}
-      commentsAreLoading={commentsAreLoading}
-      commentsLoadError={commentsLoadError}
-      commentFormData={commentFormData}
-      setCommentFormData={setCommentFormData}
-      onSubmitComment={onSubmitComment}
-      relatedContent={relatedContent}
-    />
+    <>
+      {content && (
+        <PostSingle
+          content={content}
+          liked={liked}
+          likeCount={likeCount}
+          onLikeClick={onLikeClick}
+          likeButtonIsLoading={likeButtonIsLoading}
+          comments={comments}
+          commentsAreLoading={commentsAreLoading}
+          commentsLoadError={commentsLoadError}
+          commentFormData={commentFormData}
+          setCommentFormData={setCommentFormData}
+          onSubmitComment={onSubmitComment}
+          relatedContent={relatedContent}
+        />
+      )}
+    </>
   )
 }

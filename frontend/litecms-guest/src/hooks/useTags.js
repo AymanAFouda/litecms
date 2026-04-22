@@ -13,9 +13,9 @@ export function useTags() {
                 const data = await getTags();
                 setTagList(data);
                 
-                tagsLoadError(null);
+                setTagsLoadError(null);
             } catch (er) {
-                tagsLoadError(er);
+                setTagsLoadError(er);
             } finally {
                 setTagsAreLoading(false);
             }

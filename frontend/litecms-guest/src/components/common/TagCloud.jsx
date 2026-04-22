@@ -17,7 +17,7 @@ export const TagCloud = ({ title, tags}) => {
                             hover:bg-emerald-100 hover:text-emerald-700
                             dark:hover:bg-emerald-900/40 dark:hover:text-emerald-400
                             transition-all duration-200"
-                    >{tag}
+                    >{tag.name}
                     </Link>
                 ))}
             </div>

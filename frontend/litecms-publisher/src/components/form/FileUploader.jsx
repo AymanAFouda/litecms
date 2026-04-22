@@ -25,21 +25,13 @@ export const FileUploader = ({ setFormData, resetTrigger, initialImages = []  })
       inline: true,
       target: '#uppy-dashboard',
       showProgressDetails: true,  
-      note: "Accepted file types: jpg, png, pdf. Maximum size per photo: 10MB",
+      note: "Accepted file types: jpg, png. Maximum size per photo: 10MB",
       proudlyDisplayPoweredByUppy: false,
       showLinkToFileUploadResult: false,
       showRemoveButtonAfterComplete: false,
-      showEditButton: true,
+      showEditButton: false,
       height: 600,
       hideUploadButton: true, 
-    })
-
-    uppy.use(ImageEditor, {
-      quality: 0.8,
-      cropperOptions: {
-          viewMode: 1,
-          background: false
-      }
     })
 
     uppy.on("file-added", (image) => {
@@ -93,7 +85,7 @@ export const FeaturedImageFileUploader = ({ setFormData, resetTrigger, initialFe
 
   useEffect(() => {
     const uppyfe = new Uppy({
-      id: "file-uploader",
+      id: "featured-image-uploader",
       restrictions: {
         maxNumberOfFiles: 1,
         allowedFileTypes: [".jpg", ".png", ".jpeg"],
@@ -106,7 +98,7 @@ export const FeaturedImageFileUploader = ({ setFormData, resetTrigger, initialFe
       inline: true,
       target: '#uppyfe-dashboard',
       showProgressDetails: true,  
-      note: "Accepted file types: jpg, png, pdf. Maximum size per photo: 10MB",
+      note: "Accepted file types: jpg, png. Maximum size per photo: 10MB",
       proudlyDisplayPoweredByUppy: false,
       showLinkToFileUploadResult: false,
       showRemoveButtonAfterComplete: false,

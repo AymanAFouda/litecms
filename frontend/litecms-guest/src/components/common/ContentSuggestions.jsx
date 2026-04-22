@@ -17,25 +17,25 @@ export const ContentSuggestions  = ({ title, content}) => {
                 }`}
                 key={`key-${i}`}
                 >
-                    <img
-                        className="mr-3 h-[85px] w-[85px] rounded-md object-cover"
-                        src={
+                    <div className="mr-3 w-[85px] aspect-square rounded-md overflow-hidden flex-shrink-0">
+                        <img
+                            className="w-full h-full object-cover"
+                            src={
                             content.featuredImage
-                            ? `http://localhost:8080${content.featuredImage.fileUrl}`
-                            : "/images/default-image.png"
-                        }
-                        onError={(e) => {
-                            e.target.onerror = null; // prevent infinite loop
+                                ? `http://localhost:8080${content.featuredImage.fileUrl}`
+                                : "/images/default-image.png"
+                            }
+                            onError={(e) => {
+                            e.target.onerror = null;
                             e.target.src = "/images/default-image.png";
-                        }}
-                        width={105}
-                        height={85}
-                        alt={content.title}
-                    />
+                            }}
+                            alt={content.title}
+                        />
+                    </div>
                     <div>
                         <h3 className="h5 mb-2">
                             <Link
-                                to={`/content/1`}
+                                to={`/content/${content.contentId}`}
                                 className="block hover:text-primary"
                             >
                                 {content.title}

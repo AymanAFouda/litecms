@@ -34,7 +34,7 @@ public class ContentController {
     }
 
     //get Published Contents By Category
-    @GetMapping("/contents/Category/{name}")
+    @GetMapping("/contents/category/{name}")
     public List<Content> getPublishedContentsByCategory(@PathVariable String name) {
         return contentService.getPublishedContentsByCategory(name);
     }

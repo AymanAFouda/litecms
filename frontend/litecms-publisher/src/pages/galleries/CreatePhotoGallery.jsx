@@ -71,7 +71,9 @@ export function CreatePhotoGallery() {
                 submitData.append("files", image.data, image.name);
             });
 
-            if (!formData.featuredImage == null) submitData.append("featuredImage", formData.featuredImage.data, formData.featuredImage.name);
+            if (formData.featuredImage) {
+                submitData.append("featuredImage", formData.featuredImage.data, formData.featuredImage.name);
+            }
 
             const createdGallery = await createGallery(submitData)
 

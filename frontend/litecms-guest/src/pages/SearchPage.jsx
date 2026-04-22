@@ -44,7 +44,7 @@ export const SearchPage = () => {
 
     useEffect(() => {
         fetchResults(currentQuery, currentFilters);
-    }, [currentQuery, currentFilters.contentType, currentFilters.category, currentFilters.tag]);
+    }, [searchParams]);
 
     const handleSearch = (e) => {
         e.preventDefault();

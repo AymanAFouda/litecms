@@ -57,7 +57,7 @@ export const EditPhotoGallery = () => {
             setFormData(data)
             setInitialData(data)
 
-            if(!gallery.featuredImage == null) {loadFeaturedImageFromBackend()}
+            if(gallery.featuredImage) {loadFeaturedImageFromBackend()}
             if(gallery.mediaList.length > 0) {loadImagesFromBackend()}
         }
     }, [gallery])
@@ -125,7 +125,9 @@ export const EditPhotoGallery = () => {
             const submitData = new FormData();
 
             submitData.append("gallery", new Blob([JSON.stringify(payload)], { type: "application/json" }))
-            if (!formData.featuredImage == null) submitData.append("featuredImage", formData.featuredImage.data, formData.featuredImage.name);
+            if (formData.featuredImage) {
+                submitData.append("featuredImage", formData.featuredImage.data, formData.featuredImage.name);
+            }
 
             formData.images.forEach(file => {
                 submitData.append("files", file.data, file.name);

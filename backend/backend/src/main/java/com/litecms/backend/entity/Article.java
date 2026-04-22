@@ -14,21 +14,22 @@ public class Article extends Content{
     @Column(name = "Article_Body", columnDefinition = "TEXT")
     private String articleBody;
 
-    public Article(){
-        
-    }
+    public Article() { }
  
     public Article(String articleBody) {
         this.articleBody = articleBody;
     }
   
-    public Article(Long contentId, String title, String description, Integer likeCount, 
-            Integer viewCount, LocalDateTime createdAt, Status status, Category category, 
-            Set<Tag> tags, Media featuredImage, Set<Comment> comments, String articleBody
+    public Article(Long contentId, String title, String publisherName, 
+            String description, Integer likeCount, Integer viewCount, 
+            LocalDateTime createdAt, Status status, Category category, 
+            Set<Tag> tags, Media featuredImage, Set<Comment> comments, 
+            String articleBody
         ) {
             
-        super(contentId, title, description, likeCount, 
-            viewCount, createdAt, status, category, 
+        super(contentId, title, publisherName,
+            description, likeCount, viewCount, 
+            createdAt, status, category, 
             tags, featuredImage, comments
         );
         this.articleBody = articleBody;

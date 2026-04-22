@@ -2,9 +2,7 @@ import { getAuthHeaders } from "../utils/publisherAuth"
 const CATEGORY_API_URL = "http://localhost:8080/api/publisher/categories"
 
 export async function getCategories() {
-    const response = await fetch(CATEGORY_API_URL, {
-        headers: getAuthHeaders(),
-    });
+    const response = await fetch("http://localhost:8080/api/categories");
     if(!response.ok) throw new Error('Failed to fetch Categories');
     
     const data = await response.json();

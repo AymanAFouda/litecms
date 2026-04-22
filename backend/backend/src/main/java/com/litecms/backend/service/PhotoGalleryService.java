@@ -117,11 +117,17 @@ public class PhotoGalleryService {
     public PhotoGallery update(PhotoGallery gallery, MultipartFile[] files, MultipartFile newFeaturedImage) throws IOException {
 
         PhotoGallery original = photoGalleryRepository.findById(gallery.getContentId())
-        .orElseThrow(() -> new RuntimeException("PhotoGallery not found"));
+            .orElseThrow(() -> new RuntimeException("PhotoGallery not found"));
 
-        // Keep view and like counts
-        original.setViewCount(gallery.getViewCount());
-        original.setLikeCount(gallery.getLikeCount());
+        // Copy normal fields
+        original.setTitle(gallery.getTitle());
+        original.setPublisherName(gallery.getPublisherName());
+        original.setDescription(gallery.getDescription());
+        original.setStatus(gallery.getStatus());
+
+        // Keep old counts
+        original.setViewCount(original.getViewCount());
+        original.setLikeCount(original.getLikeCount());
 
         // Handle Category
         if (gallery.getCategory() != null) {
@@ -134,24 +140,27 @@ public class PhotoGalleryService {
         // Handle Tags
         if (gallery.getTags() != null) {
             Set<Tag> processedTags = gallery.getTags().stream()
-                .map(tag -> tagRepository.findByName(tag.getName())
-                    .orElseGet(() -> {
-                        Tag newTag = new Tag();
-                        newTag.setName(tag.getName());
-                        return tagRepository.save(newTag);
-                    }))
+                .map(tag -> {
+                    String tagName = tag.getName().trim();
+                    return tagRepository.findByName(tagName)
+                        .orElseGet(() -> {
+                            Tag newTag = new Tag();
+                            newTag.setName(tagName);
+                            return tagRepository.save(newTag);
+                        });
+                })
                 .collect(Collectors.toSet());
 
             original.setTags(processedTags);
         }
 
-        // Delete old media safely
+        // Delete old media
         for (Media media : new ArrayList<>(original.getMediaList())) {
-            mediaService.deleteFile(media); // deletes file + DB record
+            mediaService.deleteFile(media);
         }
-        original.getMediaList().clear(); // remove references from managed entity
+        original.getMediaList().clear();
 
-        // Add new media files
+        // Add new media
         if (files != null && files.length > 0) {
             for (MultipartFile file : files) {
                 Media newMedia = mediaService.saveFile(file, original);
@@ -168,7 +177,7 @@ public class PhotoGalleryService {
             original.setFeaturedImage(savedImage);
         }
 
-        PhotoGallery updatedGallery = photoGalleryRepository.save(gallery);
+        PhotoGallery updatedGallery = photoGalleryRepository.save(original);
         searchService.indexContent(updatedGallery);
         return updatedGallery;
     }
