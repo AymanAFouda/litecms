@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import dateFormat from "../../utils/dateFormat";
 import { FaRegCalendar, FaEye } from "react-icons/fa";
+import { UPLOADS_BASE_URL } from "../../services/apiConfig"
 
 export const ContentSuggestions  = ({ title, content}) => {
     
@@ -22,7 +23,7 @@ export const ContentSuggestions  = ({ title, content}) => {
                             className="w-full h-full object-cover"
                             src={
                             content.featuredImage
-                                ? `http://localhost:8080${content.featuredImage.fileUrl}`
+                                ? `${UPLOADS_BASE_URL}${content.featuredImage.fileUrl}`
                                 : "/images/default-image.png"
                             }
                             onError={(e) => {

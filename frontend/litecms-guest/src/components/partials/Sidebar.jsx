@@ -23,7 +23,7 @@ const Sidebar = ({ className, variant = "default", contentTags = [], relatedCont
   const { contentList: recentContent, isLoading: recentContentLoading, loadError: recentContentLoadError } = useRecentContent();
 
   return (
-    <aside className={`${className} px-3 lg:col-4 ${largeMedia? 'lg:pl-12 order-3 mb-8 pt-1': 'lg:px-6 order-2'}`}>
+    <aside className={`${className} ${variant === "content-detail" ? "px-0" : "px-3"} lg:col-4 ${largeMedia? 'lg:pl-12 order-3 mb-8 pt-1': 'lg:px-6 order-2'}`}>
       {(variant=== "default") && (
         <>
           {!recentContentLoading && !recentContentLoadError && (

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import dateFormat from "../../utils/dateFormat";
 import { Link } from "react-router-dom";
+import dateFormat from "../../utils/dateFormat";
 import { FaRegCalendar, FaUserAlt, FaEye, FaVideo, FaImages } from "react-icons/fa";
 import { FaNewspaper } from "react-icons/fa6";
+import { UPLOADS_BASE_URL } from "../../services/apiConfig"
 
 const iconMap = {
   PHOTOGALLERY: <FaImages />,
@@ -41,7 +42,7 @@ const ContentListItem = ({ content }) => {
           className="flex-shrink-0 rounded-lg !object-cover !h-[220px] !w-[440px] md:!h-[130px] md:!w-[200px]"
           src={
             featuredImage
-              ? `http://localhost:8080${featuredImage.fileUrl}`
+              ? `${UPLOADS_BASE_URL}${featuredImage.fileUrl}`
               : "/images/default-image.png"
           }
           onError={(e) => {
@@ -61,7 +62,7 @@ const ContentListItem = ({ content }) => {
           </div>
         )}
 
-        <div className="absolute bottom-2 right-2 text-white text-2xl drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">
+        <div className="absolute bottom-4 right-4 text-white text-5xl md:text-2xl md:bottom-2 md:right-2 drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">
           {iconMap[type] || <FaNewspaper />}
         </div>
       </div>

@@ -1,4 +1,6 @@
-const SEARCH_API_URL = "http://localhost:8080/api/search"
+import { API_BASE_URL } from "./apiConfig";
+
+const SEARCH_API_BASE_URL = API_BASE_URL + "/search"
 
 export async function search(query, filters = {}) {
   const params = new URLSearchParams();
@@ -20,7 +22,7 @@ export async function search(query, filters = {}) {
     params.append("tagName", filters.tag.trim());
   }
 
-  const response = await fetch(`${SEARCH_API_URL}?${params.toString()}`);
+  const response = await fetch(`${SEARCH_API_BASE_URL}?${params.toString()}`);
 
   if (!response.ok) {
     throw new Error("Failed to fetch search results");
@@ -30,7 +32,7 @@ export async function search(query, filters = {}) {
 }
 
 export async function getRelatedContent(contentId) {
-    const response = await fetch(`${SEARCH_API_URL}/related/${contentId}`);
+    const response = await fetch(`${SEARCH_API_BASE_URL}/related/${contentId}`);
 
     if(!response.ok) throw new Error('Failed to fetch related content');
     return await response.json();

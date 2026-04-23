@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaRegCalendar, FaUserAlt, FaEye, FaVideo, FaImages } from "react-icons/fa";
 import { FaNewspaper } from "react-icons/fa6";
 import { useState, useEffect } from "react";
+import { UPLOADS_BASE_URL } from "../../services/apiConfig"
 
 const iconMap = {
   PHOTOGALLERY: <FaImages />,
@@ -29,13 +30,13 @@ const Post = ({ content }) => {
   }, []);
   return (
     <div className="post">
-      <div className="relative">
+      <div className="relative max-h-[500px] overflow-hidden">
         {content.featuredImage && (
           <img
-            className="rounded w-full"
+            className="rounded w-full h-[500px] object-cover"
             src={
               content.featuredImage
-                ? `http://localhost:8080${content.featuredImage.fileUrl}`
+                ? `${UPLOADS_BASE_URL}${content.featuredImage.fileUrl}`
                 : "/images/default-image.png"
             }
             onError={(e) => {
@@ -56,7 +57,7 @@ const Post = ({ content }) => {
           </div>
         )}
 
-        <div className="absolute bottom-5 right-5 text-white text-6xl drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">
+        <div className="absolute bottom-4 right-4 text-white text-5xl md:text-6xl md:bottom-5 md:right-5 drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">
           {iconMap[content.type] || <FaNewspaper />}
         </div>
       </div>

@@ -28,6 +28,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "contents")
@@ -204,7 +205,11 @@ public class Content {
         this.comments = comments;
     }
 
+    @Transient
     public String getType() {
-        return type;
+        if (this instanceof Article) return "ARTICLE";
+        if (this instanceof Video) return "VIDEO";
+        if (this instanceof PhotoGallery) return "PHOTOGALLERY";
+        return null;
     }
 }

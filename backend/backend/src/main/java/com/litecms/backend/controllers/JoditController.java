@@ -33,15 +33,18 @@ public class JoditController {
 
         if (Files.exists(dirPath)) {
             files = Files.list(dirPath)
+                .filter(Files::isRegularFile)
                 .map(path -> {
                     Map<String, Object> file = new HashMap<>();
                     String fileName = path.getFileName().toString();
 
+                    file.put("file", fileName);
                     file.put("name", fileName);
 
-                    if (fileName.matches(".*\\.(png|jpg|jpeg|gif|webp)$")) {
+                    if (fileName.toLowerCase().matches(".*\\.(png|jpg|jpeg|gif|webp)$")) {
                         file.put("type", "image");
-                        file.put("thumb", fileName );
+                        file.put("thumb", fileName);
+                        file.put("url", fileName);
                     } else {
                         file.put("type", "file");
                     }
@@ -53,10 +56,10 @@ public class JoditController {
 
         Map<String, Object> source = new HashMap<>();
         source.put("baseurl", "http://localhost:8080/uploads/article-body-files/");
-        source.put("path", "/");
+        source.put("path", "");
         source.put("name", "default");
         source.put("files", files);
-        source.put("folders", new ArrayList<>()); //CRITICAL FIX
+        source.put("folders", new ArrayList<>());
 
         Map<String, Object> data = new HashMap<>();
         data.put("sources", List.of(source));
@@ -77,13 +80,20 @@ public class JoditController {
 
         for (MultipartFile file : files) {
 
-            String fileName = UUID.randomUUID().toString();
+            String originalName = file.getOriginalFilename();
+            String extension = "";
+
+            if (originalName != null && originalName.contains(".")) {
+                extension = originalName.substring(originalName.lastIndexOf("."));
+            }
+
+            String fileName = UUID.randomUUID() + extension;
 
             Path filePath = Paths.get(uploadDir, "article-body-files", fileName);
             Files.createDirectories(filePath.getParent());
             Files.write(filePath, file.getBytes());
 
-            uploadedFiles.add(fileName); //ONLY filename (important)
+            uploadedFiles.add(fileName);
         }
 
         return Map.of(

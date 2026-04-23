@@ -4,6 +4,7 @@ import { FaRegCalendar, FaUserAlt, FaEye, FaThumbsUp } from "react-icons/fa";
 
 import dateFormat from "../../utils/dateFormat";
 import { markdownify } from "../../utils/textConverter";
+import { UPLOADS_BASE_URL } from "../../services/apiConfig"
 
 import Sidebar from "../partials/Sidebar";
 import CommentSection from "../common/CommentSection";
@@ -30,23 +31,19 @@ const PostSingle = ({
   const [largeMedia, setLargeMedia] = useState(false)
 
   return (
-    <section className="section single-blog">
+    <section className="section single-blog pt-10">
       <div className="container">
         <div className="row">
           <div className={`p-0 ${largeMedia? 'lg:col-12' : 'lg:col-8'} order-1`}>
             <article>
               <div className="relative">
                 {featuredImage ? ( 
-                  <>
-                    <div className="w-full h-[350px] object-cover overflow-hidden rounded-lg">
+                  <div>
                       <img
-                        src={`http://localhost:8080${featuredImage.fileUrl}`}
-                        height={300}
-                        width={1000}
+                        src={`${UPLOADS_BASE_URL}${featuredImage.fileUrl}`}
                         alt={title}
-                        className="w-full h-full object-cover"
+                        className="w-full max-w-[854px] h-[350px] object-cover overflow-hidden rounded-lg"
                       />
-                    </div>
                     <div className="absolute top-2 left-2 flex flex-wrap items-center">
                       {category && (
                         <Link
@@ -57,7 +54,7 @@ const PostSingle = ({
                         </Link>
                       )}
                     </div>
-                  </>
+                  </div>
                 ) : (
                   <div className="absolute absolute top-[-40px]">
                     {category && (

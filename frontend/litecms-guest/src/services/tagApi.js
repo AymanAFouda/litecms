@@ -1,14 +1,16 @@
-const BASE_API_URL = "http://localhost:8080/api"
+import { API_BASE_URL } from "./apiConfig";
+
+const TAG_API_BASE_URL = API_BASE_URL + "/tags"
 
 export async function getTags() {
-    const response = await fetch(`${BASE_API_URL}/tags`);
+    const response = await fetch(TAG_API_BASE_URL);
 
     if(!response.ok) throw new Error('Failed to fetch tags');
     return await response.json();
 }
 
 export async function getPopularTags() {
-    const response = await fetch(`${BASE_API_URL}/tags/popular`);
+    const response = await fetch(`${TAG_API_BASE_URL}/popular`);
 
     if(!response.ok) throw new Error('Failed to fetch popular tags');
     return await response.json();

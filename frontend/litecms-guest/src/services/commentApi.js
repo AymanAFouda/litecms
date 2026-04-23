@@ -1,7 +1,9 @@
-const BASE_API_URL = "http://localhost:8080/api/comments"
+import { API_BASE_URL } from "./apiConfig";
+
+const COMMENT_API_BASE_URL = API_BASE_URL + "/comments"
 
 export async function getComments(contentId) {
-    const response = await fetch(`${BASE_API_URL}/content/${contentId}`)
+    const response = await fetch(`${COMMENT_API_BASE_URL}/content/${contentId}`)
 
     if(!response.ok) throw new Error('Failed to fetch comments');
     return await response.json();
@@ -9,7 +11,7 @@ export async function getComments(contentId) {
 
 export async function createComment(comment, contentId) {
     console.log(comment)
-    const response = await fetch(`${BASE_API_URL}/${contentId}`, {
+    const response = await fetch(`${COMMENT_API_BASE_URL}/${contentId}`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",

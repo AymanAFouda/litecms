@@ -4,7 +4,7 @@ import ThemeSwitcher from "../common/ThemeSwitcher";
 import SearchModal from "../partials/SearchModal";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { IoSearch } from "react-icons/io5";
+import { IoSearch, IoClose } from "react-icons/io5";
 
 const Header = ({ currentPath = "/" }) => {
   // distructuring the main menu from menu object
@@ -39,16 +39,10 @@ const Header = ({ currentPath = "/" }) => {
             } lg:flex lg:translate-x-0`}
           >
             <button
-              className="absolute right-6 top-11 lg:hidden"
+              className="absolute right-6 top-11 text-3xl lg:hidden"
               onClick={() => setShowMenu(false)}
             >
-              <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20">
-                <title>Menu Close</title>
-                <polygon
-                  points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
-                  transform="rotate(45 10 10)"
-                />
-              </svg>
+              <IoClose />
             </button>
             <ul
               id="nav-menu"
@@ -148,7 +142,11 @@ const Header = ({ currentPath = "/" }) => {
         />
       </nav>
       {showMenu && (
-        <div className="header-backdrop absolute top-0 left-0 h-[100vh] w-full bg-black/50 lg:hidden"></div>
+        <div 
+          className="header-backdrop absolute top-0 left-0 h-[100vh] w-full bg-black/50 lg:hidden"
+          onClick={() => setShowMenu(false)}
+        >
+        </div>
       )}
     </header>
   );

@@ -37,6 +37,7 @@ export function useSearch(query, filters) {
                     createdAt: hit._source?.createdAt ?? "",
                     viewCount: hit._source?.viewCount ?? 0,
                     description: hit._source?.description ?? "",
+                    type: hit._source?.type ?? "",
                 }))
             );
 

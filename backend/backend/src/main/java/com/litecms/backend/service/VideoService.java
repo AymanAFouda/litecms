@@ -77,6 +77,9 @@ public class VideoService {
     // Create Video
     @Transactional
     public Video create(Video video, MultipartFile featuredImage) throws IOException {
+        if (video.getStatus() == null) {
+            video.setStatus(Status.DRAFT);
+        }
 
         // Ensure category exists
         if (video.getCategory() != null) {
@@ -116,6 +119,7 @@ public class VideoService {
 
         video.setViewCount(originalVideo.getViewCount());
         video.setLikeCount(originalVideo.getLikeCount());
+        video.setComments(originalVideo.getComments());
 
         if (video.getCategory() != null) {
             Long categoryId = video.getCategory().getId();

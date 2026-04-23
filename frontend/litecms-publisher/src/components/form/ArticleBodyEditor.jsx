@@ -56,8 +56,10 @@ export const ArticleBodyEditor = ({ value, onChange, placeholder }) => {
         filebrowser: {
             ajax: {
                 url: "http://localhost:8080/api/file-list",
-                method: "GET"
-            }
+                method: "GET",
+            },
+            isSuccess: (resp) => resp.success,
+            process: (resp) => resp.data,
         },
 
         removeButtons: [

@@ -7,6 +7,7 @@ import { FaRegCalendar, FaUserAlt, FaEye } from "react-icons/fa";
 import  ContentList  from "../components/layouts/ContentList"
 import Sidebar from "../components/partials/Sidebar";
 import { useContent } from "../hooks/useContent";
+import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
 
 export const HomePage = () => {
 
@@ -21,6 +22,8 @@ export const HomePage = () => {
     useEffect(() => {
       setLatestPublishedContent(contentList[0] || null);
     }, [contentList]);
+
+    if(isLoading) return <LoadingSpinner />
 
     return (
     <section className="section pt-0 ">

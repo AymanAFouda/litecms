@@ -1,8 +1,45 @@
 export function LoadingSpinner() {
     return (
-        <main className="spinner-container right_col d-flex justify-content-center align-items-center pt-0" role="main" aria-label="Main content"> 
-            <div className="large-spinner spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
+        <main
+            className="spinner-container right_col d-flex justify-content-center align-items-center"
+            role="main"
+            aria-label="Main content"
+            style={{ minHeight: "80vh" }}  // important for vertical centering
+        >
+            <div className="text-center">
+                <svg
+                width="64"
+                height="64"
+                fill="#0284c7"
+                viewBox="0 0 24 24"
+                >
+                    <circle cx="4" cy="12" r="3">
+                        <animate
+                        id="spinner_jObz"
+                        begin="0;spinner_vwSQ.end-0.25s"
+                        attributeName="r"
+                        dur="0.75s"
+                        values="3;.2;3"
+                        />
+                    </circle>
+                    <circle cx="12" cy="12" r="3">
+                        <animate
+                        begin="spinner_jObz.end-0.6s"
+                        attributeName="r"
+                        dur="0.75s"
+                        values="3;.2;3"
+                        />
+                    </circle>
+                    <circle cx="20" cy="12" r="3">
+                        <animate
+                        id="spinner_vwSQ"
+                        begin="spinner_jObz.end-0.45s"
+                        attributeName="r"
+                        dur="0.75s"
+                        values="3;.2;3"
+                        />
+                    </circle>
+                </svg>
             </div>
         </main>
     );

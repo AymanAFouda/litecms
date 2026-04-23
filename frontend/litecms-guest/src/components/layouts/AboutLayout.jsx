@@ -1,5 +1,6 @@
 import { markdownify } from "../../utils/textConverter";
 import ReactMarkdown from "react-markdown";
+import { LoadingSpinner } from "../shortcodes/LoadingSpinner";
 
 const AboutLayout = ({ data }) => {
   const { title, content } = data;

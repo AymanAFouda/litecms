@@ -78,6 +78,9 @@ public class ArticleService {
     // Create Article  
     @Transactional
     public Article create(Article article, MultipartFile featuredImage) throws IOException {
+        if (article.getStatus() == null) {
+            article.setStatus(Status.DRAFT);
+        }
 
         // Ensure category exists
         if (article.getCategory() != null) {
@@ -117,6 +120,7 @@ public class ArticleService {
 
         article.setViewCount(originalArticle.getViewCount());
         article.setLikeCount(originalArticle.getLikeCount());
+        article.setComments(originalArticle.getComments());
 
         // Handle Category
         if (article.getCategory() != null) {

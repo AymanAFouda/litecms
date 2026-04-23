@@ -3,7 +3,7 @@ import { LoadingSpinner } from "../shortcodes/LoadingSpinner";
 
 function CommentSection({ comments, commentFormData, setCommentFormData, onSubmitComment, commentsAreLoading, commentsLoadError }) {
     return (
-        <section className="w-full antialiased">
+        <section className="w-full antialiased mt-3">
             <div className="w-full max-w-4xl mx-auto container p-0 ml-0">
                 <h2 className="section-title mb-2">
                     {`Comments (${comments? comments.length : 0})`}

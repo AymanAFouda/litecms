@@ -28,7 +28,6 @@ public class PhotoGalleryService {
     private final MediaService mediaService;
     private final TagRepository tagRepository;
     private final SearchService searchService;
-    private final String uploadDir = "uploads";
 
     public PhotoGalleryService(PhotoGalleryRepository photoGalleryRepository, 
             CategoryRepository categoryRepository, MediaService mediaService,
@@ -78,6 +77,9 @@ public class PhotoGalleryService {
     // Create PhotoGallery
     @Transactional
     public PhotoGallery create(PhotoGallery gallery, MultipartFile[] files,  MultipartFile featuredImage) throws IOException {
+        if (gallery.getStatus() == null) {
+            gallery.setStatus(Status.DRAFT);
+        }
 
         // Ensure category exists
         if (gallery.getCategory() != null) {
@@ -128,6 +130,7 @@ public class PhotoGalleryService {
         // Keep old counts
         original.setViewCount(original.getViewCount());
         original.setLikeCount(original.getLikeCount());
+        original.setComments(original.getComments());
 
         // Handle Category
         if (gallery.getCategory() != null) {

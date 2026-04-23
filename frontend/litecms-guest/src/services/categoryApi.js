@@ -1,14 +1,16 @@
-const BASE_API_URL = "http://localhost:8080/api"
+import { API_BASE_URL } from "./apiConfig";
+
+const CATEGORY_API_BASE_URL = API_BASE_URL + "/categories"
 
 export async function getCategories() {
-    const response = await fetch(`${BASE_API_URL}/categories`);
+    const response = await fetch(CATEGORY_API_BASE_URL);
 
     if(!response.ok) throw new Error('Failed to fetch categories');
     return await response.json();
 }
 
 export async function getCategoriesAndCounts() {
-    const response = await fetch(`${BASE_API_URL}/categories/count`);
+    const response = await fetch(`${CATEGORY_API_BASE_URL}/count`);
 
     if(!response.ok) throw new Error('Failed to fetch categories');
     return await response.json();

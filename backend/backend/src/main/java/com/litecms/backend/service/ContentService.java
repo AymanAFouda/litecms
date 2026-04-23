@@ -12,9 +12,11 @@ import com.litecms.backend.repositories.ContentRepository;
  public class ContentService {
 
     private final ContentRepository contentRepository;
+    private final SearchService searchService;
  
-    public ContentService(ContentRepository contentRepository){
+    public ContentService(ContentRepository contentRepository, SearchService searchService){
         this.contentRepository =  contentRepository;
+        this.searchService = searchService;
     }
     //get Published Contents
     public List<Content> getPublishedContents() {
@@ -51,6 +53,11 @@ import com.litecms.backend.repositories.ContentRepository;
             throw new RuntimeException("Content not found with ID: " + id);
         }
         contentRepository.incrementLike(id);
+
+        Content updatedcontent = contentRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Published content not found with ID: " + id));
+        
+        searchService.indexContent(updatedcontent);
     }
 
     //unlike Content
@@ -60,6 +67,11 @@ import com.litecms.backend.repositories.ContentRepository;
             throw new RuntimeException("Content not found with ID: " + id);
         }
         contentRepository.decrementLike(id);
+
+        Content updatedcontent = contentRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Published content not found with ID: " + id));
+        
+        searchService.indexContent(updatedcontent);
     }
 
     //view Content
@@ -69,6 +81,11 @@ import com.litecms.backend.repositories.ContentRepository;
             throw new RuntimeException("Content not found with ID: " + id);
         }
         contentRepository.incrementView(id);
+
+        Content updatedcontent = contentRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Published content not found with ID: " + id));
+        
+        searchService.indexContent(updatedcontent);
     }
 
     // Get all content
