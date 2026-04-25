@@ -51,7 +51,6 @@ export function Categories() {
             )
             toast.success("Category Edited");
         } catch(er) {
-            console.log(er)
             toast.error("Failed to edit Category")
         } finally {
             handleCloseEditModal();
@@ -80,7 +79,6 @@ export function Categories() {
             setCategories(prev => prev.filter(cat => cat.id !== selectedCategory.id))
             toast.success("Category Deleted")
         } catch(er) {
-            console.log(er)
             toast.error("Failed to delete Category")
         } finally {
             handleCloseDeleteModal();

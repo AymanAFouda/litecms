@@ -1,5 +1,6 @@
+import { API_BASE_URL } from "./apiConfig";
 import { getAuthHeaders } from "../utils/publisherAuth"
-const video_API_URL = "http://localhost:8080/api/publisher/videos"
+const video_API_URL = API_BASE_URL + "/api/publisher/videos"
 
 export async function getVideos() {
     const response = await fetch(video_API_URL, {

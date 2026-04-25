@@ -16,7 +16,6 @@ export function usePublisherDashboard() {
 
                 const content = await getLatestContent();
                 setLatestContent(content);
-                console.log(content)
 
                 setLoadError(null);
             } catch (er) {

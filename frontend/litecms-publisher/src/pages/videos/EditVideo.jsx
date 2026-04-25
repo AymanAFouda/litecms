@@ -6,6 +6,7 @@ import { ContentForm } from "../../components/form/ContentForm";
 import { LoadingSpinner } from "../../components/common/LoadingSpinner";
 import { LoadError } from "../../components/common/LoadError";
 
+import { API_BASE_URL } from "../../services/apiConfig";
 import { updateVideo } from "../../services/videoApi";
 import { useCategories } from "../../hooks/useCategories";
 import { useContent } from "../../hooks/useContent";
@@ -62,9 +63,8 @@ export function EditVideo() {
     }
 
     const loadFeaturedImageFromBackend = async () => {
-        const featuredImage = video.featuredImage
-        console.log(featuredImage)
-        const fileResponse = await fetch(`http://localhost:8080${featuredImage.fileUrl}`);
+        const featuredImage = video.featuredImage;
+        const fileResponse = await fetch(`${API_BASE_URL}${featuredImage.fileUrl}`);
 
         if (!fileResponse.ok) {
         throw new Error("Failed to fetch file");
@@ -110,7 +110,6 @@ export function EditVideo() {
             toast.success("Video updated successfully!")
 
         } catch(er) {
-            console.log(er)
             toast.error("Failed to edit Video")
         } finally {
             setIsSubmitting(false)

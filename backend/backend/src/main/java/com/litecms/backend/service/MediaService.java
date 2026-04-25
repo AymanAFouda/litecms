@@ -57,7 +57,7 @@ public class MediaService {
         //Save metadata in DB
         Media media = new Media();
         media.setFileName(originalName);
-        media.setFileUrl("/uploads/" + storedFileName); // for serving
+        media.setFileUrl("/" + uploadDir + "/" + storedFileName); // for serving
         media.setMimeType(mimeType);
          
         return mediaRepository.save(media);
@@ -93,7 +93,7 @@ public class MediaService {
         //Save metadata in DB
         Media media = new Media();
         media.setFileName(originalName);
-        media.setFileUrl("/uploads/" + storedFileName); // for serving
+        media.setFileUrl("/" + uploadDir + "/" + storedFileName); // for serving
         media.setMimeType(mimeType);
         media.setPhotoGallery(gallery);
 

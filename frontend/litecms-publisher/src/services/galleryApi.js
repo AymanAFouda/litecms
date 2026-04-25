@@ -1,5 +1,6 @@
+import { API_BASE_URL } from "./apiConfig";
 import { getAuthHeaders } from "../utils/publisherAuth"
-const PHOTO_GALLERY_API_URL = "http://localhost:8080/api/publisher/galleries"
+const PHOTO_GALLERY_API_URL = API_BASE_URL + "/api/publisher/galleries"
 
 export async function getGalleries() {
     const response = await fetch(PHOTO_GALLERY_API_URL, {

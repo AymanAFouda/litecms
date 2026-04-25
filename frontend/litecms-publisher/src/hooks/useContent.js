@@ -23,7 +23,6 @@ export function useContent(contentType, id) {
                 } else if(contentType == 'gallery') {
                     const data = await getGallery(id);
                     setContent(data);
-                    console.log(data)
                 }
                 setLoadError(null);
             } catch (er) {

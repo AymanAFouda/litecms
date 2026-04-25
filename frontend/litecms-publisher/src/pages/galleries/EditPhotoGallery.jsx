@@ -6,6 +6,7 @@ import { ContentForm } from "../../components/form/ContentForm";
 import { LoadingSpinner } from "../../components/common/LoadingSpinner";
 import { LoadError } from "../../components/common/LoadError";
 
+import { API_BASE_URL } from "../../services/apiConfig";
 import { updateGallery } from "../../services/galleryApi";
 import { useCategories } from "../../hooks/useCategories";
 import { useContent } from "../../hooks/useContent";
@@ -64,7 +65,7 @@ export const EditPhotoGallery = () => {
 
     const loadFeaturedImageFromBackend = async () => {
         const featuredImage = gallery.featuredImage
-        const fileResponse = await fetch(`http://localhost:8080${featuredImage.fileUrl}`);
+        const fileResponse = await fetch(`${API_BASE_URL}${featuredImage.fileUrl}`);
 
         if (!fileResponse.ok) {
         throw new Error("Failed to fetch file");
@@ -82,7 +83,7 @@ export const EditPhotoGallery = () => {
     const loadImagesFromBackend = async () => {
         const images = await Promise.all(
             gallery.mediaList.map(async (file) => {
-                const fileResponse = await fetch(`http://localhost:8080${file.fileUrl}`);
+                const fileResponse = await fetch(`${API_BASE_URL}${file.fileUrl}`);
 
                 if (!fileResponse.ok) {
                 throw new Error("Failed to fetch file");
@@ -138,7 +139,6 @@ export const EditPhotoGallery = () => {
             toast.success("Photo Gallery updated successfully!")
             navigate("/galleries")
         } catch(er) {
-            console.log(er)
             toast.error("Failed to edit Photo Gallery")
         } finally {
             setIsSubmitting(false)

@@ -6,6 +6,7 @@ import { ContentForm } from "../../components/form/ContentForm";
 import { LoadingSpinner } from "../../components/common/LoadingSpinner";
 import { LoadError } from "../../components/common/LoadError";
 
+import { API_BASE_URL } from "../../services/apiConfig";
 import { updateArticle } from "../../services/articleApi";
 import { useCategories } from "../../hooks/useCategories";
 import { useContent } from "../../hooks/useContent";
@@ -63,7 +64,7 @@ export function EditArticle() {
 
     const loadFeaturedImageFromBackend = async () => {
         const featuredImage = article.featuredImage
-        const fileResponse = await fetch(`http://localhost:8080${featuredImage.fileUrl}`);
+        const fileResponse = await fetch(`${API_BASE_URL}${featuredImage.fileUrl}`);
 
         if (!fileResponse.ok) {
         throw new Error("Failed to fetch file");
@@ -101,25 +102,14 @@ export function EditArticle() {
             const submitData = new FormData();
             submitData.append("article", new Blob([JSON.stringify(payload)], { type: "application/json" }))
             if (formData.featuredImage) {
-                console.log("featuredImage:", formData.featuredImage);
-                console.log("featuredImage.name:", formData.featuredImage.name);
-                console.log("featuredImage.type:", formData.featuredImage.type);
-                console.log("featuredImage.data:", formData.featuredImage.data);
-                console.log("featuredImage.data instanceof File:", formData.featuredImage.data instanceof File);
-                console.log("featuredImage.data.type:", formData.featuredImage.data?.type);
-                console.log("featuredImage.data.name:", formData.featuredImage.data?.name);
-
                 submitData.append("featuredImage", formData.featuredImage.data, formData.featuredImage.name);
-            } else {
-                console.log("No featured image");
-            }
+            } 
 
             const updatedArticle = await updateArticle(id, submitData)
             navigate("/articles")
             toast.success("Article updated successfully!")
 
         } catch(er) {
-            console.log(er)
             toast.error("Failed to edit Article")
         } finally {
             setIsSubmitting(false)

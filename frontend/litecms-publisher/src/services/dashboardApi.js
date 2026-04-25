@@ -1,6 +1,7 @@
+import { API_BASE_URL } from "./apiConfig";
 import { getAuthHeaders } from "../utils/publisherAuth"
-const STATS_API_URL = "http://localhost:8080/api/publisher/stats"
-const CONTENT_API_URL = "http://localhost:8080/api/publisher/contents/latest-ten"
+const STATS_API_URL = API_BASE_URL + "/api/publisher/stats"
+const CONTENT_API_URL = API_BASE_URL + "/api/publisher/contents/latest-ten"
 
 export async function getStats() {
     const response = await fetch(STATS_API_URL, {

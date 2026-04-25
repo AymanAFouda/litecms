@@ -76,8 +76,6 @@ export function CreatePhotoGallery() {
             }
 
             const createdGallery = await createGallery(submitData)
-
-            console.log(createdGallery)
             toast.success("Photo Gallery created successfully!")
 
             if(createAnother) {
@@ -87,7 +85,6 @@ export function CreatePhotoGallery() {
                 navigate("/galleries")
             }
         } catch(er) {
-            console.log(er)
             toast.error("Failed to create Photo Gallery")
         } finally {
             setIsSubmitting(false)

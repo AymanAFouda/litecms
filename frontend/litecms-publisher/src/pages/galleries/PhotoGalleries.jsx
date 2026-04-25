@@ -41,7 +41,6 @@ export function PhotoGalleries() {
             await deleteGallery(selectedPhotoGallery.contentId)
             setPhotoGalleries(photoGalleries.filter((item) => item.contentId !== selectedPhotoGallery.contentId));
         } catch(er) {
-            console.log(er)
             toast.error("Failed to delete Photo Gallery")
         } finally {
             handleCloseDeleteModal();

@@ -63,7 +63,6 @@ export function CreateVideo() {
                 status: formData.status,
                 videoUrl: formData.videoUrl,
             }
-            console.log(payload)
 
             const submitData = new FormData();
             submitData.append("video", new Blob([JSON.stringify(payload)], { type: "application/json" }))
@@ -81,7 +80,6 @@ export function CreateVideo() {
                 navigate("/videos")
             }
         } catch(er) {
-            console.log(er)
             toast.error("Failed to create Video")
         } finally {
             setIsSubmitting(false)

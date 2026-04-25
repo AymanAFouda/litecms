@@ -42,7 +42,6 @@ export function Articles() {
             await deleteArticle(selectedArticle.contentId)
             setArticles(articles.filter((item) => item.contentId !== selectedArticle.contentId));
         } catch(er) {
-            console.log(er)
             toast.error("Failed to delete Article")
         } finally {
             handleCloseDeleteModal();

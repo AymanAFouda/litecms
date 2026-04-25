@@ -10,7 +10,6 @@ export async function getComments(contentId) {
 }
 
 export async function createComment(comment, contentId) {
-    console.log(comment)
     const response = await fetch(`${COMMENT_API_BASE_URL}/${contentId}`, {
         method: 'POST',
         headers: {

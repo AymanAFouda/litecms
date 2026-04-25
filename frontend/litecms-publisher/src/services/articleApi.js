@@ -1,5 +1,6 @@
+import { API_BASE_URL } from "./apiConfig";
 import { getAuthHeaders } from "../utils/publisherAuth"
-const ARTICLE_API_URL = "http://localhost:8080/api/publisher/articles"
+const ARTICLE_API_URL = API_BASE_URL + "/api/publisher/articles"
 
 export async function getArticles() {
     const response = await fetch(ARTICLE_API_URL, {

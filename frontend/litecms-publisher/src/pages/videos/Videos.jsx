@@ -41,7 +41,6 @@ export function Videos() {
             await deleteVideo(selectedVideo.contentId)
             setVideos(videos.filter((item) => item.contentId !== selectedVideo.contentId));
         } catch(er) {
-            console.log(er)
             toast.error("Failed to delete Video")
         } finally {
             handleCloseDeleteModal();

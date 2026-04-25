@@ -96,7 +96,6 @@ export function Home() {
 
             toast.success("Content deleted successfully")
         } catch(er) {
-            console.log(er)
             toast.error("Failed to delete Content")
         } finally {
             handleCloseDeleteModal();

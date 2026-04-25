@@ -55,7 +55,7 @@ public class JoditController {
         }
 
         Map<String, Object> source = new HashMap<>();
-        source.put("baseurl", "http://localhost:8080/uploads/article-body-files/");
+        source.put("baseurl", "http://localhost:8080/" + uploadDir + "/article-body-files/");
         source.put("path", "");
         source.put("name", "default");
         source.put("files", files);
@@ -99,7 +99,7 @@ public class JoditController {
         return Map.of(
             "data", Map.of(
                 "files", uploadedFiles,
-                "path", "/uploads/article-body-files/",
+                "path", "/" + uploadDir + "/article-body-files/",
                 "baseurl", "http://localhost:8080",
                 "error", 0,
                 "messages", List.of()

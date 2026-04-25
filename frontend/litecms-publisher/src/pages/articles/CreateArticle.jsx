@@ -80,7 +80,6 @@ export function CreateArticle() {
                 navigate("/articles")
             }
         } catch(er) {
-            console.log(er)
             toast.error("Failed to create Article")
         } finally {
             setIsSubmitting(false)

@@ -37,7 +37,6 @@ export function CreateCategory() {
                 navigate("/categories")
             }
         } catch(er) {
-            console.log(er)
             toast.error("Failed to create Category")
         } finally {
             setIsSubmitting(false)

@@ -15,7 +15,6 @@ export function useCategories() {
                 setCategories(data);
                 setLoadError(null);
             } catch (er) {
-                console.log(er)
                 toast.error("Failed to load categories");
                 setLoadError(er);
             } finally {

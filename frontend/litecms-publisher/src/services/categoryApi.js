@@ -1,5 +1,6 @@
+import { API_BASE_URL } from "./apiConfig";
 import { getAuthHeaders } from "../utils/publisherAuth"
-const CATEGORY_API_URL = "http://localhost:8080/api/publisher/categories"
+const CATEGORY_API_URL = API_BASE_URL + "/api/publisher/categories"
 
 export async function getCategories() {
     const response = await fetch("http://localhost:8080/api/categories");
