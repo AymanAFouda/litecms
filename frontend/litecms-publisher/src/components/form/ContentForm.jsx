@@ -143,7 +143,7 @@ export const ContentForm = ({
         </div>
 
         <div className="mb-4 row w-100">
-            <label className="col-form-label col-sm-1 mb-2">
+            <label className="col-form-label col-sm-1 mb-2" htmlFor="uppyfe-dashboard">
                 Featured image
             </label>
             <div className="col-sm-12">
@@ -160,7 +160,7 @@ export const ContentForm = ({
 
         {contentType == 'article' && (
             <div className="row">
-                <label className="col-form-label col-sm-1 mb-2">
+                <label className="col-form-label col-sm-1 mb-2" htmlFor="article-body">
                     Article Body
                 </label>
                 <div className="col-sm-12">
@@ -196,7 +196,7 @@ export const ContentForm = ({
 
         {contentType === 'gallery' && (
             <div className="row">
-                <label className="col-form-label col-sm-1 mb-2">
+                <label className="col-form-label col-sm-1 mb-2" htmlFor="uppy-dashboard">
                     Images
                 </label>
                 <div className="col-sm-12">
@@ -212,7 +212,7 @@ export const ContentForm = ({
         {mode === 'create' && (
             <>
             <div className="border-top border-primary border-opacity-25 mt-4 mb-3"></div>
-            <div className="row ">
+            <div className="row">
                 <div className="col-sm-12">
                     <AnotherCheckBox 
                         label={`Create another ${contentType} after this`}

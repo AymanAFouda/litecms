@@ -44,7 +44,7 @@ public class Content {
     @Column(name = "content_id")
     private Long contentId;
 
-    @Column(name = "content_title")
+    @Column(name = "content_title", nullable=false)
     private String title;
 
     @Column(name = "publisher_name")

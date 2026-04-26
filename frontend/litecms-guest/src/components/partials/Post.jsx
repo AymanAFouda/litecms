@@ -43,6 +43,7 @@ const Post = ({ content }) => {
               e.target.onerror = null; // prevent infinite loop
               e.target.src = "/images/default-image.png";
             }}
+            alt={content.title}
           />
         )}
 

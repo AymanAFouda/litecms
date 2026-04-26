@@ -5,7 +5,6 @@ const getLikedContentIds = () => {
     const stored = localStorage.getItem(LIKED_CONTENT_KEY);
     return stored ? JSON.parse(stored) : [];
   } catch (error) {
-    console.error("Failed to read liked content IDs", error);
     return [];
   }
 };
@@ -14,7 +13,6 @@ const saveLikedContentIds = (ids) => {
   try {
     localStorage.setItem(LIKED_CONTENT_KEY, JSON.stringify(ids));
   } catch (error) {
-    console.error("Failed to save liked content IDs", error);
   }
 };
 

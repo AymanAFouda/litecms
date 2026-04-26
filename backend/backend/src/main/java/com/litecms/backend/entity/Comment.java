@@ -24,8 +24,10 @@ public class Comment  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
+    @Column(nullable = false)
     private String guestName;
 
+    @Column(nullable = false)
     private String commentText;
    
     @CreatedDate

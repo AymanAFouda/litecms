@@ -38,7 +38,7 @@ export function Login() {
                             <div className="card-body p-5">
                                 <div className="text-center mb-4">
                                     <div className="d-flex align-items-center justify-content-center mb-3">
-                                        <img src="/images/logo.png" alt="LiteCMS" className="login-logo"/>
+                                        <img src="/images/logo.png" alt="LiteCMS logo" className="login-logo"/>
                                     </div>
                                 </div>
 

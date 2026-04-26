@@ -1,10 +1,10 @@
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 import { markdownify } from "../utils/textConverter";
 import ContentList from "../components/layouts/ContentList";
 import Sidebar from "../components/partials/Sidebar";
 import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
 import { useContent } from "../hooks/useContent";
-
 
 export const ArticlesPage = () => {
     const { contentList, isLoading, loadError} = useContent('articles')
@@ -12,6 +12,12 @@ export const ArticlesPage = () => {
     useEffect(() => {
         document.title = "Articles - LiteCMS"
     }, []);
+
+    useEffect(() => {
+        if (loadError) {
+            toast.error("Failed to load articles. Please try again.");
+        }
+    }, [loadError]);
 
     return(
         <div className="section pt-0">

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 import { markdownify } from "../utils/textConverter";
 import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
 import ContentList from "../components/layouts/ContentList";
@@ -11,6 +12,12 @@ export const GalleriesPage = () => {
     useEffect(() => {
         document.title = "Photo Galleries - LiteCMS"
     }, []);
+
+    useEffect(() => {
+        if (loadError) {
+            toast.error("Failed to load photo galleries. Please try again.");
+        }
+    }, [loadError]);
 
     return(
         <div className="section pt-0">

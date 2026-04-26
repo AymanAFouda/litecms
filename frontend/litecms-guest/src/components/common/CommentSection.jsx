@@ -1,7 +1,14 @@
+import { useEffect } from "react";
 import dateFormat from "../../utils/dateFormat";
 import { LoadingSpinner } from "../shortcodes/LoadingSpinner";
 
 function CommentSection({ comments, commentFormData, setCommentFormData, onSubmitComment, commentsAreLoading, commentsLoadError }) {
+    useEffect(() => {
+        if (commentsLoadError) {
+            toast.error("Failed to load comments. Please try again.");
+        }
+    }, [commentsLoadError]);
+
     return (
         <section className="w-full antialiased mt-3">
             <div className="w-full max-w-4xl mx-auto container p-0 ml-0">
@@ -12,7 +19,9 @@ function CommentSection({ comments, commentFormData, setCommentFormData, onSubmi
                 <form className="py-6 mb-3" onSubmit={onSubmitComment}>
                     <fieldset className="relative">
                         <input
-                            className="form-input h-12 w-full rounded-3xl border-none bg-theme-light px-5 py-3 pr-12 text-dark placeholder:text-xs dark:bg-darkmode-theme-dark"
+                            className="form-input h-12 w-full px-5 py-3 pr-12 rounded-3xl 
+                                border-none bg-theme-light text-dark placeholder:text-xs 
+                                dark:bg-darkmode-theme-dark focus:outline-2 focus:outline-primary"
                             type="text"
                             placeholder="Enter your name"
                             required
@@ -29,7 +38,9 @@ function CommentSection({ comments, commentFormData, setCommentFormData, onSubmi
                         <textarea
                             id="comment"
                             rows="4"
-                            className="form-input w-full rounded-3xl border-none bg-theme-light px-5 py-3 pr-12 text-dark placeholder:text-xs dark:bg-darkmode-theme-dark"
+                            className=" form-input w-full rounded-3xl px-5 py-3 pr-12 
+                                border-none bg-theme-light text-dark placeholder:text-xs 
+                                dark:bg-darkmode-theme-dark focus:outline-2 focus:outline-primary"
                             placeholder="Write a comment..."
                             required
                             name="commentText"

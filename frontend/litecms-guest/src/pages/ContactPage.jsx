@@ -3,9 +3,8 @@ import ContactLayout from "../components/layouts/ContactLayout";
 
 const data = {
     title: "Let’s Talk </br> About You",
-    form_action: "#",
     phone: "+1234567890",
-    mail: "info@email.com",
+    mail: "contact@litecms.com",
     location: "Tuzla, İstanbul/Turkey",
 }
 

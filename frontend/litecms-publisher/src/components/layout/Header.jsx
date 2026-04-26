@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom"
 import { clearPublisherAuth } from "../../utils/publisherAuth"
+import { useEffect } from "react"
 
 export function Header({ setIsMenuExpanded }) {
     const handleMenuToggleBtn = (e) => {
         e.preventDefault();
-        setIsMenuExpanded((prev) => !prev)
+        setIsMenuExpanded((prev) => !prev);
     }
 
     function handleLogout() {

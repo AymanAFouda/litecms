@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import { FaFolderOpen } from "react-icons/fa";
 
 import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
@@ -7,11 +8,17 @@ import { markdownify } from "../utils/textConverter";
 import { useCategoryCounts } from "../hooks/useCategories";
 
 export const CategoriesPage = () => {
-    const { categoryList, categoriesAreLoading, categoriesLoadError } = useCategoryCounts();
+    const { categoryList, categoriesAreLoading: isLoading, categoriesLoadError: loadError } = useCategoryCounts();
 
     useEffect(() => {
         document.title = "Categories - LiteCMS"
     }, []);
+
+    useEffect(() => {
+        if (loadError) {
+            toast.error("Failed to load categories. Please try again.");
+        }
+    }, [loadError]);
 
     return(
         <section className="section pt-0">
@@ -21,11 +28,11 @@ export const CategoriesPage = () => {
                 "h2 bg-primary py-12 text-center lg:text-[55px] text-white"
             )}
             <div className="container pt-12 text-center">
-                {categoriesAreLoading && <LoadingSpinner />}
+                {isLoading && <LoadingSpinner />}
                 
-                {categoriesLoadError && <p className="w-fit mx-auto font-secondary">Something went wrong.</p>}
+                {loadError && <p className="w-fit mx-auto font-secondary">Something went wrong.</p>}
 
-                {!categoriesAreLoading && !categoriesLoadError && (
+                {!isLoading && !loadError && (
                     <ul className="row">
                         {categoryList.map((category, i) => (
                         <li

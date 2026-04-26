@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 import ContentList from "../components/layouts/ContentList";
 import { markdownify } from "../utils/textConverter";
 import Sidebar from "../components/partials/Sidebar";
@@ -13,6 +14,12 @@ export const CategoryPage = () => {
   useEffect(() => {
       document.title = `${name} - LiteCMS`
   }, [name]);
+
+  useEffect(() => {
+    if (loadError) {
+      toast.error("Failed to load category content. Please try again.");
+    }
+  }, [loadError]);
 
   return(
     <div className="section pt-0">

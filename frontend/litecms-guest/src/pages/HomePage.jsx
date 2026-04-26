@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import Post from "../components/partials/Post";
 import dateFormat from "../utils/dateFormat";
 import { markdownify } from "../utils/textConverter";
@@ -10,9 +11,7 @@ import { useContent } from "../hooks/useContent";
 import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
 
 export const HomePage = () => {
-
     const { contentList, isLoading, loadError } = useContent("all");
-
     const [latestPublishedContent, setLatestPublishedContent] = useState(null);
 
     useEffect(() => {
@@ -20,8 +19,14 @@ export const HomePage = () => {
     }, []);
 
     useEffect(() => {
-      setLatestPublishedContent(contentList[0] || null);
+        setLatestPublishedContent(contentList[0] || null);
     }, [contentList]);
+
+    useEffect(() => {
+        if (loadError) {
+            toast.error("Failed to load content. Please try again.");
+        }
+    }, [loadError]);
 
     if(isLoading) return <LoadingSpinner />
 

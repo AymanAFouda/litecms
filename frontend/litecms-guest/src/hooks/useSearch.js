@@ -33,9 +33,11 @@ export function useSearch(query, filters) {
                     contentId: hit._id,
                     title: hit._source?.title ?? "",
                     featuredImage: hit._source?.featuredImage ?? null,
+                    publisherName: hit._source?.publisherName ?? "",
                     category: hit._source?.category ?? "",
                     createdAt: hit._source?.createdAt ?? "",
                     viewCount: hit._source?.viewCount ?? 0,
+                    likeCount: hit._source?.likeCount ?? 0,
                     description: hit._source?.description ?? "",
                     type: hit._source?.type ?? "",
                 }))

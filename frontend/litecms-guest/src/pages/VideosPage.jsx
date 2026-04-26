@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 import { markdownify } from "../utils/textConverter";
 import ContentList from "../components/layouts/ContentList";
 import Sidebar from "../components/partials/Sidebar";
@@ -11,6 +12,12 @@ export const VideosPage = () => {
     useEffect(() => {
         document.title = "Videos - LiteCMS"
     }, []);
+
+    useEffect(() => {
+        if (loadError) {
+            toast.error("Failed to load videos. Please try again.");
+        }
+    }, [loadError]);
 
     return(
         <div className="section pt-0">

@@ -4,7 +4,24 @@ import { BsArrowRightShort } from "react-icons/bs";
 import { FaEnvelope, FaMapMarkerAlt, FaUserAlt } from "react-icons/fa";
 
 const ContactLayout = ({ data }) => {
-  const { title, form_action, phone, mail, location } = data;
+  const { title, phone, mail, location } = data;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const subject = e.target.subject.value;
+    const message = e.target.message.value;
+
+    const mailBody = encodeURIComponent(
+      `Name: ${name}\n` +
+      `Email: ${email}\n\n` +
+      `Message:\n${message}`
+    );
+
+    window.location.href = `mailto:${mail}?subject=${subject}&body=${mailBody}`;
+  };
 
   return (
     <section className="section pt-0">
@@ -19,7 +36,7 @@ const ContactLayout = ({ data }) => {
             className="-z-[1] object-cover object-top absolute top-0 left-0 w-full h-full"
             src={"/images/map.svg"}
             fill="true"
-            alt="map bg"
+            alt="map background"
           />
           <div className="lg:col-6">
             {markdownify(
@@ -38,8 +55,7 @@ const ContactLayout = ({ data }) => {
             </h2>
             <form
               className="contact-form mt-12"
-              method="POST"
-              action={form_action}
+              onSubmit={handleSubmit}
             >
               <div className="mb-6">
                 <label className="mb-2 block font-secondary" htmlFor="name">
@@ -95,14 +111,15 @@ const ContactLayout = ({ data }) => {
                 </label>
                 <textarea
                   className="form-textarea w-full"
-                  placeholder="Hello I’m Mr ‘x’ from………….."
+                  name="message"
+                  placeholder={`Hello I’m Mr ‘x’ from…………..`}
                   rows="7"
                 />
               </div>
               <input
-                className="btn btn-primary"
+                className="btn btn-primary w-full"
                 type="submit"
-                value="Send Now"
+                value="Submit"
               />
             </form>
           </div>
@@ -127,7 +144,7 @@ const ContactLayout = ({ data }) => {
               <Link
                 to={`mailto:${mail}`}
                 className="my-4 flex h-[100px] items-center justify-center
-             rounded border border-border p-4 text-primary dark:border-darkmode-border"
+                rounded border border-border p-4 text-primary dark:border-darkmode-border"
               >
                 <FaEnvelope />
                 <p className="ml-1.5 text-lg font-bold text-dark dark:text-darkmode-light">
@@ -140,7 +157,7 @@ const ContactLayout = ({ data }) => {
             <div className="md:col-6 lg:col-4">
               <span
                 className="my-4 flex h-[100px] items-center justify-center
-             rounded border border-border p-4 text-primary dark:border-darkmode-border"
+                rounded border border-border p-4 text-primary dark:border-darkmode-border"
               >
                 <FaMapMarkerAlt />
                 <p className="ml-1.5 text-lg font-bold text-dark dark:text-darkmode-light">

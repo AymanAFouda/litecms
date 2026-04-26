@@ -111,14 +111,14 @@ export const PhotoGallery = ({ mediaList, largeMedia }) => {
                         }`}
                     >
                         <img
-                        draggable="false"
-                        src={`${UPLOADS_BASE_URL}${image.fileUrl}`}
-                        onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = "/images/default-image.png";
-                        }}
-                        alt={image.fileName}
-                        className="w-full h-full object-cover transition duration-700 m-0 rounded-none select-none"
+                            draggable="false"
+                            src={`${UPLOADS_BASE_URL}${image.fileUrl}`}
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = "/images/default-image.png";
+                            }}
+                            alt={image.fileName}
+                            className="w-full h-full object-cover transition duration-700 m-0 rounded-none select-none"
                         />
                     </div>
                     ))}

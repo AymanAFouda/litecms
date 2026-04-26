@@ -18,8 +18,8 @@ export function Sidebar({ isMenuExpanded }) {
                 <div className="left_col scroll-view">
                     <div className="navbar nav_title border-0">
                         <Link to={"/"} className="site_title d-flex justify-content-center align-items-end">
-                            <img src="/images/logo.png" alt="LiteCMS" className="logo-full logo-main"/>
-                            <img src="/images/logo-icon.png" alt="Icon" className="logo-icon"/>
+                            <img src="/images/logo.png" alt="LiteCMS logo" className="logo-full logo-main"/>
+                            <img src="/images/logo-icon.png" alt="LiteCMS icon" className="logo-icon"/>
                         </Link>
                     </div>
                     <div className="clearfix"></div>

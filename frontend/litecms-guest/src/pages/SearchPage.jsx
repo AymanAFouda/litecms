@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
 import { useSearch } from "../hooks/useSearch"
 
 import ContentList from "../components/layouts/ContentList";
@@ -61,6 +62,12 @@ export const SearchPage = () => {
         setSearchParams(params);
     };
 
+    useEffect(() => {
+        if (loadError) {
+            toast.error("Search failed. Please try again.");
+        }
+    }, [loadError]);
+
     return(
         <div className="section pt-0">
             <div className="px-3 my-12">
@@ -69,7 +76,9 @@ export const SearchPage = () => {
                         <div className="row">
                             <div className="md:col-10 col-12">
                                 <input 
-                                    className="text-lg placeholder:text-base form-input h-12 w-full px-5 py-3 rounded-lg border-none bg-theme-light text-dark dark:bg-darkmode-theme-dark"
+                                    className="text-lg placeholder:text-base form-input h-12 w-full 
+                                        px-5 py-3 rounded-lg border-none bg-theme-light text-dark 
+                                        dark:bg-darkmode-theme-dark focus:outline-none focus:ring-2 focus:ring-primary"
                                     type="text"
                                     id="query"
                                     name="query"

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Navigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
 import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
 import PostSingle from "../components/layouts/PostSingle";
 
@@ -46,6 +48,12 @@ export const ContentDetailPage = () => {
     setComments(fetchedComments || []);
   }, [fetchedComments]);
 
+  useEffect(() => {
+    if (loadError) {
+      toast.error("Failed to load content. Please try again.");
+    }
+  }, [loadError]);
+
   const onLikeClick = async () => {
     if (!content?.contentId) return;
 
@@ -55,14 +63,16 @@ export const ContentDetailPage = () => {
         removeLikedContent(content.contentId);
         setLiked(false);
         setLikeCount((prev) => Math.max(prev - 1, 0));
+        toast.success("Unliked")
       } else {
         await handleLike(content.contentId);
         addLikedContent(content.contentId);
         setLiked(true);
         setLikeCount((prev) => prev + 1);
+        toast.success("Liked!")
       }
     } catch (error) {
-      console.error("Like/unlike failed:", error);
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
@@ -82,7 +92,7 @@ export const ContentDetailPage = () => {
         commentText: "",
       })
     } catch (error) {
-      console.error("Comment submission failed:", error);
+      toast.error("Comment submission failed. Please try again.");
     }
   };
 

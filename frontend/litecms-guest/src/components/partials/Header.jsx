@@ -7,23 +7,34 @@ import React, { useEffect, useState } from "react";
 import { IoSearch, IoClose } from "react-icons/io5";
 
 const Header = ({ currentPath = "/" }) => {
-  // distructuring the main menu from menu object
   const { main } = menu;
-
-  // states declaration
   const [searchModal, setSearchModal] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
-  // Use currentPath for active state determination
   const activePath = currentPath;
 
-  //stop scrolling when nav is open
   useEffect(() => {
     if (showMenu) {
       document.body.classList.add("menu-open");
     } else {
       document.body.classList.remove("menu-open");
     }
+  }, [showMenu]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setShowMenu(false);
+      }
+    };
+
+    if (showMenu) {
+      document.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, [showMenu]);
 
   return (

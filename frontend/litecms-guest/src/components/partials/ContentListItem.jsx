@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import dateFormat from "../../utils/dateFormat";
-import { FaRegCalendar, FaUserAlt, FaEye, FaVideo, FaImages } from "react-icons/fa";
+import { FaRegCalendar, FaUserAlt, FaEye, FaThumbsUp, FaVideo, FaImages } from "react-icons/fa";
 import { FaNewspaper } from "react-icons/fa6";
 import { UPLOADS_BASE_URL } from "../../services/apiConfig"
 
@@ -29,7 +29,7 @@ const ContentListItem = ({ content }) => {
     return () => window.removeEventListener("resize", updateLength);
   }, []);
 
-  const { contentId, title, publisherName, featuredImage, category, createdAt, viewCount, type } = content;
+  const { contentId, title, publisherName, featuredImage, category, createdAt, viewCount, likeCount,type } = content;
 
   const description = content.description?.trim()
     ? content.description
@@ -75,28 +75,32 @@ const ContentListItem = ({ content }) => {
             {title}
           </Link>
         </h3>
-        <ul className="flex flex-wrap items-center">
+        <ul className="flex flex-wrap items-center gap-y-1">
           {publisherName && (
             <li className="mr-4">
               <Link
                 className="inline-flex items-center font-secondary text-xs leading-3"
                 to="/about"
               >
-                <FaUserAlt className="mr-1.5" />
+                <FaUserAlt className="mr-1.5"/>
                 {publisherName}
               </Link>
             </li>
           )}
           <li className="mr-4 inline-flex items-center font-secondary text-xs leading-3">
-            <FaRegCalendar className="mr-1.5" />
+            <FaRegCalendar className="mr-1.5"/>
             {dateFormat(createdAt)}
           </li>
           <li className="mr-4 inline-flex items-center font-secondary text-xs leading-3">
             <FaEye className="mr-1.5" size={16}/>
             {viewCount}
           </li>
+          <li className="mr-4 inline-flex items-center font-secondary text-xs leading-3">
+            <FaThumbsUp className="mr-1.5" size={14}/>
+            {likeCount}
+          </li>
         </ul>
-        <p className="mt-1 prose content dark:text-gray-300 leading-snug">{description.length > maxChars? description.slice(0, maxChars) : description}..<Link to={`/content/${contentId}`}>read more</Link></p>
+        <p className="mt-2 prose content dark:text-gray-300 leading-snug">{description.length > maxChars? description.slice(0, maxChars) : description}..<Link to={`/content/${contentId}`}>read more</Link></p>
       </div>
     </div>
   );

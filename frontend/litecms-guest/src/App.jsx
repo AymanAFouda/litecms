@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import './App.css'
+import { Toaster } from 'react-hot-toast'
 import Base from './components/layouts/Baseof';
 
 import { HomePage } from './pages/HomePage';
@@ -18,22 +19,23 @@ import { AboutPage } from './pages/AboutPage';
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<Base />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/articles" element={<ArticlesPage />} />
-          <Route path="/galleries" element={<GalleriesPage />} />
-          <Route path="/videos" element={<VideosPage />} />
-          <Route path="content/:id" element={<ContentDetailPage />} />
-          <Route path="categories" element={<CategoriesPage />} />
-          <Route path="categories/:name" element={<CategoryPage />} />
-          <Route path="tags/:name" element={<TagPage />} />
-          <Route path="contact" element={<ContactPage />} />
-          <Route path="about" element={<AboutPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-      </Routes>
+      <Toaster position="top-center"/>
+        <Routes>
+          <Route element={<Base />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/articles" element={<ArticlesPage />} />
+            <Route path="/galleries" element={<GalleriesPage />} />
+            <Route path="/videos" element={<VideosPage />} />
+            <Route path="content/:id" element={<ContentDetailPage />} />
+            <Route path="categories" element={<CategoriesPage />} />
+            <Route path="categories/:name" element={<CategoryPage />} />
+            <Route path="tags/:name" element={<TagPage />} />
+            <Route path="contact" element={<ContactPage />} />
+            <Route path="about" element={<AboutPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
     </BrowserRouter>
   )
 }
