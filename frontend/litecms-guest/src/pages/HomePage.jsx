@@ -9,6 +9,7 @@ import  ContentList  from "../components/layouts/ContentList"
 import Sidebar from "../components/partials/Sidebar";
 import { useContent } from "../hooks/useContent";
 import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
+import { LoadError } from "../components/shortcodes/LoadError";
 
 export const HomePage = () => {
     const { contentList, isLoading, loadError } = useContent("all");
@@ -30,32 +31,34 @@ export const HomePage = () => {
 
     if(isLoading) return <LoadingSpinner />
 
+    if(loadError) return <LoadError />
+
     return (
     <section className="section pt-0 ">
-      <div className="container px-3">
-          <div className="row items-start">
-              <div className="mb-3 lg:mb-0 lg:col-8">
-              {/* Featured posts */}
-                  {latestPublishedContent && (
+        <div className="container px-3">
+            <div className="row items-start">
+                <div className="mb-3 lg:mb-0 lg:col-8">
                     <div className="section pt-6 pb-8">
                         {markdownify("Latest Content", "h2", "section-title mb-9")}
-                        <div className="rounded border border-border p-4 dark:border-darkmode-border">
+                        {latestPublishedContent && (
+                        <div className="p-0 md:rounded md:border md:border-border md:p-4 md:dark:border-darkmode-border">
                             <div className="row">
                                 <div className="w-full">
                                     <Post content={latestPublishedContent} />
                                 </div>
                             </div>
                         </div>
+                        )}
                     </div>
-                  )}
-                  <ContentList
-                      tabs={false}
-                      contents={contentList.slice(1)} 
-                  />
-              </div>
-              <Sidebar className={"lg:mt-[103px] "} variant={"home"}/>
-          </div>
-      </div>
+                    
+                    <ContentList
+                        tabs={false}
+                        contents={contentList.slice(1)} 
+                    />
+                </div>
+                <Sidebar className={"lg:mt-[103px] "} variant={"home"}/>
+            </div>
+        </div>
     </section>
     )
 }

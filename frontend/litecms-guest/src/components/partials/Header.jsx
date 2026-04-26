@@ -90,6 +90,7 @@ const Header = ({ currentPath = "/" }) => {
                               className={`nav-dropdown-link block ${
                                 activePath === child.url && "active"
                               }`}
+                              onClick={() => setShowMenu(false)}
                             >
                               {child.name}
                             </Link>
@@ -98,12 +99,13 @@ const Header = ({ currentPath = "/" }) => {
                       </ul>
                     </li>
                   ) : (
-                    <li className="nav-item">
+                    <li className="nav-item" >
                       <Link
                         to={menu.url}
                         className={`nav-link block ${
                           activePath === menu.url && "active"
                         }`}
+                        onClick={() => setShowMenu(false)}
                       >
                         {menu.name}
                       </Link>

@@ -5,6 +5,9 @@ import ContentList from "../components/layouts/ContentList";
 import { markdownify } from "../utils/textConverter";
 import Sidebar from "../components/partials/Sidebar";
 import { useContentByTag } from "../hooks/useContent";
+import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
+import { LoadError } from "../components/shortcodes/LoadError";
+
 
 export const TagPage = () => {
     const { name } = useParams();
@@ -31,17 +34,23 @@ export const TagPage = () => {
                 )}
             </div>
             <div className="container px-3">
-                <div className="row">
-                    <div className="lg:col-8">
-                        <ContentList
-                            tabs={true}
-                            selectedTab={selectedTab}
-                            setSelectedTab={setSelectedTab}
-                            contents={contentList}
-                        />
+                {isLoading && <LoadingSpinner />}
+
+                {loadError && <LoadError />}
+
+                {!isLoading && !loadError && (
+                    <div className="row">
+                        <div className="lg:col-8">
+                            <ContentList
+                                tabs={true}
+                                selectedTab={selectedTab}
+                                setSelectedTab={setSelectedTab}
+                                contents={contentList}
+                            />
+                        </div>
+                        <Sidebar />
                     </div>
-                    <Sidebar />
-                </div>
+                )}
             </div>
         </div>
     )

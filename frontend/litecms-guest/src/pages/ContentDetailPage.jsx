@@ -10,6 +10,7 @@ import { useContentLike } from "../hooks/useUserEngagement"
 import { useComments, useSubmitComment } from "../hooks/useComments";
 import { useSearchRelatedContent } from "../hooks/useSearch";
 import { isContentLiked, addLikedContent, removeLikedContent } from "../utils/localStorageUtils";
+import { LoadError } from "../components/shortcodes/LoadError";
 
 export const ContentDetailPage = () => {
   const { id } = useParams();
@@ -98,7 +99,7 @@ export const ContentDetailPage = () => {
 
   if(isLoading) return <LoadingSpinner />;
 
-  if(loadError) return <p>Failed to load content.</p>;
+  if(loadError) return <LoadError />;
 
   return (
     <>

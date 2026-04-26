@@ -33,7 +33,7 @@ export const SearchFilters = ({ filters, setFilters }) => {
             </div>
             <div className="lg:col-4 col-12 mt-5">
                 <label htmlFor="category" className="block mb-2 font-secondary ml-1">Category</label>
-                <select 
+                <select
                     className="block form-input h-10 w-full px-5 py-2 
                         rounded-lg border-none bg-theme-light text-dark 
                         placeholder:text-xs dark:bg-darkmode-theme-dark

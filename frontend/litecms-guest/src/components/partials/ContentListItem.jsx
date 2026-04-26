@@ -66,7 +66,7 @@ const ContentListItem = ({ content }) => {
           {iconMap[type] || <FaNewspaper />}
         </div>
       </div>
-      <div className="flex flex-col justify-start flex-1 mx-2 mt-2 md:ml-4 md:mr-6 md:mt-1">
+      <div className="flex flex-col justify-start flex-1 md:mx-2 mt-2 md:ml-4 md:mr-6 md:mt-1">
         <h3 className="h5 mb-1">
           <Link
             to={`/content/${contentId}`}

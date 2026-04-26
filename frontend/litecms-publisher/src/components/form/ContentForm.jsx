@@ -189,7 +189,7 @@ export const ContentForm = ({
                         value={formData.videoUrl}
                         onChange={handleChange}
                     />
-                    <div className="form-text">{`Paste a video URL (YouTube, Vimeo, or similar platforms)`}</div>
+                    <div className="form-text">{`Paste a video URL (YouTube or Vimeo only)`}</div>
                 </div>
             </div>
         )}

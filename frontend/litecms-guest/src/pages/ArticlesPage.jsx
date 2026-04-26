@@ -5,6 +5,7 @@ import ContentList from "../components/layouts/ContentList";
 import Sidebar from "../components/partials/Sidebar";
 import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
 import { useContent } from "../hooks/useContent";
+import { LoadError } from "../components/shortcodes/LoadError";
 
 export const ArticlesPage = () => {
     const { contentList, isLoading, loadError} = useContent('articles')
@@ -31,7 +32,7 @@ export const ArticlesPage = () => {
             <div className="container px-3">
                 {isLoading && <LoadingSpinner />}
 
-                {loadError && <p className="w-fit mx-auto font-secondary">Something went wrong.</p>}
+                {loadError && <LoadError />}
 
                 {!isLoading && !loadError && (
                     <div className="row">

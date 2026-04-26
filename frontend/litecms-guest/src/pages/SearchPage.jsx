@@ -7,6 +7,7 @@ import ContentList from "../components/layouts/ContentList";
 import { FaSearch } from "react-icons/fa";
 import { SearchFilters } from "../components/partials/SearchFilters";
 import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
+import { LoadError } from "../components/shortcodes/LoadError";
 
 
 export const SearchPage = () => {
@@ -133,7 +134,7 @@ export const SearchPage = () => {
                     <div className="lg:col-9 mx-auto">
                         {isLoading && <LoadingSpinner />}
 
-                        {loadError && <p className="w-fit mx-auto font-secondary">Something went wrong.</p>}
+                        {loadError && <LoadError />}
 
                         {!isLoading && !loadError && results?.length > 0 && (
                             <ContentList

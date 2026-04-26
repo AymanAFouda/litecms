@@ -6,6 +6,7 @@ import { FaFolderOpen } from "react-icons/fa";
 import { LoadingSpinner } from "../components/shortcodes/LoadingSpinner";
 import { markdownify } from "../utils/textConverter";
 import { useCategoryCounts } from "../hooks/useCategories";
+import { LoadError } from "../components/shortcodes/LoadError";
 
 export const CategoriesPage = () => {
     const { categoryList, categoriesAreLoading: isLoading, categoriesLoadError: loadError } = useCategoryCounts();
@@ -30,14 +31,14 @@ export const CategoriesPage = () => {
             <div className="container pt-12 text-center">
                 {isLoading && <LoadingSpinner />}
                 
-                {loadError && <p className="w-fit mx-auto font-secondary">Something went wrong.</p>}
+                {loadError && <LoadError />}
 
                 {!isLoading && !loadError && (
                     <ul className="row">
                         {categoryList.map((category, i) => (
                         <li
                             key={`category-${i}`}
-                            className="mt-10 block lg:col-4 px-10"
+                            className="mt-10 block lg:col-4 px-2 md:px-8"
                         >
                             <Link
                                 to={`/categories/${encodeURIComponent(category.name)}`}
