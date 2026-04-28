@@ -33,11 +33,11 @@ export const ContentForm = ({
     
     return (
     <form onSubmit={(e) => { e.preventDefault(); onSubmit()}} className="row form-horizontal">
-        <div className="mb-4 row">
-            <label className="col-form-label col-sm-1" htmlFor="title">
+        <div className="mb-2 row">
+            <label className="col-form-label fs-6" htmlFor="title">
                 Title <span className="required text-danger">*</span>
             </label>
-            <div className="col-sm-11">
+            <div className="col-12">
                 <input
                     type="text"
                     id="title"
@@ -51,11 +51,11 @@ export const ContentForm = ({
                 <div className="form-text">Enter a clear and descriptive title for your content</div>
             </div>
         </div>
-        <div className="mb-4 row">
-            <label className="col-form-label col-sm-1" htmlFor="publisher-name">
+        <div className="mb-2 row">
+            <label className="col-form-label fs-6" htmlFor="publisher-name">
                 Publisher Name
             </label>
-            <div className="col-sm-11">
+            <div className="col-12">
                 <input
                     type="text"
                     id="publisher-name"  
@@ -68,11 +68,11 @@ export const ContentForm = ({
                 <div className="form-text">Enter the name of the content publisher</div>
             </div>
         </div>
-        <div className="mb-4 row">
-            <label className="col-form-label col-sm-1" htmlFor="description">
+        <div className="mb-2 row">
+            <label className="col-form-label fs-6" htmlFor="description">
                 Description
             </label>
-            <div className="col-sm-11">
+            <div className="col-12">
                 <textarea
                     id="description"
                     name="description"
@@ -85,11 +85,11 @@ export const ContentForm = ({
                 <div className="form-text">Provide a brief summary or overview of the content</div>
             </div>
         </div>
-        <div className="mb-4 row">
-            <label className="col-form-label col-sm-1" htmlFor="category">
+        <div className="mb-2 row">
+            <label className="col-form-label fs-6" htmlFor="category">
                 Category
             </label>
-            <div className="col-sm-11">
+            <div className="col-12">
                 <select
                 id="category"
                 name="category"
@@ -106,11 +106,11 @@ export const ContentForm = ({
                 <div className="form-text">Select the category that best fits your content</div>
             </div>
         </div>
-        <div className="mb-4 row w-100">
-            <label className="col-form-label col-sm-1" htmlFor="tags">
+        <div className="mb-2 row w-100">
+            <label className="col-form-label fs-6" htmlFor="tags">
                 Tags
             </label>
-            <div className="col-sm-11">
+            <div className="col-12">
                 <CreatableSelect
                     classNamePrefix="react-select"
                     isMulti
@@ -135,18 +135,18 @@ export const ContentForm = ({
             </div>
         </div>
 
-        <div className="row mb-4">
-            <label className="col-form-label col-sm-1" htmlFor="statusDraft">
+        <div className="row mb-2">
+            <label className="col-form-label fs-6" htmlFor="statusDraft">
                 Statuts
             </label>
             <ContentStatusRadioGroup handleChange={handleChange} formData={formData} />
         </div>
 
-        <div className="mb-4 row w-100">
-            <label className="col-form-label col-sm-1 mb-2" htmlFor="uppyfe-dashboard">
+        <div className="mb-2 row w-100">
+            <label className="col-form-label mb-2 fs-6" htmlFor="uppyfe-dashboard">
                 Featured image
             </label>
-            <div className="col-sm-12">
+            <div className="col-12">
                 <FeaturedImageFileUploader
                     setFormData={setFormData}
                     resetTrigger={resetTrigger}
@@ -160,10 +160,10 @@ export const ContentForm = ({
 
         {contentType == 'article' && (
             <div className="row">
-                <label className="col-form-label col-sm-1 mb-2" htmlFor="article-body">
+                <label className="col-form-label mb-2 fs-6" htmlFor="article-body">
                     Article Body
                 </label>
-                <div className="col-sm-12">
+                <div className="col-12">
                     <ArticleBodyEditor
                         value={formData.articleBody}
                         onChange={(data) =>
@@ -176,10 +176,10 @@ export const ContentForm = ({
 
         {contentType === 'video' && (
             <div className="row">
-                <label className="col-form-label col-sm-1" htmlFor="videoUrl">
+                <label className="col-form-label fs-6" htmlFor="videoUrl">
                     Video URL <span className="required text-danger"></span>
                 </label>
-                <div className="col-sm-11">
+                <div className="col-12">
                     <input
                         type="url"
                         id="videoUrl"
@@ -196,10 +196,10 @@ export const ContentForm = ({
 
         {contentType === 'gallery' && (
             <div className="row">
-                <label className="col-form-label col-sm-1 mb-2" htmlFor="uppy-dashboard">
+                <label className="col-form-label mb-2 fs-6" htmlFor="uppy-dashboard">
                     Images
                 </label>
-                <div className="col-sm-12">
+                <div className="col-12">
                     <FileUploader
                         setFormData={setFormData}
                         resetTrigger={resetTrigger}
@@ -213,7 +213,7 @@ export const ContentForm = ({
             <>
             <div className="border-top border-primary border-opacity-25 mt-4 mb-3"></div>
             <div className="row">
-                <div className="col-sm-12">
+                <div className="col-12">
                     <AnotherCheckBox 
                         label={`Create another ${contentType} after this`}
                         checked={createAnother}

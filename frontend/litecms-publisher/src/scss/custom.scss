@@ -1205,6 +1205,9 @@ a:focus {
 .toggle a:hover {
   color: var(--gt-primary);
 }
+.toggle a:focus {
+  color: var(--gt-primary);
+}
 .toggle a i {
   font-size: 26px;
 }
@@ -6808,21 +6811,41 @@ input[type="radio"].flat:disabled + label {
 
 .draft-badge {
   background-color: #f59e0b;
+  color: #000000;
 }
 
 .published-badge {
-  background-color: #16a34a;
+  background-color: #2e8644;
+  color: #ffffff;
 }
 
 .archived-badge {
   background-color: #4b5563;
+  color: #ffffff;
 }
 
 .data-table-badge {
-  color: #ffffff;
   padding: 6px 10px !important;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
+}
+
+li a:focus-visible, .nav_title a:focus-visible {
+  outline: 2px solid #fff !important;
+  outline-offset: -3px !important;
+  border-radius: 4px !important; /* optional, looks nicer */
+}
+
+.btn-success {
+  background-color: #2e8644 !important;
+}
+
+.react-select__placeholder {
+  color: black !important;
+}
+
+.uppy-Dashboard-note, .uppy-Dashboard-Item-statusSize, .uppy-DashboardContent-back {
+  color: black !important;
 }

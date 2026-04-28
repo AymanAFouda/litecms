@@ -7,6 +7,7 @@ import { Modal } from 'react-bootstrap'
 import { LoadingSpinner } from '../../components/common/LoadingSpinner'
 import { LoadError } from "../../components/common/LoadError"
 import { contentColumns } from "../../components/table/contentColumns"
+import { customStyles } from "../../components/table/tableStyles"; 
 
 import { deleteArticle } from "../../services/articleApi"
 import { useContents } from "../../hooks/useContents"
@@ -69,11 +70,7 @@ export function Articles() {
             <div className="row">
                 <div className="col-sm-12">
                     <div className="x_panel">
-                        <div className="x_title">
-                            <h4>Articles</h4>
-                            <div className="clearfix"></div>
-                        </div>
-                        <div className="x_content border-bottom border-2">
+                        <div className="x_content border-bottom border-2 p-0">
                             <div className="row">
                                 <div className="col-sm-12">
                                     <div className="card-box table-responsive">
@@ -81,6 +78,7 @@ export function Articles() {
                                             id="datatable-responsive"
                                             columns={columns}
                                             data={articles}
+                                            customStyles={customStyles}
                                             pagination
                                             highlightOnHover 
                                             striped
@@ -92,9 +90,9 @@ export function Articles() {
                             </div>
                         </div>
                         <div className="x_content">
-                            <div className="buttons d-inline-block">
-                                <Link to="create">
-                                    <button type="button" className="btn btn-success btn-lg d-flex align-items-center">
+                            <div className="buttons d-inline-block m-0">
+                                <Link to="create" tabIndex={-1}>
+                                    <button type="button" className="btn btn-success btn-lg d-flex align-items-center m-0">
                                         Create Article
                                         <i className="bi bi-arrow-right ms-3"></i>
                                     </button>

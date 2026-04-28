@@ -17,15 +17,15 @@ export function Header({ setIsMenuExpanded }) {
         <div className="top_nav">
             <div className="nav_menu d-flex align-items-center justify-content-between">
                 <div className="nav toggle">
-                    <Link id="menu_toggle" onClick={handleMenuToggleBtn}>
+                    <Link id="menu_toggle" onClick={handleMenuToggleBtn} aria-label="Toggle sidebar menu">
                         <i className="fas fa-bars"></i>
                     </Link>
                 </div>
                 <nav id="header-nav" className="nav navbar-nav ms-auto">
                     <ul className="navbar-right d-flex align-items-center gap-3 pe-3">
                         <li className="nav-item">
-                            <Link to="/login" role="button" className="d-flex align-items-center justify-center" onClick={handleLogout}>
-                                <span className="fs-6">Sign out</span> 
+                            <Link to="/login" role="button" className="d-flex align-items-center justify-center btn btn-light bg-white border-0 m-0" onClick={handleLogout} >
+                                <span className="fs-6 text-black">Sign out</span>
                             </Link>
                         </li>
                     </ul>

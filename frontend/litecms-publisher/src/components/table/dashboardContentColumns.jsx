@@ -3,31 +3,30 @@ import { formatDateTime, statusColorMap, contentTypeText, editButtonUrl } from "
 
 export function dashboardContentColumns({ onDelete }) {
     return [
-        {name: "Title", selector: content => content.title, wrap: true, sortable: true},
-        {name: "Content Type", selector: content => contentTypeText[content.type], width: "150px", center: true, sortable: true},
+        {name: "Title", selector: content => content.title, wrap: true},
+        {name: "Content Type", selector: content => contentTypeText[content.type], width: "160px", center: true},
         {
             name: "Status",
             selector: content => content.status,
             width: "120px",
             center: true,
-            sortable: true,
+            
             cell: content => (
                 <span className={`data-table-badge ${statusColorMap[content.status]}`}>
                     {content.status}
                 </span>
             )
         },
-        {name: "Created at", selector: content => formatDateTime(content.createdAt), wrap: true, width: "200px", center: true, sortable: true},
-        {name: "Views", selector: content => content.viewCount, width: "120px", center: true, sortable: true},
-        {name: "Likes", selector: content => content.likeCount, width: "120px", center: true, sortable: true},
+        {name: "Created at", selector: content => formatDateTime(content.createdAt), wrap: true, width: "200px", center: true},
+        {name: "Views", selector: content => content.viewCount, width: "120px", center: true},
+        {name: "Likes", selector: content => content.likeCount, width: "120px", center: true},
         {
             name: "Actions",
             width: "250px",
             center: true,
             cell: content => (
                 <div className="d-flex gap-2">
-                    <Link to={`${editButtonUrl[content.type]}/edit/${content.contentId}`
-                    }>
+                    <Link to={`${editButtonUrl[content.type]}/edit/${content.contentId}`} tabIndex={-1}>
                         <button className="btn btn-success m-0 me-2" type="button">
                             <i className="bi bi-pencil-square me-2"></i>
                             Edit

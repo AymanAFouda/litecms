@@ -2,7 +2,8 @@ export function categoryTableColumns({ handleOpenEditModal, handleOpenDeleteModa
     return [
         { name: "Category", selector: category => category.name, wrap: true},
         { 
-            name: "Actions", 
+            name: "Actions",
+            center: true,
             cell: category => (
                 <div className="d-flex gap-2" >
                     <button className="btn btn-success m-0 me-2" type="button" onClick={() => handleOpenEditModal(category)}>
@@ -13,7 +14,6 @@ export function categoryTableColumns({ handleOpenEditModal, handleOpenDeleteModa
                     </button>
                 </div>
             ),
-
             width: "225px"
         },
     ];

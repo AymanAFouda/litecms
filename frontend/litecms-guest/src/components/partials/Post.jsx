@@ -71,14 +71,9 @@ const Post = ({ content }) => {
         </Link>
       </h3>
       <ul className="flex flex-wrap items-center">
-        <li className="mr-4">
-          <Link
-            className="inline-flex items-center font-secondary text-xs leading-3"
-            to="/about"
-          >
-            <FaUserAlt className="mr-1.5" />
-            {content.publisherName}
-          </Link>
+        <li className="mr-4 inline-flex items-center font-secondary text-xs leading-3">
+          <FaUserAlt className="mr-1.5" />
+          {content.publisherName}
         </li>
         <li className="mr-4 inline-flex items-center font-secondary text-xs leading-3">
           <FaRegCalendar className="mr-1.5" />

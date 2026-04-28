@@ -23,8 +23,8 @@ function CustomForm({ status, message, onValidated }) {
               border-none bg-theme-light px-5 py-3 pr-12 text-dark 
               placeholder:text-xs dark:bg-darkmode-theme-dark
               focus:outline-2 focus:outline-primary"
-            type="text"
-            placeholder="Type And Hit Enter"
+            type="email"
+            placeholder="Enter your email"
             onChange={(e) => setEmail(e.target.value)}
           />
           <FaEnvelope className="absolute top-1/2 right-5 -translate-y-1/2 text-xl transition duration-75" />

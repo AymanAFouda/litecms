@@ -63,7 +63,7 @@ export function CreateCategory() {
                             <br />
                             <form onSubmit={(e) => { e.preventDefault(); handleSubmit()}} className="form-horizontal form-label-left">
                                 <div className="row mb-3">
-                                    <label className="col-form-label col-sm-3 label-align" htmlFor="category-name">
+                                    <label className="col-form-label col-sm-3 label-align fs-6" htmlFor="category-name">
                                         Category Name <span className="required text-danger">*</span>
                                     </label>
                                     <div className="col-sm-6">

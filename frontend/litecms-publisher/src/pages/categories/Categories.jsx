@@ -6,10 +6,12 @@ import DataTable from "react-data-table-component"
 import { Modal } from 'react-bootstrap'
 import { LoadingSpinner } from '../../components/common/LoadingSpinner'
 import { LoadError } from "../../components/common/LoadError";
+import { customStyles } from "../../components/table/tableStyles";
 
 import { useCategories } from "../../hooks/useCategories"
 import { updateCategory, deleteCategory } from '../../services/categoryApi'
 import { categoryTableColumns } from "../../components/table/categoryTableColumns";
+
 
 export function Categories() {
     const { categories, setCategories, isLoading , loadError} = useCategories()
@@ -109,11 +111,7 @@ export function Categories() {
             <div className="row">
                 <div className="col-sm-12">
                     <div className="x_panel">
-                        <div className="x_title">
-                            <h4>Categories</h4>
-                            <div className="clearfix"></div>
-                        </div>
-                        <div className="x_content border-bottom border-2">
+                        <div className="x_content border-bottom border-2 p-0">
                             <div className="row">
                                 <div className="col-sm-12">
                                     <div className="card-box table-responsive">
@@ -121,6 +119,7 @@ export function Categories() {
                                             id="datatable-responsive"
                                             columns={columns}
                                             data={categories}
+                                            customStyles={customStyles}
                                             pagination
                                             highlightOnHover 
                                             striped
@@ -132,9 +131,9 @@ export function Categories() {
                             </div>
                         </div>
                         <div className="x_content">
-                            <div className="buttons d-inline-block">
-                                <Link to="create">
-                                    <button type="button" className="btn btn-success btn-lg d-flex align-items-center">
+                            <div className="buttons d-inline-block m-0">
+                                <Link to="create" tabIndex={-1}>
+                                    <button type="button" className="btn btn-success btn-lg d-flex align-items-center m-0">
                                         Create Category
                                         <i className="bi bi-arrow-right ms-3"></i>
                                     </button>

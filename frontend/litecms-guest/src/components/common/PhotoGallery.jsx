@@ -110,16 +110,18 @@ export const PhotoGallery = ({ mediaList, largeMedia }) => {
                             : "w-24 h-16 sm:w-32 sm:h-20 md:w-40 md:h-24"
                         }`}
                     >
-                        <img
-                            draggable="false"
-                            src={`${UPLOADS_BASE_URL}${image.fileUrl}`}
-                            onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = "/images/default-image.png";
-                            }}
-                            alt={image.fileName}
-                            className="w-full h-full object-cover transition duration-700 m-0 rounded-none select-none"
-                        />
+                        <button type="button" className="w-full h-full thumbnail-img">
+                            <img
+                                draggable="false"
+                                src={`${UPLOADS_BASE_URL}${image.fileUrl}`}
+                                onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = "/images/default-image.png";
+                                }}
+                                alt={`${image.fileName} thumbnail`}
+                                className="w-full h-full object-cover transition duration-700 m-0 rounded-none select-none"
+                            />
+                        </button>
                     </div>
                     ))}
                 </div>

@@ -18,8 +18,8 @@ export const SearchFilters = ({ filters, setFilters }) => {
                 <select
                     className="block form-input h-10 w-full px-5 py-2 
                         rounded-lg border-none bg-theme-light text-dark 
-                        placeholder:text-xs dark:bg-darkmode-theme-dark"
-
+                        placeholder:text-xs dark:bg-darkmode-theme-dark
+                        search-filer"
                     id="content-type"
                     name="contentType"
                     value={filters.contentType}
@@ -37,7 +37,7 @@ export const SearchFilters = ({ filters, setFilters }) => {
                     className="block form-input h-10 w-full px-5 py-2 
                         rounded-lg border-none bg-theme-light text-dark 
                         placeholder:text-xs dark:bg-darkmode-theme-dark
-                    "
+                        search-filer"
                     id="category"
                     name="category"
                     value={filters.category}
@@ -55,7 +55,7 @@ export const SearchFilters = ({ filters, setFilters }) => {
                     className="block form-input h-10 w-full px-5 py-2 
                         rounded-lg border-none bg-theme-light text-dark 
                         placeholder:text-xs dark:bg-darkmode-theme-dark
-                    "
+                        search-filer"
                     id="tag"
                     name="tag"
                     value={filters.tag}

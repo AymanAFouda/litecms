@@ -77,14 +77,9 @@ const ContentListItem = ({ content }) => {
         </h3>
         <ul className="flex flex-wrap items-center gap-y-1">
           {publisherName && (
-            <li className="mr-4">
-              <Link
-                className="inline-flex items-center font-secondary text-xs leading-3"
-                to="/about"
-              >
-                <FaUserAlt className="mr-1.5"/>
-                {publisherName}
-              </Link>
+            <li className="mr-4 inline-flex items-center font-secondary text-xs leading-3">
+              <FaUserAlt className="mr-1.5"/>
+              {publisherName}
             </li>
           )}
           <li className="mr-4 inline-flex items-center font-secondary text-xs leading-3">

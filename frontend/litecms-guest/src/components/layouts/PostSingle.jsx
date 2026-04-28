@@ -72,35 +72,36 @@ const PostSingle = ({
 
               {markdownify(title, "h1", "lg:text-[42px] mt-4 mb-1")}
               <div className="my-0 border-t-2 border-[#45ad92]"></div>
-              <ul className="flex items-start justify-between mt-2 px-[4px] ">
+              <div className="flex items-start justify-between mt-2 px-[4px] ">
                 <div className="flex sm:space-x-5 flex-col sm:flex-row space-x-0 space-y-4 sm:space-y-0">
-                  <li className="inline-flex items-center font-secondary text-s leading-3">
+                  <div className="inline-flex items-center font-secondary text-s leading-3">
                       <FaUserAlt className="mr-1.5"/>
                       {publisherName}
-                  </li>
-                  <li className="inline-flex items-center font-secondary text-s leading-3">
+                  </div>
+                  <div className="inline-flex items-center font-secondary text-s leading-3">
                     <FaRegCalendar className="mr-1.5"/>
                     {dateFormat(createdAt)}
-                  </li>
-                  <li className="inline-flex items-center font-secondary text-s leading-3">
+                  </div>
+                  <div className="inline-flex items-center font-secondary text-s leading-3">
                     <FaEye className="mr-1.5" size={20}/>
                     {viewCount} Views
-                  </li>
+                  </div>
                 </div>
                 <div className="flex space-x-6">
-                  <li className="inline-flex items-end font-secondary text-s leading-5">
-                    <FaThumbsUp 
-                      className={`mr-1.5 text-[1.2rem] ${
-                        liked
-                          ? "text-blue-600"
-                          : "text-gray-500 hover:text-blue-500 dark:text-white dark:hover:text-blue-500"
-                        }`} 
-                      onClick={onLikeClick}
-                    />
-                    {likeCount} Likes
-                  </li>
+                    <div className="inline-flex items-end font-secondary text-s leading-5">
+                      <button type="button" onClick={onLikeClick} aria-label="Like">
+                        <FaThumbsUp
+                          className={`mr-1.5 text-[1.2rem] ${
+                            liked
+                              ? "text-blue-600"
+                              : "text-gray-500 hover:text-blue-500 dark:text-white dark:hover:text-blue-500"
+                            }`} 
+                        />
+                      </button>
+                      {likeCount} Likes
+                    </div>
                 </div>
-              </ul>
+              </div>
 
               {articleBody && (
                 <div id="article" className="content mb-8">

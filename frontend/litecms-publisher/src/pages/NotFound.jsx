@@ -34,10 +34,10 @@ export function NotFound() {
 
                             <div className="d-grid gap-4 d-md-block mb-4">
                                 <button type="button" className="btn btn-outline-secondary btn-lg" onClick={() => navigate(-1)}>
-                                <i className="fas fa-arrow-left me-2"></i>Go Back
+                                    <i className="fas fa-arrow-left me-2"></i>Go Back
                                 </button>
                                 <Link to="/" className="btn btn-primary btn-lg me-md-2">
-                                <i className="fas fa-home me-2"></i>Go Home
+                                    <i className="fas fa-home me-2"></i>Go Home
                                 </Link>
                             </div>
                         </div>

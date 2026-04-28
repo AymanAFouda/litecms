@@ -118,14 +118,16 @@ const Header = ({ currentPath = "/" }) => {
           <ThemeSwitcher />
           {/* Header search */}
           {!activePath.includes("search") && (
-            <div
+            <button
               className="search-icon"
               onClick={() => {
                 setSearchModal(true);
               }}
+              type="button"
+              aria-label="Search"
             >
               <IoSearch />
-            </div>
+            </button>
           )}    
             
           <button

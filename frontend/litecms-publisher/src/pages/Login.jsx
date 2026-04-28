@@ -44,7 +44,7 @@ export function Login() {
 
                                 <form id="loginForm" onSubmit={handleSubmit}>
                                     <div className="mb-3">
-                                        <label htmlFor="username" className="form-label text-muted">Username</label>
+                                        <label htmlFor="username" className="form-label text-black fs-6">Username</label>
                                         <div className="input-group login-input-group">
                                             <span className="input-group-text bg-light border-end-0">
                                             <i className="fas fa-user text-muted"></i>
@@ -63,7 +63,7 @@ export function Login() {
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor="password" className="form-label text-muted">Password</label>
+                                        <label htmlFor="password" className="form-label text-black fs-6">Password</label>
                                         <div className="input-group login-input-group">
                                             <span className="input-group-text bg-light border-end-0">
                                                 <i className="fas fa-lock text-muted"></i>
@@ -102,7 +102,7 @@ export function Login() {
 
                         <div className="text-center mt-4">
                             <p className="text-light opacity-75 mb-2">
-                                <i className="bi bi-c-circle"></i> 2026 LiteCMS - All Rights Reserved.
+                                <i className="bi bi-c-circle"></i> <span className="text-white">2026 LiteCMS - All Rights Reserved.</span>
                             </p>
                         </div>
 

@@ -7,6 +7,7 @@ import { Modal } from 'react-bootstrap'
 import { LoadingSpinner } from '../../components/common/LoadingSpinner'
 import { LoadError } from "../../components/common/LoadError"
 import { contentColumns } from "../../components/table/contentColumns"
+import { customStyles } from "../../components/table/tableStyles";  
 
 import { deleteGallery } from "../../services/galleryApi"
 import { useContents } from "../../hooks/useContents"
@@ -68,11 +69,7 @@ export function PhotoGalleries() {
             <div className="row">
                 <div className="col-sm-12">
                     <div className="x_panel">
-                        <div className="x_title">
-                            <h4>Photo Galleries</h4>
-                            <div className="clearfix"></div>
-                        </div>
-                        <div className="x_content border-bottom border-2">
+                        <div className="x_content border-bottom border-2 p-0">
                             <div className="row">
                                 <div className="col-sm-12">
                                     <div className="card-box table-responsive">
@@ -80,6 +77,7 @@ export function PhotoGalleries() {
                                             id="datatable-responsive"
                                             columns={columns}
                                             data={photoGalleries}
+                                            customStyles={customStyles}
                                             pagination
                                             highlightOnHover 
                                             striped
@@ -91,9 +89,9 @@ export function PhotoGalleries() {
                             </div>
                         </div>
                         <div className="x_content">
-                            <div className="buttons d-inline-block">
-                                <Link to="create">
-                                    <button type="button" className="btn btn-success btn-lg d-flex align-items-center">
+                            <div className="buttons d-inline-block m-0">
+                                <Link to="create" tabIndex={-1}>
+                                    <button type="button" className="btn btn-success btn-lg d-flex align-items-center m-0">
                                         Create Photo Gallery
                                         <i className="bi bi-arrow-right ms-3"></i>
                                     </button>

@@ -7,6 +7,7 @@ export const ArticleBodyEditor = ({ value, onChange, placeholder }) => {
     const config = useMemo(() => ({
         height: 600,
         tabIndex: 0,
+        useNativeTooltip: true,
 
         uploader: {
             url: "http://localhost:8080/api/upload",
@@ -78,6 +79,7 @@ export const ArticleBodyEditor = ({ value, onChange, placeholder }) => {
 
     return (
         <JoditEditor
+            aria-label="Article body editor"
             id="article-body"
             ref={editorRef}
             tabIndex={0}

@@ -8,6 +8,7 @@ import { LoadingSpinner } from "../components/common/LoadingSpinner"
 import { LoadError } from "../components/common/LoadError";
 import { Card } from "../components/common/Card";
 import { dashboardContentColumns } from "../components/table/dashboardContentColumns"
+import { customStyles } from "../components/table/tableStyles"; 
 
 import { usePublisherDashboard } from "../hooks/usePublisherDashboard";
 import { deleteArticle } from "../services/articleApi";
@@ -135,9 +136,9 @@ export function Home() {
                 </div>
 
                 <div className="row col-12 gy-4">   
-                    <Link to="/articles/create" className="col-sm-4 col-md-4">
+                    <Link to="/articles/create" className="col-sm-4 col-md-4" tabIndex={-1}>
                         <div className="card shadow-sm h-100">
-                            <div className="card-body">
+                            <button className="btn btn-light card-body m-0" type="button">
                                 <div className="d-flex align-items-center flex-column">
                                     <div className="flex-shrink-0 my-3">
                                         <div className="action-avatar-bg text-white rounded-circle d-flex align-items-center justify-content-center avatar-xxl">
@@ -148,13 +149,13 @@ export function Home() {
                                         <h4 className="text-center m-0">Create Article</h4>
                                     </div>
                                 </div>
-                            </div>
+                            </button>
                         </div>
                     </Link>
 
-                    <Link to="/galleries/create" className="col-sm-4 col-md-4">
+                    <Link to="/galleries/create" className="col-sm-4 col-md-4" tabIndex={-1}>
                         <div className="card shadow-sm h-100">
-                            <div className="card-body">
+                            <button className="btn btn-light card-body m-0" type="button">
                                 <div className="d-flex align-items-center flex-column">
                                     <div className="flex-shrink-0 my-3">
                                         <div className="action-avatar-bg text-white rounded-circle d-flex align-items-center justify-content-center avatar-xxl">
@@ -165,13 +166,13 @@ export function Home() {
                                         <h4 className="text-center m-0">Create Photo Gallery</h4>
                                     </div>
                                 </div>
-                            </div>
+                            </button>
                         </div>
                     </Link>
 
-                    <Link to="/videos/create" className="col-sm-4 col-md-4">
+                    <Link to="/videos/create" className="col-sm-4 col-md-4" tabIndex={-1}>
                         <div className="card shadow-sm h-100">
-                            <div className="card-body">
+                            <button className="btn btn-light card-body m-0" type="button">
                                 <div className="d-flex align-items-center flex-column">
                                     <div className="flex-shrink-0 my-3">
                                         <div className="action-avatar-bg text-white rounded-circle d-flex align-items-center justify-content-center avatar-xxl">
@@ -182,7 +183,7 @@ export function Home() {
                                         <h4 className="text-center m-0">Create Video</h4>
                                     </div>
                                 </div>
-                            </div>
+                            </button>
                         </div>
                     </Link>
                     <div className="clearfix"></div>
@@ -195,10 +196,7 @@ export function Home() {
                 <div className="row col-12">
                     <div>
                         <div className="x_panel">
-                            <div className="x_title">
-                                <h4>Latest Content</h4>
-                            </div>
-                            <div className="x_content border-bottom border-2">
+                            <div className="x_content border-bottom border-2 p-0">
                                 <div className="row">
                                     <div className="col-sm-12">
                                         <div className="card-box table-responsive">
@@ -206,6 +204,7 @@ export function Home() {
                                                 id="datatable-responsive"
                                                 columns={columns}
                                                 data={latestContent}
+                                                customStyles={customStyles}
                                                 highlightOnHover
                                                 striped
                                             />

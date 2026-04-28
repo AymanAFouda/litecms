@@ -17,14 +17,14 @@ export function Sidebar({ isMenuExpanded }) {
             <aside className="col-md-3 left_col" aria-label="Sidebar navigation">
                 <div className="left_col scroll-view">
                     <div className="navbar nav_title border-0">
-                        <Link to={"/"} className="site_title d-flex justify-content-center align-items-end">
+                        <Link to={"/"} className="site_title d-flex justify-content-center align-items-center py-3">
                             <img src="/images/logo.png" alt="LiteCMS logo" className="logo-full logo-main"/>
                             <img src="/images/logo-icon.png" alt="LiteCMS icon" className="logo-icon"/>
                         </Link>
                     </div>
                     <div className="clearfix"></div>
 
-                    <div id="sidebar-menu" className="main_menu_side hidden-print main_menu mt-3">
+                    <div id="sidebar-menu" className="main_menu_side hidden-print main_menu">
                         <div className="menu_section">
                             <ul className="nav side-menu">
                                 {menuItems.map((item, idx) => (
