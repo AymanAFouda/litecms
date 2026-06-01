@@ -35,7 +35,7 @@ const Sidebar = ({ className, variant = "default", contentTags = [], relatedCont
         </>
       )}
 
-      {(variant=== "home") && !popularTagsAreLoading && !popularTagsLoadError && (
+      {(variant=== "home") && !popularTagsAreLoading && !popularTagsLoadError && popularTagList.length>0 && (
         <TagCloud title={tagCloudTitle} tags={popularTagList}/>
       )}
 
@@ -77,16 +77,7 @@ const Sidebar = ({ className, variant = "default", contentTags = [], relatedCont
               )}
             />
             <p className="text-xs">
-              By Singing Up, You Agree To The
-              <Link
-                to={newsletter.privacy_policy_page}
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-                className="ml-1 text-primary"
-              >
-                Privacy Policy
-              </Link>
+              By Singing Up, You Agree To The Privacy Policy
             </p>
         </div>
       )}

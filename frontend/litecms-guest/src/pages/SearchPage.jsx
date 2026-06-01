@@ -122,7 +122,7 @@ export const SearchPage = () => {
                     <div className="flex justify-center flex-wrap">
                         <div className="px-4 py-2 mr-3 mb-3 md:mb-0 flex flex-col justify-center rounded-2xl border-2 border-white/20 shadow-[0_0_15px_rgba(0,0,0,0.2)]">
                             <p className="inline font-secondary font-bold">
-                                Showing<span className="text-emerald-600 mx-1.5">{total ?? 0}</span>results
+                                Showing<span className="mx-1.5">{total ?? 0}</span>results
                             </p>
                         </div>
                     </div>

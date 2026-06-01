@@ -4,8 +4,8 @@
     "base_url": "/",
     "favicon": "/images/fav-icon.png",
     "logo": "/images/main-logo.png",
-    "logo_width": "180",
-    "logo_height": "36",
+    "logo_width": "200",
+    "logo_height": "47",
     "logo_text": "LiteCMS"
   },
   "params": {

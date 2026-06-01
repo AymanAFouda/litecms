@@ -17,7 +17,7 @@ const ContentListItem = ({ content }) => {
   useEffect(() => {
     const updateLength = () => {
       if (window.innerWidth < 640) {
-        setMaxChars(160); // small screens
+        setMaxChars(130); // small screens
       } else {
         setMaxChars(200); // larger screens
       }
@@ -95,7 +95,15 @@ const ContentListItem = ({ content }) => {
             {likeCount}
           </li>
         </ul>
-        <p className="mt-2 prose content dark:text-gray-300 leading-snug">{description.length > maxChars? description.slice(0, maxChars) : description}..<Link to={`/content/${contentId}`}>read more</Link></p>
+        <p className="mt-2 prose content dark:text-gray-300 leading-snug">
+          {description.length > maxChars? description.slice(0, maxChars) : description}..
+          <Link 
+            className="text-black dark:text-white underline decoration-primary underline-offset-4 decoration-1 hover:decoration-2 transition-all duration-200" 
+            to={`/content/${contentId}`}
+          >
+            read more
+          </Link>
+        </p>
       </div>
     </div>
   );

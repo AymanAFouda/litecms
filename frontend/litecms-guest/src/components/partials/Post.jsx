@@ -84,7 +84,15 @@ const Post = ({ content }) => {
           {content.viewCount}
         </li>
       </ul>
-      <p className="mt-1 prose content dark:text-gray-300">{content.description.slice(0, maxChars)}..<a href="#">read more</a></p>
+      <p className="mt-1 prose content dark:text-gray-300">
+        {content.description.slice(0, maxChars)}..
+        <Link 
+          className="text-black dark:text-white underline decoration-primary underline-offset-4 decoration-1 hover:decoration-2 transition-all duration-200" 
+          to={`/content/${content.contentId}`}
+        >
+          read more
+        </Link>
+      </p>
     </div>
   );
 };

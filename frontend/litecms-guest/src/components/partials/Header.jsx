@@ -43,7 +43,7 @@ const Header = ({ currentPath = "/" }) => {
         <div className="order-0">
           <Logo />
         </div>
-        <div className="flex items-center space-x-4 xl:space-x-8">
+        <div className="flex items-center space-x-4 xl:space-x-8 pr-2 md:pr-0">
           <div
             className={`collapse-menu ${
               !showMenu && "translate-x-full"
